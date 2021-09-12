@@ -546,22 +546,6 @@ sensor:
         icon_template: >-
           mdi:cash
           
-      monthly_gas_costs:
-        friendly_name: "Monthly gas costs"
-        unit_of_measurement: "€"
-        value_template: >-
-          {{((states('sensor.monthly_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/12)) | round(2)}}
-        icon_template: >-
-          mdi:cash
-          
-      yearly_gas_costs:
-        friendly_name: "Yearly gas costs"
-        unit_of_measurement: "€"
-        value_template: >-
-          {{((states('sensor.yearly_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float)) | round(2)}}
-        icon_template: >-
-          mdi:cash
-          
       # Daily energy costs
       daily_energy_costs_1:
         friendly_name: "Daily costs tariff 1"
@@ -613,84 +597,6 @@ sensor:
           {{ states('sensor.daily_energy_costs_1') | float + states('sensor.daily_energy_costs_2') | float}}
         icon_template: >-
           mdi:cash
-
-      # # Monthly energy costs
-      # monthly_energy_costs_1:
-      #   friendly_name: "Monthly costs tariff 1"
-      #   unit_of_measurement: "€"
-      #   value_template: >-
-      #     {% set fixed = states('input_number.fixed_energy_tariff') | float %}
-      #     {% set fixed_day = fixed / 12 %}
-      #     {% set tariff_1 = states('input_number.energy_tariff_1') | float %}
-      #     {% set useage_1 = states('sensor.monthly_energy_tariff_1') | float %}
-      #     {% set useage_2 = states('sensor.monthly_energy_tariff_2') | float %}
-      #     {% set usage = useage_1 + useage_2 %}
-      #     {% set fixed_1 = useage_1 / usage * fixed_day %}
-      #     {{ (tariff_1 * useage_1 + fixed_1) | round(2) }}
-      #   icon_template: >-
-      #     mdi:cash
-          
-      # monthly_energy_costs_2:
-      #   friendly_name: "Monthly costs tariff 2"
-      #   unit_of_measurement: "€"
-      #   value_template: >-
-      #     {% set fixed = states('input_number.fixed_energy_tariff') | float %}
-      #     {% set fixed_day = fixed / 12 %}
-      #     {% set tariff_2 = states('input_number.energy_tariff_2') | float %}
-      #     {% set useage_1 = states('sensor.monthly_energy_tariff_1') | float %}
-      #     {% set useage_2 = states('sensor.monthly_energy_tariff_2') | float %}
-      #     {% set usage = useage_1 + useage_2 %}
-      #     {% set fixed_2 = useage_2 / usage * fixed_day %}
-      #     {{ (tariff_2 * useage_2 + fixed_2) | round(2) }}
-      #   icon_template: >-
-      #     mdi:cash
-          
-      # monthly_energy_costs:
-      #   friendly_name: "Monthly energy costs"
-      #   unit_of_measurement: "€"
-      #   value_template: >-
-      #     {{ states('sensor.monthly_energy_costs_1') | float + states('sensor.monthly_energy_costs_2') | float}}
-      #   icon_template: >-
-      #     mdi:cash
-
-      # # Yearly energy costs
-      # yearly_energy_costs_1:
-      #   friendly_name: "Yearly costs tariff 1"
-      #   unit_of_measurement: "€"
-      #   value_template: >-
-      #     {% set fixed = states('input_number.fixed_energy_tariff') | float %}
-      #     {% set fixed_day = fixed %}
-      #     {% set tariff_1 = states('input_number.energy_tariff_1') | float %}
-      #     {% set useage_1 = states('sensor.yearly_energy_tariff_1') | float %}
-      #     {% set useage_2 = states('sensor.yearly_energy_tariff_2') | float %}
-      #     {% set usage = useage_1 + useage_2 %}
-      #     {% set fixed_1 = useage_1 / usage * fixed_day %}
-      #     {{ (tariff_1 * useage_1 + fixed_1) | round(2) }}
-      #   icon_template: >-
-      #     mdi:cash
-          
-      # yearly_energy_costs_2:
-      #   friendly_name: "Yearly costs tariff 2"
-      #   unit_of_measurement: "€"
-      #   value_template: >-
-      #     {% set fixed = states('input_number.fixed_energy_tariff') | float %}
-      #     {% set fixed_day = fixed %}
-      #     {% set tariff_2 = states('input_number.energy_tariff_2') | float %}
-      #     {% set useage_1 = states('sensor.yearly_energy_tariff_1') | float %}
-      #     {% set useage_2 = states('sensor.yearly_energy_tariff_2') | float %}
-      #     {% set usage = useage_1 + useage_2 %}
-      #     {% set fixed_2 = useage_2 / usage * fixed_day %}
-      #     {{ (tariff_2 * useage_2 + fixed_2) | round(2) }}
-      #   icon_template: >-
-      #     mdi:cash
-          
-      # yearly_energy_costs:
-      #   friendly_name: "Yearly energy costs"
-      #   unit_of_measurement: "€"
-      #   value_template: >-
-      #     {{ states('sensor.yearly_energy_costs_1') | float + states('sensor.yearly_energy_costs_2') | float}}
-      #   icon_template: >-
-      #     mdi:cash
 
 #------------------------------------------------------------------------------
 # STATISTICS
@@ -931,7 +837,7 @@ utility_meter:
     cycle: yearly
 
 #------------------------------------------------------------------------------
-# ENERGY COST
+# ENERGY COSTS
 #------------------------------------------------------------------------------
 
   monthly_energy_costs_1:
@@ -982,3 +888,18 @@ utility_meter:
     source: sensor.gas_consumed
     name: Yearly Gas
     cycle: yearly
+    
+#------------------------------------------------------------------------------
+# GAS COSTS
+#------------------------------------------------------------------------------
+
+  monthly_gas_costs:
+    source: sensor.daily_gas_costs
+    name: Monthly gas costs
+    cycle: monthly
+    
+  yearly_gas_costs:
+    source: sensor.daily_gas_costs
+    name: Yearly gas costs
+    cycle: yearly
+    
