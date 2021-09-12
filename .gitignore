@@ -1,0 +1,12 @@
+# Ignore all files
+*
+
+# Include
+!.yaml
+!.gitignore
+!.HA_VERSION
+
+# Ignore specific files
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
