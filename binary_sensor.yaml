@@ -1,0 +1,70 @@
+###############################################################################
+# BINARY SENSORS
+###############################################################################
+
+#------------------------------------------------------------------------------
+# WORKDAY CALENDAR
+#------------------------------------------------------------------------------
+
+- platform: workday
+  country: NL
+    
+#------------------------------------------------------------------------------
+# PING NETWORK DEVICES
+#------------------------------------------------------------------------------
+    
+# Network device status
+- platform: ping
+  host: 192.168.2.14
+  name: "Sprinkler controller"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.30
+  name: "Hue utility bridge"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.16
+  name: "KPN TV"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.13
+  name: "Laptop"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.37
+  name: "Work Laptop"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.193
+  name: "Opentherm controller"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.32
+  name: "Dining room home mini"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.197
+  name: "Hue garden bridge"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.196
+  name: "Range extender"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.200
+  name: "ESP Home test device"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.199
+  name: "Slimme lezer"
+  scan_interval: 30
