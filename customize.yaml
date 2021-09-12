@@ -1,0 +1,42 @@
+sensor.avarage_humidity:
+  icon: mdi:water-percent
+sensor.avarage_ground_temperature:
+  icon: mdi:thermometer
+sensor.avarage_watering_level:
+  icon: mdi:water-percent
+sensor.watering_level:
+  icon: mdi:water-percent
+sensor.somebody_home:
+  icon: mdi:home
+binary_sensor.sprinkler_controller:
+  icon: mdi:wifi
+binary_sensor.laptop:
+  icon: mdi:wifi
+binary_sensor.work_laptop:
+  icon: mdi:wifi
+binary_sensor.dining_room_home_mini:
+  icon: mdi:wifi
+binary_sensor.workday_sensor:
+  icon: mdi:briefcase
+binary_sensor.esp_home_test_device:
+  icon: mdi:wifi
+sensor.downstairs_temperature:
+  icon: mdi:thermometer
+binary_sensor.slimme_lezer:
+  icon: mdi:wifi
+sensor.daily_gas:
+  device_class: gas
+  state_class: total_increasing
+  icon: mdi:fire
+sensor.monthly_gas:
+  device_class: gas
+  state_class: total_increasing
+  icon: mdi:fire
+sensor.yearly_gas:
+  device_class: gas
+  state_class: total_increasing
+  icon: mdi:fire
+sensor.energy_usage:
+  icon: hass:flash
+sensor.gas_usage:
+  icon: mdi:fire

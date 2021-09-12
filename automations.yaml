@@ -1,0 +1,806 @@
+- id: '1628699826699'
+  alias: Utility - Auto snapshot and backup
+  description: Takes snapshot and uploads to Dropbox
+  trigger:
+  - platform: time
+    at: '1:00:00'
+  condition: []
+  action:
+  - service: hassio.snapshot_full
+    data_template:
+      name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
+  - service: hassio.addon_stdin
+    data:
+      addon: 7be23ff5_dropbox_sync
+      input:
+        command: upload
+  mode: single
+- id: '1628787697002'
+  alias: Sprinklers - Irrigation control
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.watering_time
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.watering_level
+      state: '0'
+  action:
+  - service: opensprinkler.run
+    data:
+      entity_id: binary_sensor.sprinkler_1_station_running
+      run_seconds: '{{states("sensor.back_watering_time") | int }}'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: '{{states("sensor.back_watering_time") | int + 15}}'
+      milliseconds: 0
+  - service: opensprinkler.run
+    data:
+      entity_id: binary_sensor.sprinkler_2_station_running
+      run_seconds: '{{states("sensor.front_watering_time") | int }}'
+  mode: single
+- id: '1628878957372'
+  alias: Alarm - Trigger while armed away
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sensor_motion
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.livingroom_motion
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.motion_downstairs_hallway
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.upstairs_hallway_motion
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - service: alarm_control_panel.alarm_trigger
+    target:
+      entity_id: alarm_control_panel.home_alarm
+    data: {}
+  mode: single
+- id: '1629048220312'
+  alias: Alarm - Trigger actions
+  description: '- Flash lights / turn on
+
+    - Sound Alarm
+
+    - Send notification'
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: triggered
+  condition: []
+  action:
+  - service: scene.create
+    data:
+      snapshot_entities: media_player.speaker_group
+      scene_id: before_alarm_sound
+  - service: script.alarm_sound_alarm
+  - service: notify.notify
+    data:
+      message: The alarm has been triggered at {{ states('sensor.time') }}.
+      title: Alarm
+      data:
+        group: Alarms
+        tag: Alarm pending
+        color: red
+        ledColor: red
+        priority: high
+        ttl: 0
+        channel: alarm_stream
+        actions:
+        - action: URI
+          title: Disarm
+          uri: /lovelace/alarm
+  - service: script.flash_licht
+  mode: single
+- id: '1629106372874'
+  alias: Alarm - Play pending sound
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: pending
+  condition: []
+  action:
+  - service: scene.create
+    data:
+      snapshot_entities: media_player.speaker_group
+      scene_id: before_alarm_sound
+  - service: script.alarm_sound_pending
+  mode: single
+- id: '1629124515237'
+  alias: Alarm - Play arming
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: arming
+  condition: []
+  action:
+  - service: script.alarm_sound_arming
+  - service: scene.create
+    data:
+      snapshot_entities: media_player.speaker_group
+      scene_id: before_alarm_sound
+  mode: single
+- id: '1629190065593'
+  alias: Alarm  - Send notification when pending
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: pending
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: The alarm was triggerd and will sound in 30 seconds.
+      title: Pending Alarm
+      data:
+        group: Alarms
+        tag: Alarm pending
+        color: red
+        ledColor: red
+        priority: high
+        ttl: 0
+        actions:
+        - action: URI
+          title: Disarm
+          uri: /lovelace/alarm
+        - action: ALARM
+          title: Alarm
+  mode: single
+- id: '1629192620074'
+  alias: Alarm - Trigger from notification
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: ALARM
+  condition: []
+  action:
+  - service: alarm_control_panel.alarm_trigger
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  mode: single
+- id: '1629220722760'
+  alias: Alarm - Auto (dis-)arming
+  description: '- Disarm alarm
+
+    - Arm alarm'
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: home
+    id: HOME
+  - platform: state
+    entity_id: sensor.house_state
+    id: AWAY
+    to: away
+  - platform: state
+    entity_id: sensor.house_state
+    id: HOLIDAY
+    to: holiday
+  - platform: state
+    entity_id: sensor.house_state
+    id: NIGHT_ON
+    to: night
+    for: '{{ states( ''input_datetime.night_alarm_delay'' ) }}'
+  - platform: template
+    value_template: "{% set early = state_attr('input_datetime.night_alarm_early_stop',\
+      \ 'timestamp') %} {% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
+      \ %} {% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
+      \ %} {% set work_end_time = (end_work - early)  | timestamp_utc %} {% set end_free\
+      \ = state_attr('input_datetime.end_night_free_day', 'timestamp') %} {% set free_end_time\
+      \ = (end_free - early)  | timestamp_utc %}\n{% if is_state('binary_sensor.workday_sensor',\
+      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
+      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
+      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
+      {% endif %}\n"
+    id: NIGHT_OFF
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: HOME
+      sequence:
+      - service: alarm_control_panel.alarm_disarm
+        target:
+          entity_id: alarm_control_panel.home_alarm
+        data:
+          code: '2070'
+    - conditions:
+      - condition: trigger
+        id: AWAY
+      sequence:
+      - service: alarm_control_panel.alarm_arm_away
+        target:
+          entity_id: alarm_control_panel.home_alarm
+    - conditions:
+      - condition: trigger
+        id: HOLIDAY
+      sequence:
+      - service: alarm_control_panel.alarm_arm_away
+        target:
+          entity_id: alarm_control_panel.home_alarm
+    - conditions:
+      - condition: trigger
+        id: NIGHT_ON
+      sequence:
+      - service: alarm_control_panel.alarm_arm_night
+        target:
+          entity_id: alarm_control_panel.home_alarm
+    - conditions:
+      - condition: trigger
+        id: NIGHT_OFF
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: input_boolean.holiday
+          state: 'on'
+      sequence:
+      - service: alarm_control_panel.alarm_disarm
+        target:
+          entity_id: alarm_control_panel.home_alarm
+        data:
+          code: '2070'
+    default: []
+  mode: single
+- id: '1629220807943'
+  alias: Lights - All off when away
+  description: '- Turn of all lights when away'
+  trigger:
+  - platform: state
+    to: away
+    entity_id: sensor.house_state
+  condition: []
+  action:
+  - service: script.lights_turn_off_all_lights
+  mode: single
+- id: '1629568493916'
+  alias: Alarm - Trigger while armed night
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sensor_motion
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.livingroom_motion
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.motion_downstairs_hallway
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_night
+  action:
+  - service: alarm_control_panel.alarm_trigger
+    target:
+      entity_id: alarm_control_panel.home_alarm
+    data: {}
+  mode: single
+- id: '1629639165423'
+  alias: Lights - Turn off if there is no motion - Stairs closet
+  description: Turn lights off when no motion is detected
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sensor_motion
+    to: 'off'
+    for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
+  condition:
+  - condition: state
+    entity_id: light.stairs_closet
+    state: 'on'
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.stairs_closet
+  mode: single
+- id: '1629825060315'
+  alias: Climate - Hot water service
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: home
+    id: 'ON'
+  - platform: state
+    entity_id: sensor.house_state
+    id: 'OFF'
+    from: home
+  - platform: template
+    value_template: "{% set early = state_attr('input_datetime.hot_water_pre_heat',\
+      \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
+      \ %} \n{% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
+      \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
+      \ end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}\
+      \ \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if is_state('binary_sensor.workday_sensor',\
+      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
+      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
+      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
+      {% endif %}"
+    id: EARLY_ON
+  - platform: template
+    value_template: "{% set early = state_attr('input_datetime.hot_water_early_stop',\
+      \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
+      \ %} \n{% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
+      \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
+      \ end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}\
+      \ \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if is_state('binary_sensor.workday_sensor',\
+      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
+      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
+      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
+      {% endif %}"
+    id: EARLY_OFF
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.hot_water_service
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.hot_water_service
+    - conditions:
+      - condition: trigger
+        id: EARLY_ON
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: input_boolean.holiday
+          state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.hot_water_service
+    - conditions:
+      - condition: trigger
+        id: EARLY_OFF
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.hot_water_service
+    default: []
+  mode: single
+- id: '1629825198745'
+  alias: 'Climate - Heating service '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: home
+    id: 'ON'
+  - platform: state
+    entity_id: sensor.house_state
+    id: 'OFF'
+    from: home
+  - platform: template
+    value_template: "{% set early = state_attr('input_datetime.heating_early_stop',\
+      \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
+      \ %} \n{% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
+      \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
+      \ end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}\
+      \ \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if is_state('binary_sensor.workday_sensor',\
+      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
+      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
+      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
+      {% endif %}"
+    id: EARLY_OFF
+  - platform: template
+    value_template: "{% set early = state_attr('input_datetime.heating_pre_heat',\
+      \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
+      \ %} \n{% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
+      \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
+      \ end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}\
+      \ \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if is_state('binary_sensor.workday_sensor',\
+      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
+      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
+      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
+      {% endif %}"
+    id: EARLY_ON
+  - platform: state
+    entity_id: sensor.climate_setpoint
+    id: SETPOINT
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.central_heating
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.central_heating
+        data:
+          temperature: '{{ states(''sensor.climate_setpoint'') }}'
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.central_heating
+    - conditions:
+      - condition: trigger
+        id: EARLY_OFF
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.central_heating
+    - conditions:
+      - condition: trigger
+        id: EARLY_ON
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: input_boolean.holiday
+          state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.central_heating
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.central_heating
+        data:
+          temperature: '{{ states(''sensor.climate_setpoint'') }}'
+    - conditions:
+      - condition: trigger
+        id: SETPOINT
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.central_heating
+        data:
+          temperature: '{{ states(''sensor.climate_setpoint'') }}'
+    default: []
+  mode: single
+- id: '1630088921261'
+  alias: Lights - Turn off if there is no motion - Upstairs hallway
+  description: Turn lights off when no motion is detected
+  trigger:
+  - platform: state
+    to: 'off'
+    for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
+    entity_id: binary_sensor.upstairs_hallway_motion
+  condition:
+  - condition: state
+    entity_id: light.upstairs_hallway
+    state: 'on'
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.upstairs_hallway
+  mode: single
+- id: '1630089027781'
+  alias: Lights - Turn off if there is no motion - Downstairs hallway
+  description: Turn lights off when no motion is detected
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_downstairs_hallway
+    to: 'off'
+    for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
+  condition:
+  - condition: state
+    entity_id: light.downstairs_hallway
+    state: 'on'
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.downstairs_hallway
+  mode: single
+- id: '1630089139008'
+  alias: Lights - Turn off if there is no motion - Living room
+  description: Turn lights off when no motion is detected
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.livingroom_motion
+    to: 'off'
+    for: '{{states(''input_datetime.light_motion_timeout_long'')}}'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.livingroom_motion
+    state: 'on'
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.living_room
+      - light.decorations
+  mode: single
+- id: '1630259774998'
+  alias: Lights - Holiday replay
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.replay_living_room
+    id: LIVINGROOM
+  - platform: state
+    entity_id: sensor.replay_kitchen
+    id: KITCHEN
+  - platform: state
+    entity_id: sensor.replay_closet
+    id: CLOSET
+  - platform: state
+    entity_id: sensor.replay_bedroom
+    id: BEDROOM
+  - platform: state
+    entity_id: sensor.replay_dining_room
+    id: DININGROOM
+  - platform: state
+    entity_id: input_boolean.holiday
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.holiday
+    state: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: LIVINGROOM
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_living_room
+            state: '1'
+          sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.living_room
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_living_room
+            state: '0'
+          sequence:
+          - service: light.turn_off
+            target:
+              entity_id: light.living_room
+        default: []
+    - conditions:
+      - condition: trigger
+        id: DININGROOM
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_dining_room
+            state: '1'
+          sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.dining_room
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_dining_room
+            state: '0'
+          sequence:
+          - service: light.turn_off
+            target:
+              entity_id: light.dining_room
+        default: []
+    - conditions:
+      - condition: trigger
+        id: BEDROOM
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_bedroom
+            state: '1'
+          sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.bedroom
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_bedroom
+            state: '0'
+          sequence:
+          - service: light.turn_off
+            target:
+              entity_id: light.bedroom
+        default: []
+    - conditions:
+      - condition: trigger
+        id: CLOSET
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_closet
+            state: '1'
+          sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.closet
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_closet
+            state: '0'
+          sequence:
+          - service: light.turn_off
+            target:
+              entity_id: light.closet
+        default: []
+    - conditions:
+      - condition: trigger
+        id: KITCHEN
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_kitchen
+            state: '1'
+          sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.kitchen
+        - conditions:
+          - condition: state
+            entity_id: sensor.replay_closet
+            state: '0'
+          sequence:
+          - service: light.turn_off
+            target:
+              entity_id: light.kitchen
+        default: []
+    default: []
+  mode: parallel
+  max: 10
+- id: '1630829332532'
+  alias: Climate - Publish downstairs temperature to MQTT
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.downstairs_temperature
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: temperature/downstairs
+      payload_template: '{{states("sensor.downstairs_temperature")}}'
+  mode: single
+- id: '1631038917696'
+  alias: Alarm - Link panel
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.alarm_panel_ias_ace
+    id: PANEL TO HOME ALARM
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    id: HOME ALARM TO PANEL
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: PANEL TO HOME ALARM
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: alarm_control_panel.alarm_panel_ias_ace
+            state: armed_night
+          sequence:
+          - service: alarm_control_panel.alarm_arm_night
+            target:
+              entity_id: alarm_control_panel.home_alarm
+        - conditions:
+          - condition: state
+            entity_id: alarm_control_panel.alarm_panel_ias_ace
+            state: armed_away
+          sequence:
+          - service: alarm_control_panel.alarm_arm_away
+            target:
+              entity_id: alarm_control_panel.home_alarm
+        - conditions:
+          - condition: state
+            entity_id: alarm_control_panel.alarm_panel_ias_ace
+            state: triggered
+          sequence:
+          - service: alarm_control_panel.alarm_trigger
+            target:
+              entity_id: alarm_control_panel.home_alarm
+        - conditions:
+          - condition: state
+            entity_id: alarm_control_panel.alarm_panel_ias_ace
+            state: disarmed
+          sequence:
+          - service: alarm_control_panel.alarm_disarm
+            data:
+              code: '2070'
+            target:
+              entity_id: alarm_control_panel.home_alarm
+        default: []
+    - conditions:
+      - condition: trigger
+        id: HOME ALARM TO PANEL
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: alarm_control_panel.home_alarm
+            state: armed_night
+          sequence:
+          - service: alarm_control_panel.alarm_arm_night
+            target:
+              entity_id: alarm_control_panel.alarm_panel_ias_ace
+        - conditions:
+          - condition: state
+            entity_id: alarm_control_panel.home_alarm
+            state: armed_away
+          sequence:
+          - service: alarm_control_panel.alarm_arm_away
+            target:
+              entity_id: alarm_control_panel.alarm_panel_ias_ace
+        - conditions:
+          - condition: state
+            entity_id: alarm_control_panel.home_alarm
+            state: triggered
+          sequence:
+          - service: alarm_control_panel.alarm_trigger
+            target:
+              entity_id: alarm_control_panel.alarm_panel_ias_ace
+        - conditions:
+          - condition: state
+            entity_id: alarm_control_panel.home_alarm
+            state: disarmed
+          sequence:
+          - service: alarm_control_panel.alarm_disarm
+            data:
+              code: '2070'
+            target:
+              entity_id: alarm_control_panel.alarm_panel_ias_ace
+        default: []
+    default: []
+  mode: single

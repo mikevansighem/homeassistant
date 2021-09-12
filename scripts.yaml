@@ -1,0 +1,245 @@
+flash_licht:
+  alias: Alarm - Flash light red
+  sequence:
+  - service: scene.create
+    data:
+      scene_id: lights_before_alarm
+      snapshot_entities:
+      - light.living_room
+      - light.dining_room
+      - light.kitchen
+      - light.stairs_closet
+      - light.downstairs_hallway
+      - light.upstairs_hallway
+      - light.attict_hallway
+      - light.attict
+      - light.bedroom
+      - light.closet
+      - light.car_port
+      - light.toilet
+  - service: light.turn_on
+    data:
+      brightness_pct: 100
+      color_name: red
+    target:
+      area_id:
+      - attic
+      - attic_hallway
+      - bedroom
+      - car_port
+      - closet
+      - dining_room
+      - downstairs_hallway
+      - kitchen
+      - living_room
+      - stairs_closet
+      - toilet
+      - upstairs_hallway
+  - repeat:
+      while:
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: triggered
+      sequence:
+      - service: light.toggle
+        data:
+          color_name: red
+          brightness_pct: 100
+        target:
+          area_id:
+          - downstairs_hallway
+          - upstairs_hallway
+          - attic_hallway
+          - stairs_closet
+          - kitchen
+          - dining_room
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 800
+  - service: scene.reload
+  - service: scene.turn_on
+    target:
+      entity_id: scene.lights_before_alarm
+  mode: restart
+  icon: mdi:alarm-light-outline
+lights_turn_off_all_lights:
+  alias: Lights - Turn off all lights
+  sequence:
+  - service: light.turn_off
+    target:
+      area_id:
+      - attic
+      - attic_hallway
+      - bedroom
+      - car_port
+      - closet
+      - decorations
+      - dining_room
+      - downstairs_hallway
+      - garden
+      - kitchen
+      - living_room
+      - stairs_closet
+      - toilet
+      - upstairs_hallway
+  mode: single
+  icon: mdi:lightbulb-group-off
+alarm_sound_alarm:
+  alias: Alarm - Sound alarm
+  sequence:
+  - service: media_player.volume_set
+    data:
+      volume_level: '{{states(''input_number.alarm_volume'') | float}}'
+    target:
+      entity_id: media_player.speaker_group
+  - service: media_player.play_media
+    data:
+      media_content_type: audio/mp3
+      media_content_id: https://www.dropbox.com/s/qtb2xln4vudjwpp/alarm_sound_long.mp3?dl=1
+    target:
+      entity_id:
+      - media_player.speaker_group
+  - repeat:
+      until:
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: alarm_control_panel.home_alarm
+          state: triggered
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 100
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.speaker_group
+  - service: scene.turn_on
+    target:
+      entity_id: scene.before_alarm_sound
+  mode: single
+  icon: mdi:volume-medium
+alarm_sound_pending:
+  alias: Alarm - Sound pending
+  sequence:
+  - service: media_player.volume_set
+    data:
+      volume_level: '{{states(''input_number.aux_volume'') | float}}'
+    target:
+      entity_id: media_player.speaker_group
+  - service: media_player.play_media
+    data:
+      media_content_type: audio/mp3
+      media_content_id: https://www.dropbox.com/s/38ng65r7u4w45vp/pending_sound_long.mp3?dl=1
+    target:
+      entity_id: media_player.speaker_group
+  - repeat:
+      until:
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: alarm_control_panel.home_alarm
+          state: pending
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 100
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_night
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: disarmed
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_away
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.speaker_group
+  - service: scene.turn_on
+    target:
+      entity_id: scene.before_alarm_sound
+  mode: single
+  icon: mdi:volume-medium
+alarm_sound_arming:
+  alias: Alarm - Sound arming
+  sequence:
+  - service: media_player.volume_set
+    data:
+      volume_level: '{{states(''input_number.aux_volume'') | float}}'
+    target:
+      entity_id: media_player.living_room_home_mini
+  - service: media_player.play_media
+    data:
+      media_content_type: audio/mp3
+      media_content_id: https://www.dropbox.com/s/38ng65r7u4w45vp/pending_sound_long.mp3?dl=1
+    target:
+      entity_id: media_player.living_room_home_mini
+  - repeat:
+      until:
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: alarm_control_panel.home_alarm
+          state: arming
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 100
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_away
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: disarmed
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: armed_night
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.living_room_home_mini
+  - service: scene.turn_on
+    target:
+      entity_id: scene.before_alarm_sound
+  mode: single
+  icon: mdi:volume-medium
+sprinkler_stop:
+  alias: Sprinkler - Stop
+  sequence:
+  - service: opensprinkler.stop
+    data:
+      entity_id: binary_sensor.sprinkler_1_station_running
+  - service: opensprinkler.stop
+    data:
+      entity_id: binary_sensor.sprinkler_2_station_running
+  mode: single
+  icon: mdi:sprinkler-variant
+'1630344371413':
+  alias: Sprinklers - Run back for input time
+  sequence:
+  - service: opensprinkler.run
+    data:
+      entity_id: binary_sensor.sprinkler_1_station_running
+      run_seconds: '{{states("input_number.back_sprinkler_time") | int * 60}}'
+  mode: single
+  icon: mdi:sprinkler-variant
+spriklers_run_front_for_input_time:
+  alias: Sprinklers - Run front for input time
+  sequence:
+  - service: opensprinkler.run
+    data:
+      entity_id: binary_sensor.sprinkler_2_station_running
+      run_seconds: '{{states("input_number.front_sprinkler_time") | int * 60}}'
+  mode: single
+  icon: mdi:sprinkler-variant
