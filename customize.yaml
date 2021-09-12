@@ -40,3 +40,15 @@ sensor.energy_usage:
   icon: hass:flash
 sensor.gas_usage:
   icon: mdi:fire
+sensor.monthly_energy_costs:
+  icon: mdi:cash
+sensor.yearly_energy_costs:
+  icon: mdi:cash
+sensor.yearly_energy_costs_tariff_1:
+  icon: mdi:cash
+sensor.yearly_energy_costs_tariff_2:
+  icon: mdi:cash
+sensor.monthly_energy_costs_tariff_2:
+  icon: mdi:cash
+sensor.monthly_energy_costs_tariff_1:
+  icon: mdi:cash
