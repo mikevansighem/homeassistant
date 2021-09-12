@@ -519,7 +519,7 @@ sensor:
          {% elif is_state('sensor.climate_period', 'evening') %}
            {{ states('input_number.evening_temperature') }}
          {% else %}
-           0
+           {{ states('input_number.night_temperature') }}
          {% endif %}
       
       # Duplicate workday sensor with nice icons for dashboard 

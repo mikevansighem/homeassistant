@@ -429,9 +429,6 @@
       \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
       {% endif %}"
     id: EARLY_ON
-  - platform: state
-    entity_id: sensor.climate_setpoint
-    id: SETPOINT
   condition: []
   action:
   - choose:
@@ -444,11 +441,6 @@
           hvac_mode: heat
         target:
           entity_id: climate.central_heating
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.central_heating
-        data:
-          temperature: '{{ states(''sensor.climate_setpoint'') }}'
     - conditions:
       - condition: trigger
         id: 'OFF'
@@ -481,20 +473,6 @@
           hvac_mode: heat
         target:
           entity_id: climate.central_heating
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.central_heating
-        data:
-          temperature: '{{ states(''sensor.climate_setpoint'') }}'
-    - conditions:
-      - condition: trigger
-        id: SETPOINT
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.central_heating
-        data:
-          temperature: '{{ states(''sensor.climate_setpoint'') }}'
     default: []
   mode: single
 - id: '1630088921261'
@@ -803,4 +781,20 @@
               entity_id: alarm_control_panel.alarm_panel_ias_ace
         default: []
     default: []
+  mode: single
+- id: '1631473532138'
+  alias: Climate - Update setpoint
+  description: Update the central heating setpoint when the climate period changes.
+  trigger:
+  - platform: state
+    entity_id: sensor.climate_period
+  - platform: state
+    entity_id: sensor.climate_setpoint
+  condition: []
+  action:
+  - service: climate.set_temperature
+    target:
+      entity_id: climate.central_heating
+    data:
+      temperature: '{{ states(''sensor.climate_setpoint'') }}'
   mode: single
