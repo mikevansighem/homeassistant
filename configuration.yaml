@@ -476,7 +476,7 @@ sensor:
                 morning
               {% elif states('input_datetime.morning_end') < time < states('input_datetime.evening_start') %}
                 day
-              {% elif states('input_datetime.evening_start') < time < 'input_datetime.start_night_free_day'%}
+              {% elif states('input_datetime.evening_start') < time < states('input_datetime.start_night_free_day') %}
                 evening
               {% else %}
                 night
@@ -486,7 +486,7 @@ sensor:
                 morning
               {% elif states('input_datetime.morning_end') < time < states('input_datetime.evening_start') %}
                 day
-              {% elif states('input_datetime.evening_start') < time < 'input_datetime.start_night_workday'%}
+              {% elif states('input_datetime.evening_start') < time < states('input_datetime.start_night_workday') %}
                 evening
               {% else %}
                 night
