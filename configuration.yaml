@@ -55,7 +55,7 @@ sensor:
   - platform: derivative
     source: sensor.gas_usage
     name: 'Gas usage'
-    round: 2
+    round: 3
     unit_time: h
     time_window: "00:01:00"
 
