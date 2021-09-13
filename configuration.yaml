@@ -769,32 +769,32 @@ utility_meter:
 
   daily_energy_tariff_1:
     source: sensor.energy_consumed_tariff_1
-    name: Daily Energy - Tariff 1
+    name: Daily energy - Off-peak
     cycle: daily
     
   monthly_energy_tariff_1:
     source: sensor.energy_consumed_tariff_1
-    name: Monthly Energy - Tariff 1
+    name: Monthly energy - Off-peak
     cycle: monthly
     
   yearly_energy_tariff_1:
     source: sensor.energy_consumed_tariff_1
-    name: Yearly Energy - Tariff 1
+    name: Yearly energy - Off-peak
     cycle: yearly
     
   daily_energy_tariff_2:
     source: sensor.energy_consumed_tariff_2
-    name: Daily Energy - Tariff 2
+    name: Daily energy - Peak
     cycle: daily
     
   monthly_energy_tariff_2:
     source: sensor.energy_consumed_tariff_2
-    name: Monthly Energy - Tariff 2
+    name: Monthly energy - Peak
     cycle: monthly
     
   yearly_energy_tariff_2:
     source: sensor.energy_consumed_tariff_2
-    name: Yearly Energy - Tariff 2
+    name: Yearly energy - Peak
     cycle: yearly
 
 #------------------------------------------------------------------------------
@@ -803,22 +803,22 @@ utility_meter:
 
   monthly_energy_costs_1:
     source: sensor.daily_energy_costs_1
-    name: Monthly energy costs off-peak
+    name: Monthly energy costs - Off-peak
     cycle: monthly
     
   yearly_energy_costs_1:
     source: sensor.daily_energy_costs_1
-    name: Yearly energy costs off-peak
+    name: Yearly energy costs - Off-peak
     cycle: yearly
     
   monthly_energy_costs_2:
     source: sensor.daily_energy_costs_2
-    name: Monthly energy costs peak
+    name: Monthly energy costs - Peak
     cycle: monthly
     
   yearly_energy_costs_2:
     source: sensor.daily_energy_costs_2
-    name: Yearly energy costs peak
+    name: Yearly energy costs - Peak
     cycle: yearly
 
   monthly_energy_costs:
