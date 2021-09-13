@@ -565,7 +565,7 @@ sensor:
           
       # Daily energy costs
       daily_energy_costs_1:
-        friendly_name: "Daily costs tariff 1"
+        friendly_name: "Daily energy costs off-peak"
         unit_of_measurement: "€"
         value_template: >-
           {% set fixed = states('input_number.fixed_energy_tariff') | float %}
@@ -587,7 +587,7 @@ sensor:
           mdi:cash
           
       daily_energy_costs_2:
-        friendly_name: "Daily costs tariff 2"
+        friendly_name: "Daily energy costs peak"
         unit_of_measurement: "€"
         value_template: >-
           {% set fixed = states('input_number.fixed_energy_tariff') | float %}
@@ -803,22 +803,22 @@ utility_meter:
 
   monthly_energy_costs_1:
     source: sensor.daily_energy_costs_1
-    name: Monthly energy costs - Tariff 1
+    name: Monthly energy costs off-peak
     cycle: monthly
     
   yearly_energy_costs_1:
     source: sensor.daily_energy_costs_1
-    name: Yearly energy costs - Tariff 1
+    name: Yearly energy costs off-peak
     cycle: yearly
     
   monthly_energy_costs_2:
     source: sensor.daily_energy_costs_2
-    name: Monthly energy costs - Tariff 2
+    name: Monthly energy costs peak
     cycle: monthly
     
   yearly_energy_costs_2:
     source: sensor.daily_energy_costs_2
-    name: Yearly energy costs - Tariff 2
+    name: Yearly energy costs peak
     cycle: yearly
 
   monthly_energy_costs:
