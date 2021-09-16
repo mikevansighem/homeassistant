@@ -69,7 +69,7 @@ sensor:
     name: 'Gas usage'
     round: 3
     unit_time: h
-    time_window: "00:01:00"
+    # time_window: "01:00:00"
 
 #------------------------------------------------------------------------------
 # HOLIDAY REPLAY
