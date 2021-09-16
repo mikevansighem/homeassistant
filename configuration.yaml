@@ -238,7 +238,7 @@ sensor:
         device_class: 'energy'
         unit_of_measurement: 'kWh'
         value_template: >-
-          {{ states('sensor.daily_energy_tariff_1')|float + states('sensor.daily_energy_tariff_2')|float }}
+          {{ states('sensor.daily_energy_off_peak')|float + states('sensor.daily_energy_peak')|float }}
         icon_template: >-
           mdi:lightning-bolt 
         
@@ -247,7 +247,7 @@ sensor:
         unit_of_measurement: 'kWh'
         device_class: 'energy'
         value_template: >-
-          {{ states('sensor.monthly_energy_tariff_1')|float + states('sensor.monthly_energy_tariff_2')|float }}
+          {{ states('sensor.monthly_energy_off_peak')|float + states('sensor.monthly_energy_peak')|float }}
         icon_template: >-
           mdi:lightning-bolt 
 
@@ -256,7 +256,7 @@ sensor:
         unit_of_measurement: 'kWh'
         device_class: 'energy'
         value_template: >-
-          {{ states('sensor.yearly_energy_tariff_1')|float + states('sensor.yearly_energy_tariff_2')|float }}
+          {{ states('sensor.yearly_energy_off_peak')|float + states('sensor.yearly_energy_peak')|float }}
         icon_template: >-
           mdi:lightning-bolt 
 
@@ -571,8 +571,8 @@ sensor:
           {% set fixed = states('input_number.fixed_energy_tariff') | float %}
           {% set fixed_day = fixed / 365 %}
           {% set tariff_1 = states('input_number.energy_tariff_1') | float %}
-          {% set useage_1 = states('sensor.daily_energy_tariff_1') | float %}
-          {% set useage_2 = states('sensor.daily_energy_tariff_2') | float %}
+          {% set useage_1 = states('sensor.daily_energy_off_peak') | float %}
+          {% set useage_2 = states('sensor.daily_energy_peak') | float %}
           {% set usage = useage_1 + useage_2 %}
           {% set fixed_1 = useage_1 / usage * fixed_day %}
           {% set result = (tariff_1 * useage_1 + fixed_1) | round(2) %}
@@ -593,8 +593,8 @@ sensor:
           {% set fixed = states('input_number.fixed_energy_tariff') | float %}
           {% set fixed_day = fixed / 365 %}
           {% set tariff_2 = states('input_number.energy_tariff_2') | float %}
-          {% set useage_1 = states('sensor.daily_energy_tariff_1') | float %}
-          {% set useage_2 = states('sensor.daily_energy_tariff_2') | float %}
+          {% set useage_1 = states('sensor.daily_energy_off_peak') | float %}
+          {% set useage_2 = states('sensor.daily_energy_peak') | float %}
           {% set usage = useage_1 + useage_2 %}
           {% set fixed_2 = useage_2 / usage * fixed_day %}
           {% set result = (tariff_2 * useage_2 + fixed_2) | round(2) %}
