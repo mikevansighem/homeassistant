@@ -32,6 +32,17 @@ tts:
 # Enable the recorder integration 
 recorder:
   purge_keep_days: 8
+  exclude:
+    entities:
+      - sun.sun
+      - sensor.time
+      - sensor.time_utc
+      - sensor.time_date
+      - sensor.internet_time
+      - sensor.date_time_utc
+      - sensor.date_time_iso
+      - sensor.date_time
+      - sensor.power_consumed
   
 ###############################################################################
 # ZIGBEE
