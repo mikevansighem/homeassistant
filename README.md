@@ -7,3 +7,15 @@
 ## About
 
 This is my personal Home Assistant configuration.
+
+## House state
+
+The house state is used to schedule automations. Below table shows devices used by the house state.
+
+| House state        | Home     | Away       | Night       | Holiday    |
+|--------------------|----------|------------|-------------|------------|
+| Alarm              | Disarmed | Armed away | Armed night | Armed away |
+| Central heating    | On       | Off        | Off         | Off        |
+| Floor heating pump | On       | Off        | Off         | Off        |
+| Hot water          | On       | Off        | Off         | Off        |
+| Holiday lights     | Off      | Off        | Off         | On         |
