@@ -798,3 +798,53 @@
     data:
       temperature: '{{ states(''sensor.climate_setpoint'') }}'
   mode: single
+- id: '1631815874577'
+  alias: Climate - Floor heating pump
+  description: Floor heating pump follows the central heating. Every night it turns
+    to prevent the pump from stalling.
+  trigger:
+  - platform: state
+    entity_id: climate.central_heating
+    id: 'ON'
+    to: heat
+  - platform: state
+    entity_id: climate.central_heating
+    id: 'OFF'
+    to: 'off'
+  - platform: time
+    at: 02:00
+    id: TIME
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.floor_heating_pump_on_off
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.floor_heating_pump_on_off
+    - conditions:
+      - condition: trigger
+        id: TIME
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.floor_heating_pump_on_off
+      - delay:
+          hours: 0
+          minutes: 3
+          seconds: 0
+          milliseconds: 0
+      - service: switch.turn_off
+        target:
+          entity_id: switch.floor_heating_pump_on_off
+    default: []
+  mode: single
