@@ -30,16 +30,6 @@
   scan_interval: 30
   
 - platform: ping
-  host: 192.168.2.13
-  name: "Laptop"
-  scan_interval: 30
-  
-- platform: ping
-  host: 192.168.2.37
-  name: "Work Laptop"
-  scan_interval: 30
-  
-- platform: ping
   host: 192.168.2.193
   name: "Opentherm controller"
   scan_interval: 30
