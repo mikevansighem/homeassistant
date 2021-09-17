@@ -46,7 +46,7 @@ recorder:
       - sensor.local_ip
       - sensor.last_boot
       - sensor.hacs
-      - sensor.binary_sensor.home_assistant_operating_system_update_available
+      - binary_sensor.home_assistant_operating_system_update_available
   
 ###############################################################################
 # ZIGBEE
