@@ -811,9 +811,20 @@
     entity_id: climate.central_heating
     id: 'OFF'
     to: 'off'
-  - platform: time
-    at: 02:00
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: switch.floor_heating_pump_on_off
     id: TIME
+    to: 'off'
+    for:
+      hours: 12
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
   condition: []
   action:
   - choose:
@@ -847,4 +858,4 @@
         target:
           entity_id: switch.floor_heating_pump_on_off
     default: []
-  mode: single
+  mode: restart
