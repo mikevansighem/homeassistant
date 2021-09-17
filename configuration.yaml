@@ -43,6 +43,10 @@ recorder:
       - sensor.date_time_iso
       - sensor.date_time
       - sensor.power_consumed
+      - sensor.local_ip
+      - sensor.last_boot
+      - sensor.hacs
+      - sensor.binary_sensor.home_assistant_operating_system_update_available
   
 ###############################################################################
 # ZIGBEE
