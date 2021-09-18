@@ -680,13 +680,16 @@
     entity_id: sensor.downstairs_temperature
   - platform: homeassistant
     event: start
+  - platform: time_pattern
+    seconds: '30'
   condition: []
   action:
   - service: mqtt.publish
     data:
-      topic: temperature/downstairs
+      topic: opentherm-thermostat/current-temperature/set
       payload_template: '{{states("sensor.downstairs_temperature")}}'
-  mode: single
+  mode: parallel
+  max: 10
 - id: '1631038917696'
   alias: Alarm - Link panel
   description: ''

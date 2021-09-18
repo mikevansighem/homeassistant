@@ -11,6 +11,7 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 binary_sensor: !include binary_sensor.yaml
+climate: !include climate.yaml
 
 # Enable themes
 frontend:
@@ -73,7 +74,7 @@ sensor:
     source: sensor.gas_usage
     name: 'Gas usage'
     round: 3
-    unit_time: h
+    unit_time: min
     # time_window: "01:00:00"
 
 #------------------------------------------------------------------------------
@@ -728,51 +729,6 @@ device_tracker:
       ping_phone_anneloes: 192.168.2.27
       
 ###############################################################################
-# CLIMATE
-###############################################################################
-
-climate:
-# Thermostat sample DIYLESS
-  - platform: mqtt
-    icon: mdi:water-boiler
-    modes:
-      - "off"
-      - "heat"
-    name: "Central heating"
-    current_temperature_topic: "temperature/downstairs"
-    mode_command_topic: "opentherm-thermostat/mode/set"
-    mode_state_topic: "opentherm-thermostat/mode/get"
-    temperature_command_topic: "opentherm-thermostat/setpoint-temperature/set"
-    temperature_state_topic: "opentherm-thermostat/setpoint-temperature/get"
-    min_temp: 12
-    max_temp: 28
-    value_template: "{{ value }}"
-    temp_step: 0.5
-    
-# Hot water
-  - platform: mqtt
-    icon: mdi:water-pump
-    modes:
-      - "off"
-      - "heat"
-    name: "Hot water service"
-    current_temperature_topic: "opentherm-thermostat/dhw-actual-temperature/get"
-    mode_command_topic: "opentherm-thermostat/dhw-state/set"
-    mode_state_topic: "opentherm-thermostat/dhw-state/get"
-    temperature_command_topic: "opentherm-thermostat/dhw-temperature/set"
-    temperature_state_topic: "opentherm-thermostat/dhw-temperature/get"
-    min_temp: 10
-    max_temp: 80
-    value_template: "{{ value }}"
-    temp_step: 0.5
-    mode_command_template: >-
-      {% set values = { 'heat':'on', 'off':'off'} %}
-      {{ values[value] if value in values.keys() else 'off' }}
-    mode_state_template: >-
-      {% set values = { 'on':'heat', 'off':'off'} %}
-      {{ values[value] if value in values.keys() else 'off' }}
-
-###############################################################################
 # UTILITY METERS
 ###############################################################################
 
@@ -782,6 +738,11 @@ utility_meter:
 #------------------------------------------------------------------------------
 # ENERGY
 #------------------------------------------------------------------------------
+
+  daily_energy_tariff_1_copy:
+    source: sensor.energy_consumed_tariff_1
+    name: Daily energy - Off-peak_
+    cycle: daily
 
   daily_energy_tariff_1:
     source: sensor.energy_consumed_tariff_1
