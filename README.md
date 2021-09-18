@@ -41,3 +41,6 @@ Using a simple Zigbee plug the floor heating pump is turned off whenever the cen
 
 ### Hot water
 The same boiler that serves the central heating systems is used for hot water. This is controlled in a similar manner as the boiler using the Weemos D1 Mini.
+
+## :bookmark_tabs: License
+Copyright (c) 2021 Mike van Sighem. Licensed under the [MIT license](/LICENSE?raw=true).
