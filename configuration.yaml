@@ -568,7 +568,7 @@ sensor:
         friendly_name: "Monthly gas costs"
         unit_of_measurement: "€"
         value_template: >-
-          {{((states('sensor.monthty_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/12)) | round(2)}}
+          {{((states('sensor.monthly_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/12)) | round(2)}}
         icon_template: >-
           mdi:cash
           
@@ -624,11 +624,21 @@ sensor:
         icon_template: >-
           mdi:cash
           
+      # Calculate the daily energy costs
       daily_energy_costs:
         friendly_name: "Daily energy costs"
         unit_of_measurement: "€"
         value_template: >-
           {{ states('sensor.daily_energy_costs_1') | float + states('sensor.daily_energy_costs_2') | float}}
+        icon_template: >-
+          mdi:cash
+          
+      # Calculate utility costs
+      daily_utility_costs:
+        friendly_name: "Daily utility costs"
+        unit_of_measurement: "€"
+        value_template: >-
+          {{states('sensor.daily_energy_costs')|float + states('sensor.daily_gas_costs')|float}}
         icon_template: >-
           mdi:cash
 
@@ -732,7 +742,6 @@ device_tracker:
 # UTILITY METERS
 ###############################################################################
 
-# Total usage over last day, month and year.
 utility_meter:
 
 #------------------------------------------------------------------------------
@@ -743,7 +752,7 @@ utility_meter:
     source: sensor.energy_consumed_tariff_1
     name: Daily energy - Off-peak_
     cycle: daily
-
+  
   daily_energy_tariff_1:
     source: sensor.energy_consumed_tariff_1
     name: Daily energy - Off-peak
@@ -797,7 +806,7 @@ utility_meter:
     source: sensor.daily_energy_costs_2
     name: Yearly energy costs - Peak
     cycle: yearly
-
+  
   monthly_energy_costs:
     source: sensor.daily_energy_costs
     name: Monthly energy costs
@@ -811,7 +820,7 @@ utility_meter:
 #------------------------------------------------------------------------------
 # GAS
 #------------------------------------------------------------------------------
-
+  
   daily_gas:
     source: sensor.gas_consumed
     name: Daily Gas
@@ -826,4 +835,17 @@ utility_meter:
     source: sensor.gas_consumed
     name: Yearly Gas
     cycle: yearly
+
+#------------------------------------------------------------------------------
+# UTILITY COSTS
+#------------------------------------------------------------------------------
+  
+  monthly_utility_costs:
+    source: sensor.daily_utility_costs
+    name: Monthly utility costs
+    cycle: monthly
     
+  yearly_utility_costs:
+    source: sensor.daily_utility_costs
+    name: Yearly utility costs
+    cycle: yearly
