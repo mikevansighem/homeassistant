@@ -71,11 +71,11 @@ sensor:
 
   # Derivative for current gas usage
   - platform: derivative
-    source: sensor.gas_usage
+    source: sensor.gas_consumed
     name: 'Gas usage'
     round: 3
-    unit_time: min
-    # time_window: "01:00:00"
+    unit_time: h
+    time_window: "00:10:00"
 
 #------------------------------------------------------------------------------
 # HOLIDAY REPLAY
