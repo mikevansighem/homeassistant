@@ -26,7 +26,7 @@
     - "off"
     - "heat"
   name: "Hot water service"
-  current_temperature_topic: "opentherm-thermostat/dhw-actual-temperature/get"
+  current_temperature_topic: "opentherm-thermostat/boiler-temperature/get"
   mode_command_topic: "opentherm-thermostat/dhw-state/set"
   mode_state_topic: "opentherm-thermostat/dhw-state/get"
   temperature_command_topic: "opentherm-thermostat/dhw-temperature/set"

@@ -230,14 +230,6 @@ sensor:
     value_template: "{{ value }}"
     unit_of_measurement: '°C'
     icon: mdi:thermometer
-
-  - platform: mqtt
-    name: "Water temperature"
-    device_class: temperature
-    state_topic: "opentherm-thermostat/dhw-actual-temperature/get"
-    value_template: "{{ value }}"
-    unit_of_measurement: '°C'
-    icon: mdi:thermometer
     
   - platform: mqtt
     name: "Water service"
