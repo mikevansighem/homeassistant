@@ -338,14 +338,14 @@
   - platform: template
     value_template: "{% set early = state_attr('input_datetime.hot_water_early_stop',\
       \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
-      \ %} \n{% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
+      \ %} \n{% set end_work = state_attr('input_datetime.start_night_workday', 'timestamp')\
       \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
-      \ end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}\
-      \ \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if is_state('binary_sensor.workday_sensor',\
-      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
-      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
+      \ end_free = state_attr('input_datetime.start_night_free_day', 'timestamp')\
+      \ %} \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if\
+      \ is_state('binary_sensor.workday_sensor', 'on') %}\n  {% if as_timestamp(work_end_time)\
       \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
-      {% endif %}"
+      {% else %}\n  {% if as_timestamp(free_end_time) == as_timestamp(tnow) %}\n \
+      \   true\n  {% else %}\n    false\n  {% endif %}\n{% endif %}"
     id: EARLY_OFF
   condition: []
   action:
@@ -418,14 +418,14 @@
   - platform: template
     value_template: "{% set early = state_attr('input_datetime.heating_early_stop',\
       \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
-      \ %} \n{% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
+      \ %} \n{% set end_work = state_attr('input_datetime.start_night_workday', 'timestamp')\
       \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
-      \ end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}\
-      \ \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if is_state('binary_sensor.workday_sensor',\
-      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
-      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
+      \ end_free = state_attr('input_datetime.start_night_free_day', 'timestamp')\
+      \ %} \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if\
+      \ is_state('binary_sensor.workday_sensor', 'on') %}\n  {% if as_timestamp(work_end_time)\
       \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
-      {% endif %}"
+      {% else %}\n  {% if as_timestamp(free_end_time) == as_timestamp(tnow) %}\n \
+      \   true\n  {% else %}\n    false\n  {% endif %}\n{% endif %}"
     id: EARLY_OFF
   - platform: template
     value_template: "{% set early = state_attr('input_datetime.heating_pre_heat',\
