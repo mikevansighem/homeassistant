@@ -872,3 +872,40 @@
           entity_id: switch.floor_heating_pump_on_off
     default: []
   mode: restart
+- id: '1632334823224'
+  alias: Utility - Notify when offline
+  description: Send a notification if any network device is offline for more than
+    5 minutes.
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.local_ip
+    - binary_sensor.kpn_tv
+    - binary_sensor.hue_utility_bridge
+    - binary_sensor.range_extender
+    - binary_sensor.hue_garden_bridge
+    - binary_sensor.sprinkler_controller
+    - binary_sensor.opentherm_controller
+    - binary_sensor.dining_room_home_mini
+    - binary_sensor.esp_home_test_device
+    - binary_sensor.slimme_lezer
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+    to: 'off'
+    from: 'on'
+  condition: []
+  action:
+  - service: notify.mobile_app_phone_mike
+    data:
+      message: '{{ state_attr(trigger.to_state.entity_id, ''friendly_name'') }} is
+        offline more than 5 minutes.'
+      data:
+        actions:
+        - action: URI
+          title: More info
+          uri: /lovelace/network
+      title: Device offline
+  mode: single

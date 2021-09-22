@@ -60,3 +60,5 @@ sensor.monthly_utility_costs:
   icon: mdi:cash
 sensor.yearly_utility_costs:
   icon: mdi:cash
+binary_sensor.opentherm_controller:
+  icon: mdi:wifi
