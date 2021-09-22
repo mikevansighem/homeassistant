@@ -32,7 +32,8 @@ tts:
 
 # Enable the recorder integration 
 recorder:
-  purge_keep_days: 8
+  purge_keep_days: 8 #days
+  commit_interval: 5 #seconds
   exclude:
     entities:
       - sun.sun
@@ -48,7 +49,7 @@ recorder:
       # - sensor.last_boot
       # - sensor.hacs
       # - binary_sensor.home_assistant_operating_system_update_available
-      # one of thease lises is causing trouble
+      # one of thease lines is causing trouble
   
 ###############################################################################
 # ZIGBEE
