@@ -12,6 +12,10 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 binary_sensor: !include binary_sensor.yaml
 climate: !include climate.yaml
+alarm_control_panel: !include alarm_control_panel.yaml
+media_player: !include media_player.yaml
+utility_meter: !include utility_meter.yaml
+
 
 # Enable themes
 frontend:
@@ -685,38 +689,6 @@ sensor:
       - 'beat'
 
 ###############################################################################
-# ALARM
-###############################################################################
-
-# Virtual alarm panel. Linked to physical Zibee panel through automations.
-alarm_control_panel:
-  - platform: manual
-    name: Home Alarm
-    code: !secret alarm_code
-    code_arm_required: False
-    arming_time: 30 # Time till armed
-    delay_time: 30  # time till triggered
-    trigger_time: 3600 # How long the alarm lasts
-    disarmed:
-      delay_time: 0
-    armed_night:
-      arming_time: 0
-      delay_time: 0
-
-###############################################################################
-# MEDIA PLAYER
-###############################################################################
-
-# Whole house media group. Used for alarm panel.
-media_player:
-  - platform: group
-    name: Speaker Group
-    entities:
-      - media_player.living_room_home_mini
-      - media_player.bedroom_home_mini
-      - media_player.dining_room_speaker
-
-###############################################################################
 # PRECENCE
 ###############################################################################
 
@@ -744,114 +716,3 @@ device_tracker:
       ping_phone_mike: 192.168.2.23
       ping_phone_anneloes: 192.168.2.27
       
-###############################################################################
-# UTILITY METERS
-###############################################################################
-
-utility_meter:
-
-#------------------------------------------------------------------------------
-# ENERGY
-#------------------------------------------------------------------------------
-
-  daily_energy_tariff_1_copy:
-    source: sensor.energy_consumed_tariff_1
-    name: Daily energy - Off-peak_
-    cycle: daily
-  
-  daily_energy_tariff_1:
-    source: sensor.energy_consumed_tariff_1
-    name: Daily energy - Off-peak
-    cycle: daily
-    
-  monthly_energy_tariff_1:
-    source: sensor.energy_consumed_tariff_1
-    name: Monthly energy - Off-peak
-    cycle: monthly
-    
-  yearly_energy_tariff_1:
-    source: sensor.energy_consumed_tariff_1
-    name: Yearly energy - Off-peak
-    cycle: yearly
-    
-  daily_energy_tariff_2:
-    source: sensor.energy_consumed_tariff_2
-    name: Daily energy - Peak
-    cycle: daily
-    
-  monthly_energy_tariff_2:
-    source: sensor.energy_consumed_tariff_2
-    name: Monthly energy - Peak
-    cycle: monthly
-    
-  yearly_energy_tariff_2:
-    source: sensor.energy_consumed_tariff_2
-    name: Yearly energy - Peak
-    cycle: yearly
-
-#------------------------------------------------------------------------------
-# ENERGY COSTS
-#------------------------------------------------------------------------------
-
-  monthly_energy_costs_1:
-    source: sensor.daily_energy_costs_1
-    name: Monthly energy costs - Off-peak
-    cycle: monthly
-    
-  yearly_energy_costs_1:
-    source: sensor.daily_energy_costs_1
-    name: Yearly energy costs - Off-peak
-    cycle: yearly
-    
-  monthly_energy_costs_2:
-    source: sensor.daily_energy_costs_2
-    name: Monthly energy costs - Peak
-    cycle: monthly
-    
-  yearly_energy_costs_2:
-    source: sensor.daily_energy_costs_2
-    name: Yearly energy costs - Peak
-    cycle: yearly
-  
-  monthly_energy_costs:
-    source: sensor.daily_energy_costs
-    name: Monthly energy costs
-    cycle: monthly
-    
-  yearly_energy_costs:
-    source: sensor.daily_energy_costs
-    name: Yearly energy costs
-    cycle: yearly
-
-#------------------------------------------------------------------------------
-# GAS
-#------------------------------------------------------------------------------
-  
-  daily_gas:
-    source: sensor.gas_consumed
-    name: Daily Gas
-    cycle: daily
-    
-  monthly_gas:
-    source: sensor.gas_consumed
-    name: Monthly Gas
-    cycle: monthly
-    
-  yearly_gas:
-    source: sensor.gas_consumed
-    name: Yearly Gas
-    cycle: yearly
-
-#------------------------------------------------------------------------------
-# UTILITY COSTS
-#------------------------------------------------------------------------------
-  
-  monthly_utility_costs:
-    source: sensor.daily_utility_costs
-    name: Monthly utility costs
-    cycle: monthly
-    
-  yearly_utility_costs:
-    source: sensor.daily_utility_costs
-    name: Yearly utility costs
-    cycle: yearly

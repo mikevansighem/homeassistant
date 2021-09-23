@@ -1,0 +1,17 @@
+###############################################################################
+# ALARM
+###############################################################################
+
+# Virtual alarm panel. Linked to physical Zibee panel through automations.
+- platform: manual
+  name: Home Alarm
+  code: !secret alarm_code
+  code_arm_required: False
+  arming_time: 30 # Time till armed
+  delay_time: 30  # time till triggered
+  trigger_time: 3600 # How long the alarm lasts
+  disarmed:
+    delay_time: 0
+  armed_night:
+    arming_time: 0
+    delay_time: 0
