@@ -10,7 +10,8 @@ This is my personal Home Assistant configuration.
 
 ## :house_with_garden: House state
 
-The house state is used to schedule automations. Below table shows devices used by the house state.
+The house state is used to schedule automations. Below table shows devices used 
+by the house state.
 
 | House state        | Home         | Away       | Night           | Holiday    |
 |--------------------|--------------|------------|-----------------|------------|
@@ -21,6 +22,7 @@ The house state is used to schedule automations. Below table shows devices used 
 | Holiday lights     | Off          | Off        | Off             | On         |
 
 Footnotes:
+
 1. When going from night to home the alarm is disarmed early to prevent accidental triggers.
 2. When going from home to night the alarm arming is delayed to prevent accidental triggers.
 3. Switched on early using helper to pre-heat the home.
@@ -33,14 +35,18 @@ For the alarm the [manual alarm panel integration](https://www.home-assistant.io
 ## :thermometer: Climate
 
 ### Heating
-The boiler is controlled by a Weemos D1 Mini with a [DIYLESS Thermostat shield](https://diyless.com/product/esp8266-thermostat-shield) to communicate using the Opentherm protocol. 
-This allows for modulation of the burner. The shield has a build in temperature sensor, however this is not used. Instead an average of various downstairs sensors is taken and send to the thermostat to be used as the current temperature. 
+
+The boiler is controlled by a Weemos D1 Mini with a [DIYLESS Thermostat shield](https://diyless.com/product/esp8266-thermostat-shield) to communicate using the Opentherm protocol.
+This allows for modulation of the burner. The shield has a build in temperature sensor, however this is not used. Instead an average of various downstairs sensors is taken and send to the thermostat to be used as the current temperature.
 
 ### Floor heating pump
+
 Using a simple Zigbee plug the floor heating pump is turned off whenever the central heating is off. If the pump has been of for 12 hours, it will run for several minutes to prevent it from getting stuck.
 
 ### Hot water
+
 The same boiler that serves the central heating systems is used for hot water. This is controlled in a similar manner as the boiler using the Weemos D1 Mini.
 
 ## :bookmark_tabs: License
+
 Copyright (c) 2021 Mike van Sighem. Licensed under the [MIT license](/LICENSE?raw=true).
