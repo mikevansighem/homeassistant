@@ -1,0 +1,609 @@
+###############################################################################
+# SENSORS
+###############################################################################
+
+#------------------------------------------------------------------------------
+# INTEGRAL AND DERIVATIVE
+#------------------------------------------------------------------------------
+
+# Derivative for current gas usage
+- platform: derivative
+  source: sensor.gas_consumed
+  name: 'Gas usage'
+  round: 3
+  unit_time: h
+  unit: 'm³/h'
+  time_window: "00:10:00"
+
+#------------------------------------------------------------------------------
+# HOLIDAY REPLAY
+#------------------------------------------------------------------------------
+
+# Replay sensor for holiday mode
+- platform: history_stats
+  name: "replay_living_room"
+  entity_id: light.living_room
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (7*86400) }}
+  duration: 00:00:30
+
+- platform: history_stats
+  name: "replay_bedroom"
+  entity_id: light.bedroom
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (7*86400) }}
+  duration: 00:00:30
+  
+- platform: history_stats
+  name: "replay_dining_room"
+  entity_id: light.dining_room
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (7*86400) }}
+  duration: 00:00:30
+  
+- platform: history_stats
+  name: "replay_closet"
+  entity_id: light.closet
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (7*86400) }}
+  duration: 00:00:30
+      
+- platform: history_stats
+  name: "replay_kitchen"
+  entity_id: light.kitchen
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (7*86400) }}
+  duration: 00:00:30
+
+#------------------------------------------------------------------------------
+# AVARAGE OF TEMPERATURE
+#------------------------------------------------------------------------------
+
+# Downstairs avarage
+- platform: min_max
+  type: mean
+  name: "downstairs temperature"
+  round_digits: 1
+  entity_ids:
+    - sensor.downstairs_hallway_temperature
+    - sensor.livingroom_temperature
+    - sensor.sensor_temperature
+#      - sensor.current_thermostat_temperature /// sensor value not calibrated
+
+#------------------------------------------------------------------------------
+# SYSTEM MONITOR
+#------------------------------------------------------------------------------
+
+# System monitor
+- platform: systemmonitor
+  resources:
+  - type: processor_use
+  - type: memory_use_percent
+  - type: processor_temperature
+  - type: last_boot
+  - type: disk_use_percent
+    arg: "/"
+  - type: disk_free
+    arg: "/"
+  - type: network_in
+    arg: eth0
+  - type: throughput_network_in
+    arg: eth0
+  - type: network_out
+    arg: eth0
+  - type: throughput_network_out
+    arg: eth0
+
+#------------------------------------------------------------------------------
+# MQTT THERMOSTAT
+#------------------------------------------------------------------------------
+
+# Thermostat sensors DIYLESS
+- platform: mqtt
+  name: "Current thermostat temperature"
+  device_class: temperature
+  state_topic: "opentherm-thermostat/current-temperature/get"
+  value_template: "{{ value }}"
+  unit_of_measurement: '°C'
+  icon: mdi:thermometer
+  
+- platform: mqtt
+  name: "Target thermostat temperature"
+  device_class: temperature
+  state_topic: "opentherm-thermostat/setpoint-temperature/get"
+  value_template: "{{ value }}"
+  unit_of_measurement: '°C'
+  icon: mdi:thermometer
+  
+- platform: mqtt
+  name: "Boiler temperature"
+  device_class: temperature
+  state_topic: "opentherm-thermostat/boiler-temperature/get"
+  value_template: "{{ value }}"
+  unit_of_measurement: '°C'
+  icon: mdi:thermometer
+  
+- platform: mqtt
+  name: "Boiler target temperature"
+  device_class: temperature
+  state_topic: "opentherm-thermostat/boiler-target-temperature/get"
+  value_template: "{{ value }}"
+  unit_of_measurement: '°C'
+  icon: mdi:thermometer
+  
+- platform: mqtt
+  name: "Boiler mode"
+  device_class: temperature
+  state_topic: "opentherm-thermostat/mode/get"
+  value_template: "{{ value }}"
+  icon: mdi:water-boiler
+
+- platform: mqtt
+  name: "Water target temperature"
+  device_class: temperature
+  state_topic: "opentherm-thermostat/dhw-temperature/get"
+  value_template: "{{ value }}"
+  unit_of_measurement: '°C'
+  icon: mdi:thermometer
+  
+- platform: mqtt
+  name: "Water service"
+  state_topic: "opentherm-thermostat/dhw-state/get"
+  value_template: "{{ value }}"
+  icon: mdi:water-boiler
+
+#------------------------------------------------------------------------------
+# TEMPLATE SENSORS
+#------------------------------------------------------------------------------
+
+- platform: template
+  sensors:
+  
+    # Rounded power usage
+    power_usage_round:
+      friendly_name: "Power usage"
+      device_class: 'energy'
+      unit_of_measurement: 'W'
+      value_template: >-
+        {{ (((states('sensor.power_consumed') | float )/10) | round(0) ) * 10 }}
+      icon_template: >-
+        mdi:lightning-bolt 
+  
+  # Combined energy sensors
+    daily_energy:
+      friendly_name: "Daily energy"
+      device_class: 'energy'
+      unit_of_measurement: 'kWh'
+      value_template: >-
+        {{ states('sensor.daily_energy_off_peak')|float + states('sensor.daily_energy_peak')|float }}
+      icon_template: >-
+        mdi:lightning-bolt 
+      
+    monthly_energy:
+      friendly_name: "Monthly energy"
+      unit_of_measurement: 'kWh'
+      device_class: 'energy'
+      value_template: >-
+        {{ states('sensor.monthly_energy_off_peak')|float + states('sensor.monthly_energy_peak')|float }}
+      icon_template: >-
+        mdi:lightning-bolt 
+
+    yearly_energy:
+      friendly_name: "Yearly energy"
+      unit_of_measurement: 'kWh'
+      device_class: 'energy'
+      value_template: >-
+        {{ states('sensor.yearly_energy_off_peak')|float + states('sensor.yearly_energy_peak')|float }}
+      icon_template: >-
+        mdi:lightning-bolt 
+
+    # Alarm panel battery sensor
+    alarm_panel_battery:
+      friendly_name: "Alarm panel battery"
+      unit_of_measurement: "%"
+      device_class: battery
+      value_template: >-
+        {% set battery_level = ( state_attr('sensor.alarm_panel_power', 'battery_voltage') - 5.6)/0.8 * 100 |int('unknown') %}
+        {{ (battery_level|int / 10)|int * 10 }}
+      icon_template: >-
+        {% set battery_level = states('sensor.alarm_panel_battery') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
+        {% else %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+        {% endif %}
+        
+    # Battery level of motion sensor
+    livingroom_motion_battery:
+      friendly_name: "Livingroom motion battery"
+      unit_of_measurement: "%"
+      device_class: battery
+      value_template: >-
+        {% set battery_level = state_attr('binary_sensor.livingroom_motion', 'battery_level') |int('unknown') %}
+        {{ (battery_level|int / 10)|int * 10 }}
+      icon_template: >-
+        {% set battery_level = states('sensor.livingroom_motion_battery') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
+        {% else %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+        {% endif %}
+        
+    # Battery level of motion sensor
+    downstairs_hallway_motion_battery:
+      friendly_name: "Downstairs hallway motion battery"
+      unit_of_measurement: "%"
+      device_class: battery
+      value_template: >-
+        {% set battery_level = state_attr('binary_sensor.motion_downstairs_hallway', 'battery_level') |int('unknown') %}
+        {{ (battery_level|int / 10)|int * 10 }}
+      icon_template: >-
+        {% set battery_level = states('sensor.downstairs_hallway_motion_battery') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
+        {% else %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+        {% endif %}
+        
+    # Battery level of motion sensor
+    upstairs_hallway_motion_battery:
+      friendly_name: "Upstairs hallway motion battery"
+      unit_of_measurement: "%"
+      device_class: battery
+      value_template: >-
+        {% set battery_level = state_attr('binary_sensor.upstairs_hallway_motion', 'battery_level') |int('unknown') %}
+        {{ (battery_level|int / 10)|int * 10 }}
+      icon_template: >-
+        {% set battery_level = states('sensor.upstairs_hallway_motion_battery') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
+        {% else %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+        {% endif %}
+        
+    # Battery level of motion sensor
+    stairs_closet_motion_battery:
+      friendly_name: "Stairs closet motion battery"
+      unit_of_measurement: "%"
+      device_class: battery
+      value_template: >-
+        {% set battery_level = state_attr('binary_sensor.sensor_motion', 'battery_level') |int('unknown') %}
+        {{ (battery_level|int / 10)|int * 10 }}
+      icon_template: >-
+        {% set battery_level = states('sensor.stairs_closet_motion_battery') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
+        {% else %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+        {% endif %}
+        
+    # Calculate watering level
+    watering_level:
+      friendly_name: "Watering level"
+      unit_of_measurement: "%"
+      value_template: >-
+          {% set rain = states('sensor.buienradar_rain_last_24h') | float %}
+          {% set humidity = states('sensor.avarage_humidity') | float %}
+          {% set temperature = states('sensor.avarage_ground_temperature') | float %}
+
+          {% set threshold = states('input_number.rain_threshold') | float %}
+          {% set B_humidity = states('input_number.base_humidity') | float %}
+          {% set B_temperature = states('input_number.base_temperature') | float %}
+
+
+          {% set F_humidity = B_humidity / humidity | float %}
+          {% set F_temperature = temperature / B_temperature | float %}
+          {% set level = 100 * F_humidity * F_temperature | round(2) %}
+
+          {% if rain > threshold %}
+              {{ 0 | int }}
+          {% else %}
+              {{ level | int}}
+          {% endif %}
+    
+    # Calculate watering time for front sprinkler
+    front_watering_time:
+      friendly_name: "Front watering time"
+      value_template: >-
+          {% set base_time = states('input_number.front_sprinkler_base_time') | int * 60 %}
+          {% set level = states('sensor.watering_level') | float / 100 %}
+          {{base_time * level}}
+    
+    # Calculate watering time for back sprinkler
+    back_watering_time:
+      friendly_name: "Back watering time"
+      value_template: >-
+          {% set base_time = states('input_number.back_sprinkler_base_time') | int * 60 %}
+          {% set level = states('sensor.watering_level') | float / 100 %}
+          {{base_time * level}}
+          
+    somebody_home:
+      friendly_name: "Somebody home"
+      value_template: >-
+          {% set mike_home = is_state('person.mike_van_sighem', 'home') %}
+          {% set anneloes_home = is_state('person.anneloes_jagt', 'home') %}
+          {% if mike_home or anneloes_home %}
+              true
+          {% else %}
+              false
+          {% endif %}
+          
+    house_state:
+      friendly_name: "House state"
+      value_template: >-
+          {% set time = states('sensor.time') %}
+          {% if is_state('input_select.house_state_override', 'auto') %}
+            {% if is_state('input_boolean.holiday', 'on') %}
+              holiday
+            {% else %}
+              {% if is_state('sensor.somebody_home', 'false') %}
+                away
+              {% else %}
+                {% if is_state('binary_sensor.workday_sensor', 'off') %}
+                  {% if states('input_datetime.start_night_free_day') > time > states('input_datetime.end_night_free_day')  %}
+                    home
+                  {% else %}
+                    night
+                  {% endif %}
+                {% else %}
+                  {% if states('input_datetime.start_night_workday') > time > states('input_datetime.end_night_workday')  %}
+                    home
+                  {% else %}
+                    night
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          {% else %}
+            {{ states('input_select.house_state_override') }}
+          {% endif %}
+      icon_template: >-
+          {% if is_state('sensor.house_state', 'holiday') %}
+            mdi:beach
+          {% elif is_state('sensor.house_state', 'home') %}
+            mdi:home
+          {% elif is_state('sensor.house_state', 'away') %}
+            mdi:home-export-outline
+          {% elif is_state('sensor.house_state', 'night') %}
+            mdi:weather-night
+          {% endif %}
+          
+    climate_period:
+      friendly_name: "Climate period"
+      value_template: >-
+        {% set time = states('sensor.time') %}
+        {% if is_state('input_select.climate_period_override', 'auto') %}
+          {% if is_state('binary_sensor.workday_sensor', 'off') %}
+            {% if states('input_datetime.end_night_free_day') < time < states('input_datetime.morning_end') %}
+              morning
+            {% elif states('input_datetime.morning_end') < time < states('input_datetime.evening_start') %}
+              day
+            {% elif states('input_datetime.evening_start') < time < states('input_datetime.start_night_free_day') %}
+              evening
+            {% else %}
+              night
+            {% endif %}
+          {% else %}
+            {% if states('input_datetime.end_night_workday') < time < states('input_datetime.morning_end') %}
+              morning
+            {% elif states('input_datetime.morning_end') < time < states('input_datetime.evening_start') %}
+              day
+            {% elif states('input_datetime.evening_start') < time < states('input_datetime.start_night_workday') %}
+              evening
+            {% else %}
+              night
+            {% endif %}
+          {% endif %}
+        {% else %}
+          {{states('input_select.climate_period_override')}}
+        {% endif  %}
+      icon_template: >-
+          {% if is_state('sensor.climate_period', 'morning') %}
+            mdi:weather-sunset-up
+          {% elif is_state('sensor.climate_period', 'day') %}
+            mdi:weather-sunny
+          {% elif is_state('sensor.climate_period', 'evening') %}
+            mdi:weather-sunset-down
+          {% elif is_state('sensor.climate_period', 'night') %}
+            mdi:minus
+          {% endif %}
+          
+    # Thermostat setpoint for time of the day.
+    climate_setpoint:
+      friendly_name: "Climate setpoint"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: >-
+       {% if is_state('sensor.climate_period', 'morning') %}
+         {{ states('input_number.morning_temperature') }}
+       {% elif is_state('sensor.climate_period', 'day') %}
+         {{ states('input_number.day_temperature') }}
+       {% elif is_state('sensor.climate_period', 'evening') %}
+         {{ states('input_number.evening_temperature') }}
+       {% else %}
+         {{ states('input_number.night_temperature') }}
+       {% endif %}
+    
+    # Duplicate workday sensor with nice icons for dashboard 
+    pretty_workday:
+      friendly_name: "Pretty Workday"
+      value_template: >-
+          {% if is_state('binary_sensor.workday_sensor', 'on') %}
+            Workday
+          {% else %}
+            Free day
+          {% endif %}
+      icon_template: >-
+          {% if is_state('binary_sensor.workday_sensor', 'on') %}
+            mdi:briefcase
+          {% else %}
+            mdi:party-popper
+          {% endif %}
+          
+    # Gas costs
+    daily_gas_costs:
+      friendly_name: "Daily gas costs"
+      unit_of_measurement: "€"
+      value_template: >-
+        {{((states('sensor.daily_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/365)) | round(2)}}
+      icon_template: >-
+        mdi:cash
+        
+    monthly_gas_costs:
+      friendly_name: "Monthly gas costs"
+      unit_of_measurement: "€"
+      value_template: >-
+        {{((states('sensor.monthly_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/12)) | round(2)}}
+      icon_template: >-
+        mdi:cash
+        
+    yearly_gas_costs:
+      friendly_name: "Yearly gas costs"
+      unit_of_measurement: "€"
+      value_template: >-
+        {{((states('sensor.yearly_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float)) | round(2)}}
+      icon_template: >-
+        mdi:cash
+        
+    # Daily energy costs
+    daily_energy_costs_1:
+      friendly_name: "Daily energy costs off-peak"
+      unit_of_measurement: "€"
+      value_template: >-
+        {% set fixed = states('input_number.fixed_energy_tariff') | float %}
+        {% set fixed_day = fixed / 365 %}
+        {% set tariff_1 = states('input_number.energy_tariff_1') | float %}
+        {% set useage_1 = states('sensor.daily_energy_off_peak') | float %}
+        {% set useage_2 = states('sensor.daily_energy_peak') | float %}
+        {% set usage = useage_1 + useage_2 %}
+        {% set fixed_1 = useage_1 / usage * fixed_day %}
+        {% set result = (tariff_1 * useage_1 + fixed_1) | round(2) %}
+        
+        {% if result > 0 %}
+          {{ result }}
+        {% else %}
+          0
+        {% endif %} 
+
+      icon_template: >-
+        mdi:cash
+        
+    daily_energy_costs_2:
+      friendly_name: "Daily energy costs peak"
+      unit_of_measurement: "€"
+      value_template: >-
+        {% set fixed = states('input_number.fixed_energy_tariff') | float %}
+        {% set fixed_day = fixed / 365 %}
+        {% set tariff_2 = states('input_number.energy_tariff_2') | float %}
+        {% set useage_1 = states('sensor.daily_energy_off_peak') | float %}
+        {% set useage_2 = states('sensor.daily_energy_peak') | float %}
+        {% set usage = useage_1 + useage_2 %}
+        {% set fixed_2 = useage_2 / usage * fixed_day %}
+        {% set result = (tariff_2 * useage_2 + fixed_2) | round(2) %}
+        
+        {% if result > 0 %}
+          {{ result }}
+        {% else %}
+          0
+        {% endif %} 
+      icon_template: >-
+        mdi:cash
+        
+    # Calculate the daily energy costs
+    daily_energy_costs:
+      friendly_name: "Daily energy costs"
+      unit_of_measurement: "€"
+      value_template: >-
+        {{ states('sensor.daily_energy_costs_1') | float + states('sensor.daily_energy_costs_2') | float}}
+      icon_template: >-
+        mdi:cash
+        
+    # Calculate utility costs
+    daily_utility_costs:
+      friendly_name: "Daily utility costs"
+      unit_of_measurement: "€"
+      value_template: >-
+        {{states('sensor.daily_energy_costs')|float + states('sensor.daily_gas_costs')|float}}
+      icon_template: >-
+        mdi:cash
+
+#------------------------------------------------------------------------------
+# STATISTICS
+#------------------------------------------------------------------------------
+  
+  # Avagage used for sprinkler water level   
+- platform: statistics
+  entity_id: sensor.buienradar_humidity
+  name: "Avarage humidity"
+  sampling_size: 200
+  max_age:
+    hours: 24
+  
+  # Avagage used for sprinkler water level  
+- platform: statistics
+  entity_id: sensor.buienradar_ground_temperature
+  name: "Avarage ground temperature"
+  sampling_size: 200
+  max_age:
+    hours: 24
+    
+#------------------------------------------------------------------------------
+# TIME
+#------------------------------------------------------------------------------
+    
+# Date and time sensors
+- platform: time_date
+  display_options:
+    - 'time'
+    - 'date'
+    - 'date_time'
+    - 'date_time_utc'
+    - 'date_time_iso'
+    - 'time_date'
+    - 'time_utc'
+    - 'beat'
