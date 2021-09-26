@@ -47,10 +47,10 @@
   name: "RPI cooling fan"
   heater: switch.rpi_cooling_fan
   target_sensor: sensor.processor_temperature
-  min_temp: 55
+  min_temp: 45
   max_temp: 80
   ac_mode: true
-  target_temp: 65
+  target_temp: 60
   cold_tolerance: 0.1
   hot_tolerance: 0.1
   min_cycle_duration:
