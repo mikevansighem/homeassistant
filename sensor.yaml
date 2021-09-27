@@ -485,28 +485,18 @@
             mdi:party-popper
           {% endif %}
           
-    # Gas costs
-    daily_gas_costs:
-      friendly_name: "Daily gas costs"
+    # Gas costs including fixed costs to be fed into an utility meter
+    daily_gas_costs_temp:
+      friendly_name: "Daily gas costs temp"
       unit_of_measurement: "€"
       value_template: >-
-        {{((states('sensor.daily_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/365)) | round(2)}}
-      icon_template: >-
-        mdi:cash
-        
-    monthly_gas_costs:
-      friendly_name: "Monthly gas costs"
-      unit_of_measurement: "€"
-      value_template: >-
-        {{((states('sensor.monthly_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/12)) | round(2)}}
-      icon_template: >-
-        mdi:cash
-        
-    yearly_gas_costs:
-      friendly_name: "Yearly gas costs"
-      unit_of_measurement: "€"
-      value_template: >-
-        {{((states('sensor.yearly_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float)) | round(2)}}
+        {% if is_state('sensor.time', "00:00") %}
+          0
+        {% elif is_state('sensor.time', "00:01") %}
+          0
+        {% else %}
+          {{((states('sensor.daily_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/365)) | round(2)}}
+        {% endif %}
       icon_template: >-
         mdi:cash
         

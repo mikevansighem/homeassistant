@@ -62,3 +62,9 @@ sensor.yearly_utility_costs:
   icon: mdi:cash
 binary_sensor.opentherm_controller:
   icon: mdi:wifi
+sensor.daily_gas_costs:
+  icon: mdi:cash
+sensor.monthly_gas_costs_2:
+  icon: mdi:cash
+sensor.yearly_gas_costs_2:
+  icon: mdi:cash

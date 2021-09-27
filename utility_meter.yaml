@@ -93,6 +93,25 @@ yearly_gas:
   source: sensor.gas_consumed
   name: Yearly Gas
   cycle: yearly
+  
+#------------------------------------------------------------------------------
+# GAS
+#------------------------------------------------------------------------------
+
+daily_gas_costs:
+  source: sensor.daily_gas_costs_temp
+  name: Daily Gas Costs
+  cycle: daily
+  
+monthly_gas_costs:
+  source: sensor.daily_gas_costs_temp
+  name: Monthly Gas Costs
+  cycle: monthly
+  
+yearly_gas_costs:
+  source: sensor.daily_gas_costs_temp
+  name: Yearly Gas Costs
+  cycle: yearly
 
 #------------------------------------------------------------------------------
 # UTILITY COSTS
