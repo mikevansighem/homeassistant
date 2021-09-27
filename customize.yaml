@@ -68,3 +68,7 @@ sensor.monthly_gas_costs_2:
   icon: mdi:cash
 sensor.yearly_gas_costs_2:
   icon: mdi:cash
+binary_sensor.livingroom_home_mini:
+  icon: mdi:wifi
+binary_sensor.bedroom_home_mini:
+  icon: mdi:wifi
