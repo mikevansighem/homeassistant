@@ -18,6 +18,16 @@
   host: 192.168.2.14
   name: "Sprinkler controller"
   scan_interval: 30
+
+- platform: ping
+  host: 192.168.2.194
+  name: "Bedroom home mini"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.198
+  name: "Livingroom home mini"
+  scan_interval: 30
   
 - platform: ping
   host: 192.168.2.30
