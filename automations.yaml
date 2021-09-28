@@ -914,10 +914,14 @@
   description: ''
   trigger:
   - platform: template
-    value_template: -> {% if states('sensor.latest_version') != "unknown" %} {% if
-      states('sensor.latest_version') != states('sensor.current_version') %} true
-      {% else %} false {% endif %} {% else %} false {% endif %}
-  condition: []
+    value_template: "{% if states('sensor.latest_version') != states('sensor.current_version')\
+      \ %}\n  false\n{% else %}\n  true\n{% endif %}"
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.latest_version
+      state: unknown
   action:
   - service: notify.mobile_app_phone_mike
     data:
