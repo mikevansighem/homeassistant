@@ -915,7 +915,7 @@
   description: ''
   trigger:
   - platform: template
-    value_template: "{% if states('sensor.latest_version') != states('sensor.current_version')\
+    value_template: "{% if states('sensor.latest_version') == states('sensor.current_version')\
       \ %}\n  false\n{% else %}\n  true\n{% endif %}"
   condition:
   - condition: not
