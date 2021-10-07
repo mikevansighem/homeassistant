@@ -17,6 +17,7 @@ media_player: !include media_player.yaml
 utility_meter: !include utility_meter.yaml
 sensor: !include sensor.yaml
 switch: !include switch.yaml
+recorder: !include recorder.yaml
 
 # Enable themes
 frontend:
@@ -35,27 +36,6 @@ http:
 tts:
   - platform: google_translate
 
-# Enable the recorder integration 
-recorder:
-  purge_keep_days: 8 #days
-  commit_interval: 5 #seconds
-  exclude:
-    entities:
-      - sun.sun
-      - sensor.time
-      - sensor.time_utc
-      - sensor.time_date
-      - sensor.internet_time
-      - sensor.date_time_utc
-      - sensor.date_time_iso
-      - sensor.date_time
-      # - sensor.power_consumed
-      # - sensor.local_ip
-      # - sensor.last_boot
-      # - sensor.hacs
-      # - binary_sensor.home_assistant_operating_system_update_available
-      # one of thease lines is causing trouble
-  
 ###############################################################################
 # ZIGBEE
 ###############################################################################
@@ -65,7 +45,6 @@ zha:
     network:
       channel: 20
    
-
 ###############################################################################
 # PRECENCE
 ###############################################################################

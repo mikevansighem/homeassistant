@@ -1,0 +1,48 @@
+###############################################################################
+# RECORDER
+###############################################################################
+
+purge_keep_days: 8 #days
+commit_interval: 5 #seconds
+include:
+  domains:
+    - alarm_control_panel
+    - light 
+    - climate
+    - device_tracker
+    - binary_sensor
+    - person
+  
+  entity_globs: 
+    - sensor.*motion
+  
+  entities:
+    - sensor.house_state
+    - sensor.pretty_workday 
+    - sensor.climate_period
+    - sensor.power_usage_round 
+    - sensor.gas_usage 
+    - sensor.daily_utility_costs
+    - sensor.monthly_utility_costs
+    - sensor.yearly_utility_costs
+    - sensor.daily_energy_costs
+    - sensor.monthly_energy_costs
+    - sensor.yearly_energy_costs
+    - sensor.daily_gas_costs
+    - sensor.monthly_gas_costs
+    - sensor.yearly_gas_costs
+    - sensor.downstairs_temperature 
+    - sensor.boiler_target_temperature 
+    - sensor.watering_level 
+    - sensor.disk_free
+    - sensor.processor_use_percent
+    - sensor.memory_use_percent
+    - sensor.disk_use_percent
+    - sensor.processor_temperature
+    - sensor.daily_energy_peak
+    - sensor.monthly_energy_costs_peak
+    - sensor.daily_energy_off_peak_2
+    - sensor.monthly_energy_costs_off_peak
+    - sensor.daily_gas
+    - input_boolean.holiday 
+    - switch.floor_heating_pump_on_off 
