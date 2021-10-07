@@ -10,16 +10,21 @@ include:
     - light 
     - climate
     - device_tracker
-    - binary_sensor
     - person
   
   entity_globs: 
     - sensor.*motion
   
   entities:
+    # General
     - sensor.house_state
     - sensor.pretty_workday 
     - sensor.climate_period
+    - sensor.downstairs_temperature 
+    - sensor.boiler_target_temperature 
+    - sensor.watering_level 
+    
+    # Utilities
     - sensor.grid_fossil_fuel_percentage
     - sensor.co2_intensity
     - sensor.power_usage_round 
@@ -33,18 +38,32 @@ include:
     - sensor.daily_gas_costs
     - sensor.monthly_gas_costs
     - sensor.yearly_gas_costs
-    - sensor.downstairs_temperature 
-    - sensor.boiler_target_temperature 
-    - sensor.watering_level 
-    - sensor.disk_free
-    - sensor.processor_use_percent
-    - sensor.memory_use_percent
-    - sensor.disk_use_percent
-    - sensor.processor_temperature
     - sensor.daily_energy_peak
     - sensor.monthly_energy_costs_peak
     - sensor.daily_energy_off_peak_2
     - sensor.monthly_energy_costs_off_peak
     - sensor.daily_gas
+    
+    # System monitor
+    - sensor.disk_free
+    - sensor.processor_use_percent
+    - sensor.memory_use_percent
+    - sensor.disk_use_percent
+    - sensor.processor_temperature
+    
+    # Binary sensors
+    - binary_sensor.kpn_tv
+    - binary_sensor.hue_utility_bridge
+    - binary_sensor.range_extender
+    - binary_sensor.hue_garden_bridge
+    - binary_sensor.sprinkler_controller
+    - binary_sensor.opentherm_controller
+    - binary_sensor.esp_home_test_device
+    - binary_sensor.slimme_lezer
+    - binary_sensor.livingroom_home_mini
+    - binary_sensor.dining_room_home_mini
+    - binary_sensor.bedroom_home_mini
+    
+    # Other
     - input_boolean.holiday 
     - switch.floor_heating_pump_on_off 
