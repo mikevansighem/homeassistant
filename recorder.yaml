@@ -20,6 +20,8 @@ include:
     - sensor.house_state
     - sensor.pretty_workday 
     - sensor.climate_period
+    - sensor.grid_fossil_fuel_percentage
+    - sensor.co2_intensity
     - sensor.power_usage_round 
     - sensor.gas_usage 
     - sensor.daily_utility_costs
