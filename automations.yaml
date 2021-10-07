@@ -153,6 +153,7 @@
         color: red
         ledColor: red
         priority: high
+        timeout: 300
         ttl: 0
         actions:
         - action: URI
