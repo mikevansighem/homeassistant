@@ -928,6 +928,11 @@
     data:
       title: Update available 🎉
       message: New version available {{states('sensor.latest_version')}}
+      data:
+        actions:
+        - action: URI
+          title: More info
+          uri: https://www.home-assistant.io/latest-release-notes/
   - service: notify.persistent_notification
     data:
       title: Update available 🎉
