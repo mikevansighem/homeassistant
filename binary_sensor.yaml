@@ -60,11 +60,6 @@
   scan_interval: 30
   
 - platform: ping
-  host: 192.168.2.200
-  name: "ESP Home test device"
-  scan_interval: 30
-  
-- platform: ping
   host: 192.168.2.199
   name: "Slimme lezer"
   scan_interval: 30

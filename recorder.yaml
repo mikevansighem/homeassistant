@@ -63,6 +63,9 @@ include:
     - binary_sensor.livingroom_home_mini
     - binary_sensor.dining_room_home_mini
     - binary_sensor.bedroom_home_mini
+    - binary_sensor.esphome_test_device
+    - binary_sensor.doorbell
+    - binary_sensor.doorbell_pressed
     
     # Other
     - input_boolean.holiday 

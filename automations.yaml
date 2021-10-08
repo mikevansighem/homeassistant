@@ -938,3 +938,64 @@
       title: Update available 🎉
       message: New version available {{states('sensor.latest_version')}}
   mode: single
+- id: '1633712008868'
+  alias: Chime - Notify
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.doorbell_pressed
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: switch.doorbell_chime_active
+    state: 'on'
+  action:
+  - service: tts.cloud_say
+    data:
+      entity_id: media_player.downstairs_speakers
+      message: Er staat iemand aan de voordeur. Er staat iemand aan de voordeur.
+      language: nl-NL
+  mode: single
+- id: '1633713021889'
+  alias: Chime - Notify Anneloes
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.doorbell_pressed
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: switch.doorbell_chime_active
+    state: 'on'
+  - condition: state
+    entity_id: person.anneloes_jagt
+    state: home
+  action:
+  - service: notify.mobile_app_phone_anneloes
+    data:
+      message: Er is iemand aan de voordeur.
+      title: Ding dong 🔔
+  mode: single
+- id: '1633713193626'
+  alias: Chime - Notify Mike
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.doorbell_pressed
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: switch.doorbell_chime_active
+    state: 'on'
+  - condition: state
+    entity_id: person.mike_van_sighem
+    state: home
+  action:
+  - service: notify.mobile_app_phone_mike
+    data:
+      message: Er is iemand aan de voordeur.
+      title: Ding dong 🔔
+  mode: single
