@@ -1,0 +1,197 @@
+################################################################################
+# GENERAL 
+################################################################################
+
+substitutions:
+  devicename: opentherm
+  upper_devicename: Opentherm
+
+esphome:
+  name: $devicename
+  platform: ESP8266
+  board: esp01_1m
+  platformio_options:
+    lib_deps: 
+    - ihormelnyk/OpenTherm Library @ 1.1.3
+    - ESP Async WebServer
+  includes:
+    - esphome-opentherm/
+
+#Enable logging
+logger:
+
+#Enable Home Assistant API
+api:
+
+#Enable ota update with a password
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  #Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${devicename} Fallback"
+    password: !secret esphome_fallback_password
+
+captive_portal:
+
+################################################################################
+# SPECIFIC 
+################################################################################
+
+#-------------------------------------------------------------------------------
+# CUSTOM 
+#-------------------------------------------------------------------------------  
+
+custom_component:
+  - lambda: |-
+      auto opentherm = new OpenthermComponent();
+      return {opentherm};
+    
+    components:
+      - id: opentherm
+      
+#-------------------------------------------------------------------------------
+# OUTPUT 
+#-------------------------------------------------------------------------------  
+      
+output:
+  - platform: custom
+    type: float
+    lambda: |-
+      OpenthermComponent *openthermComp = (OpenthermComponent*) opentherm;
+      auto opentherm_pid_output = new OpenthermFloatOutput();
+      openthermComp->set_pid_output(opentherm_pid_output);
+      App.register_component(opentherm_pid_output);     
+      return {opentherm_pid_output};
+    outputs:
+      id: pid_output
+      #min_power: 30.00%
+      #max_power: 60.00%
+
+#-------------------------------------------------------------------------------
+# SENSORS 
+#-------------------------------------------------------------------------------  
+
+sensor:
+
+  #Boiler sensors
+  - platform: custom
+    lambda: |-    
+      OpenthermComponent *openthermComp = (OpenthermComponent*) opentherm;
+      return { 
+        openthermComp->boiler_temperature, 
+        openthermComp->external_temperature_sensor, 
+        openthermComp->return_temperature_sensor, 
+        openthermComp->pressure_sensor,
+        openthermComp->modulation_sensor,
+        openthermComp->heating_target_temperature_sensor
+      };
+    sensors:
+    - name: Boiler Temperature
+      unit_of_measurement: °C
+      accuracy_decimals: 1
+    - name: "External Temperature"
+      unit_of_measurement: °C
+      accuracy_decimals: 0  
+    - name: "Return Temperature"
+      unit_of_measurement: °C
+      accuracy_decimals: 1
+    - name: "Heating Water Pressure"
+      unit_of_measurement: hPa
+      accuracy_decimals: 1
+    - name: "Boiler Modulation"
+      unit_of_measurement: "%"
+      accuracy_decimals: 0
+    - name: "Heating Target Temperature"
+      unit_of_measurement: ºC
+      accuracy_decimals: 1
+      
+  #Actual room temprature from Home Assistant
+  - platform: homeassistant
+    id: temperature_sensor
+    entity_id: sensor.downstairs_temperature
+    name: "Actual temperature"
+    unit_of_measurement: °C
+    
+  - platform: pid
+    name: "PID Climate Result"
+    type: RESULT    
+  - platform: pid
+    name: "PID Climate HEAT"
+    type: HEAT    
+  - platform: pid
+    name: "PID Climate ERROR"
+    type: ERROR    
+    
+#-------------------------------------------------------------------------------
+# BINARY SENSORS 
+#-------------------------------------------------------------------------------  
+
+# Sensor for the boiler flame
+binary_sensor:
+
+  - platform: custom
+    lambda: |-
+      OpenthermComponent *openthermComp = (OpenthermComponent*) opentherm;
+      return {openthermComp->flame};
+    binary_sensors:
+    - name: "Flame"
+      #device_class: heat
+
+#-------------------------------------------------------------------------------
+# SWITCH 
+#-------------------------------------------------------------------------------
+
+switch:
+
+  #A switch to disable the PID control
+  - platform: custom
+    lambda: |-
+      OpenthermComponent *openthermComp = (OpenthermComponent*) opentherm;
+      return {openthermComp->thermostatSwitch};
+    switches:
+      name: "Disable PID"
+  
+  #A switch for the PID auttune
+  - platform: template
+    name: "PID Climate Autotune"
+    turn_on_action:
+      - climate.pid.autotune: pid_climate      
+
+#-------------------------------------------------------------------------------
+# CLIMATE 
+#-------------------------------------------------------------------------------
+
+climate:
+
+  - platform: custom
+    lambda: |-
+      OpenthermComponent *openthermComp = (OpenthermComponent*) opentherm;
+      return {
+        openthermComp->hotWaterClimate, 
+        openthermComp->heatingWaterClimate
+      };
+    climates:
+      - id: hot_water
+        name: "Hot water"
+      - id: heating_water
+        name: "Heating water"
+        
+  - platform: pid
+    id: pid_climate
+    name: "PID Climate Controller"
+    visual:
+      min_temperature: 16 °C
+      max_temperature: 28 °C
+      temperature_step: 0.5 °C
+    sensor: temperature_sensor
+    default_target_temperature: 20°C
+    heat_output: pid_output
+    control_parameters:
+      kp: 0.38197
+      ki: 0.01012
+      kd: 3.60387
