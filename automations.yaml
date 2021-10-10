@@ -953,8 +953,8 @@
   action:
   - service: tts.cloud_say
     data:
-      entity_id: media_player.downstairs_speakers
-      message: Er staat iemand aan de voordeur. Er staat iemand aan de voordeur.
+      entity_id: media_player.speaker_group
+      message: Er staat iemand aan de voordeur.
       language: nl-NL
   mode: single
 - id: '1633713021889'
@@ -977,6 +977,8 @@
     data:
       message: Er is iemand aan de voordeur.
       title: Ding dong 🔔
+      data:
+        timeout: 120
   mode: single
 - id: '1633713193626'
   alias: Chime - Notify Mike
@@ -998,4 +1000,6 @@
     data:
       message: Er is iemand aan de voordeur.
       title: Ding dong 🔔
+      data:
+        timeout: 120
   mode: single
