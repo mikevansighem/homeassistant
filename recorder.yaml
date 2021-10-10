@@ -12,9 +12,6 @@ include:
     - device_tracker
     - person
   
-  entity_globs: 
-    - sensor.*motion
-  
   entities:
     # General
     - sensor.house_state
@@ -66,6 +63,12 @@ include:
     - binary_sensor.esphome_test_device
     - binary_sensor.doorbell
     - binary_sensor.doorbell_pressed
+    
+    # Motion
+    - binary_sensor.livingroom_motion
+    - binary_sensor.motion_downstairs_hallway
+    - binary_sensor.sensor_motion
+    - binary_sensor.upstairs_hallway_motion
     
     # Other
     - input_boolean.holiday 
