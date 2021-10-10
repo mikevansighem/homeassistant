@@ -334,13 +334,13 @@
           {% set threshold = states('input_number.rain_threshold') | float %}
           {% set B_humidity = states('input_number.base_humidity') | float %}
           {% set B_temperature = states('input_number.base_temperature') | float %}
-
+          {% set cutoff = states('input_number.watering_cutoff') | int %}
 
           {% set F_humidity = B_humidity / humidity | float %}
           {% set F_temperature = temperature / B_temperature | float %}
           {% set level = 100 * F_humidity * F_temperature | round(2) %}
 
-          {% if rain > threshold %}
+          {% if rain > threshold or level < cutoff %}
               {{ 0 | int }}
           {% else %}
               {{ level | int}}
