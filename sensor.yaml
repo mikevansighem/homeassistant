@@ -416,24 +416,38 @@
     climate_period:
       friendly_name: "Climate period"
       value_template: >-
-        {% set time = states('sensor.time') %}
+        {% set tnow = as_timestamp(strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)) %} 
+
+        {% set early_start = state_attr('input_datetime.heating_pre_heat', 'timestamp') %} 
+        {% set night_end_work = state_attr('input_datetime.end_night_workday', 'timestamp') %} 
+        {% set work_night_end_time = (night_end_work - early_start)  | timestamp_utc %} 
+        {% set night_end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %} 
+        {% set free_night_end_time = (night_end_free - early_start)  | timestamp_utc %}
+
+        {% set early_stop = state_attr('input_datetime.heating_early_stop', 'timestamp') %} 
+        {% set night_start_work = state_attr('input_datetime.start_night_workday', 'timestamp') %} 
+        {% set work_night_start_time = (night_start_work - early_stop)  | timestamp_utc %} 
+        {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'timestamp') %} 
+        {% set free_night_start_time = (night_start_free - early_stop)  | timestamp_utc %}
+
+
         {% if is_state('input_select.climate_period_override', 'auto') %}
           {% if is_state('binary_sensor.workday_sensor', 'off') %}
-            {% if states('input_datetime.end_night_free_day') < time < states('input_datetime.morning_end') %}
+            {% if as_timestamp(free_night_end_time) < tnow < as_timestamp(state_attr('input_datetime.morning_end', 'timestamp')| timestamp_utc) %}
               morning
-            {% elif states('input_datetime.morning_end') < time < states('input_datetime.evening_start') %}
+            {% elif as_timestamp(state_attr('input_datetime.morning_end', 'timestamp')| timestamp_utc) < tnow < as_timestamp(state_attr('input_datetime.evening_start', 'timestamp')| timestamp_utc) %}
               day
-            {% elif states('input_datetime.evening_start') < time < states('input_datetime.start_night_free_day') %}
+            {% elif as_timestamp(state_attr('input_datetime.evening_start', 'timestamp')| timestamp_utc) < tnow < as_timestamp(free_night_start_time)  %}
               evening
             {% else %}
               night
             {% endif %}
           {% else %}
-            {% if states('input_datetime.end_night_workday') < time < states('input_datetime.morning_end') %}
+            {% if as_timestamp(work_night_end_time)  < tnow < as_timestamp( state_attr('input_datetime.morning_end', 'timestamp')| timestamp_utc) %}
               morning
-            {% elif states('input_datetime.morning_end') < time < states('input_datetime.evening_start') %}
+            {% elif as_timestamp(state_attr('input_datetime.morning_end', 'timestamp')| timestamp_utc) < tnow < as_timestamp(state_attr('input_datetime.evening_start', 'timestamp')| timestamp_utc )%}
               day
-            {% elif states('input_datetime.evening_start') < time < states('input_datetime.start_night_workday') %}
+            {% elif as_timestamp(state_attr('input_datetime.evening_start', 'timestamp')| timestamp_utc) < tnow < as_timestamp(work_night_start_time)  %}
               evening
             {% else %}
               night
