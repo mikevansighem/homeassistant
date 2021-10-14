@@ -914,21 +914,24 @@
   alias: Utility - Notify for update
   description: ''
   trigger:
-  - platform: template
-    value_template: "{% if states('sensor.latest_version') == states('sensor.current_version')\
-      \ %}\n  false\n{% else %}\n  true\n{% endif %}"
+  - platform: state
+    entity_id: sensor.latest_version
   condition:
   - condition: not
     conditions:
     - condition: state
       entity_id: sensor.latest_version
       state: unknown
+  - condition: template
+    value_template: "  {% if states('sensor.latest_version') != states('sensor.current_version')\
+      \ %}\n    true\n  {% endif %}"
   action:
   - service: notify.mobile_app_phone_mike
     data:
       title: Update available 🎉
       message: New version available {{states('sensor.latest_version')}}
       data:
+        clickAction: https://www.home-assistant.io/latest-release-notes/
         actions:
         - action: URI
           title: More info

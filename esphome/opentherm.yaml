@@ -3,8 +3,8 @@
 ################################################################################
 
 substitutions:
-  devicename: opentherm
-  upper_devicename: Opentherm
+  devicename: test_device
+  upper_devicename: Test device
 
 esphome:
   name: $devicename
@@ -17,13 +17,13 @@ esphome:
   includes:
     - esphome-opentherm/
 
-#Enable logging
+# Enable logging
 logger:
 
-#Enable Home Assistant API
+# Enable Home Assistant API
 api:
 
-#Enable ota update with a password
+# Enable ota update with a password
 ota:
   password: !secret ota_password
 
@@ -31,9 +31,9 @@ wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
 
-  #Enable fallback hotspot (captive portal) in case wifi connection fails
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "${devicename} Fallback"
+    ssid: "${devicename} fallback"
     password: !secret esphome_fallback_password
 
 captive_portal:
@@ -110,7 +110,7 @@ sensor:
       unit_of_measurement: ºC
       accuracy_decimals: 1
       
-  #Actual room temprature from Home Assistant
+  # Actual room temprature from Home Assistant
   - platform: homeassistant
     id: temperature_sensor
     entity_id: sensor.downstairs_temperature
@@ -141,6 +141,9 @@ binary_sensor:
     binary_sensors:
     - name: "Flame"
       #device_class: heat
+      
+  - platform: status
+    name: "${upper_devicename}"
 
 #-------------------------------------------------------------------------------
 # SWITCH 
@@ -148,7 +151,7 @@ binary_sensor:
 
 switch:
 
-  #A switch to disable the PID control
+  # A switch to disable the PID control
   - platform: custom
     lambda: |-
       OpenthermComponent *openthermComp = (OpenthermComponent*) opentherm;
@@ -156,7 +159,7 @@ switch:
     switches:
       name: "Disable PID"
   
-  #A switch for the PID auttune
+  # A switch for the PID auttune
   - platform: template
     name: "PID Climate Autotune"
     turn_on_action:
