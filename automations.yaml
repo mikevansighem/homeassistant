@@ -403,7 +403,8 @@
         target:
           entity_id: climate.hot_water_service
     default: []
-  mode: single
+  mode: queued
+  max: 3
 - id: '1629825198745'
   alias: 'Climate - Heating service '
   description: ''
@@ -485,7 +486,8 @@
         target:
           entity_id: climate.central_heating
     default: []
-  mode: single
+  mode: queued
+  max: 3
 - id: '1630088921261'
   alias: Lights - Turn off if there is no motion - Upstairs hallway
   description: Turn lights off when no motion is detected
@@ -795,7 +797,8 @@
               entity_id: alarm_control_panel.alarm_panel_ias_ace
         default: []
     default: []
-  mode: single
+  mode: queued
+  max: 3
 - id: '1631473532138'
   alias: Climate - Update setpoint
   description: Update the central heating setpoint when the climate period changes.
@@ -811,7 +814,8 @@
       entity_id: climate.central_heating
     data:
       temperature: '{{ states(''sensor.climate_setpoint'') }}'
-  mode: single
+  mode: queued
+  max: 3
 - id: '1631815874577'
   alias: Climate - Floor heating pump
   description: Floor heating pump follows the central heating. Every night it turns
