@@ -1006,3 +1006,142 @@
       data:
         timeout: 120
   mode: single
+- id: '1634576080537'
+  alias: Air - Notify
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.carbon_dioxide_state
+    id: CO2_BAD
+    to: Bad
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.carbon_dioxide_state
+    id: CO2_DANGER
+    to: Danger
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.carbon_dioxide_state
+    id: CO2_BAD
+    to: Bad
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.carbon_dioxide_state
+    id: CO2_DANGER
+    to: Danger
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.carbon_dioxide_state
+    id: CO2_BAD
+    to: Bad
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.carbon_dioxide_state
+    id: CO2_DANGER
+    to: Danger
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.voc_state
+    id: VOC_BAD
+    to: Bad
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.voc_state
+    id: VOC_DANGER
+    to: Danger
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.humidity_state
+    id: HUM_HIGH
+    to: High
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.humidity_state
+    id: HUM_LOW
+    to: Low
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: CO2_DANGER
+        - condition: trigger
+          id: CO2_BAD
+      sequence:
+      - service: notify.notify
+        data:
+          title: CO2 te hoog; zet de ventilator hoger
+          message: ⚠️ CO2 te hoog
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: VOC_DANGER
+        - condition: trigger
+          id: VOC_BAD
+      sequence:
+      - service: notify.notify
+        data:
+          title: VOC te hoog; zet de ventilator hoger
+          message: ⚠️ VOC te hoog
+    - conditions:
+      - condition: trigger
+        id: HUM_HIGH
+      sequence:
+      - service: notify.notify
+        data:
+          title: Luchtvochtigheid te hoog; zet de ventilator hoger
+          message: 💧 Luchtvochtigheid te hoog
+    - conditions:
+      - condition: trigger
+        id: HUM_LOW
+      sequence:
+      - service: notify.notify
+        data:
+          title: Luchtvochtigheid te laag; sluit de ramen
+          message: 💧 Luchtvochtigheid te laag
+    default: []
+  mode: single

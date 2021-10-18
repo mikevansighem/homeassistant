@@ -576,6 +576,89 @@
       icon_template: >-
         mdi:cash
 
+    # CO2
+    carbon_dioxide_state:
+      friendly_name: "Carbon dioxide"
+      value_template: >-
+        {% set co = states('sensor.carbon_dioxide') | int%}
+        {% if co < 800 %}
+          Good
+        {% elif 800 < co < 1200 %}
+          Bad
+        {% elif co > 1200 %}
+          Danger
+        {% endif %}
+      icon_template: >-
+        {% if is_state('sensor.carbon_dioxide_state', 'Good') %}
+          mdi:emoticon
+        {% elif is_state('sensor.carbon_dioxide_state', 'Bad') %}
+          mdi:emoticon-neutral
+        {% elif is_state('sensor.carbon_dioxide_state', 'Danger') %}
+          mdi:emoticon-sad
+        {% endif %}
+
+    # Humidity
+    humidity_state:
+      friendly_name: "Humidity"
+      value_template: >-
+        {% set hum = states('sensor.indoor_humidity') | int %}
+        {% if 40 < hum < 60 %}
+          Good
+        {% elif hum < 40 %}
+          Low
+        {% elif hum > 60 %}
+          High
+        {% endif %}
+      icon_template: >-
+        {% if is_state('sensor.humidity_state', 'Good') %}
+          mdi:emoticon
+        {% elif is_state('sensor.humidity_state', 'High') %}
+          mdi:emoticon-neutral
+        {% elif is_state('sensor.humidity_state', 'Low') %}
+          mdi:emoticon-neutral
+        {% endif %}
+
+    # VOC
+    voc_state:
+      friendly_name: "VOC"
+      value_template: >-
+        {% set voc = states('sensor.voc') | int %}
+        {% if voc < 250 %}
+          Good
+        {% elif 250 < voc < 2000 %}
+          Bad
+        {% elif voc > 2000 %}
+          Danger
+        {% endif %}
+      icon_template: >-
+        {% if is_state('sensor.voc_state', 'Good') %}
+          mdi:emoticon
+        {% elif is_state('sensor.voc_state', 'Bad') %}
+          mdi:emoticon-neutral
+        {% elif is_state('sensor.voc_state', 'Danger') %}
+          mdi:emoticon-sad
+        {% endif %}
+
+    # Combined air quality
+    air_quality_state:
+      friendly_name: "Air quality"
+      value_template: >-
+        {% if is_state('sensor.carbon_dioxide_state','Danger') or is_state('sensor.humidity_state','Danger') or is_state('sensor.voc_state','Danger') %}
+          Danger
+        {% elif is_state('sensor.carbon_dioxide_state','Bad') or is_state('sensor.humidity_state','Low') or is_state('sensor.humidity_state','High') or is_state('sensor.voc_state','Bad') %}
+          Bad
+        {% else %}
+          Good
+        {% endif %}
+      icon_template: >-
+        {% if is_state('sensor.air_quality_state', 'Good') %}
+          mdi:emoticon
+        {% elif is_state('sensor.air_quality_state', 'Bad') %}
+          mdi:emoticon-neutral
+        {% elif is_state('sensor.air_quality_state', 'Danger') %}
+          mdi:emoticon-sad
+        {% endif %}
+
 #------------------------------------------------------------------------------
 # STATISTICS
 #------------------------------------------------------------------------------

@@ -41,6 +41,12 @@ include:
     - sensor.monthly_energy_costs_off_peak
     - sensor.daily_gas
     
+    # Air quality
+    - sensor.carbon_dioxide
+    - sensor.formaldehyde
+    - sensor.indoor_humidity
+    - sensor.voc
+    
     # System monitor
     - sensor.disk_free
     - sensor.processor_use_percent
