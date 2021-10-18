@@ -78,7 +78,6 @@
     - sensor.downstairs_hallway_temperature
     - sensor.livingroom_temperature
     - sensor.sensor_temperature
-#      - sensor.current_thermostat_temperature /// sensor value not calibrated
 
 #------------------------------------------------------------------------------
 # SYSTEM MONITOR
@@ -175,7 +174,7 @@
       device_class: 'energy'
       unit_of_measurement: 'W'
       value_template: >-
-        {{ (((states('sensor.power_consumed') | float )/10) | round(0) ) * 10 }}
+        {{ (((states('sensor.power_consumed') | float(0) )/10) | round(0) ) * 10 }}
       icon_template: >-
         mdi:lightning-bolt 
   
@@ -185,7 +184,7 @@
       device_class: 'energy'
       unit_of_measurement: 'kWh'
       value_template: >-
-        {{ states('sensor.daily_energy_off_peak')|float + states('sensor.daily_energy_peak')|float }}
+        {{ states('sensor.daily_energy_off_peak') | float(0) + states('sensor.daily_energy_peak') | float(0) }}
       icon_template: >-
         mdi:lightning-bolt 
       
@@ -194,7 +193,7 @@
       unit_of_measurement: 'kWh'
       device_class: 'energy'
       value_template: >-
-        {{ states('sensor.monthly_energy_off_peak')|float + states('sensor.monthly_energy_peak')|float }}
+        {{ states('sensor.monthly_energy_off_peak')|float + states('sensor.monthly_energy_peak') | float(0) }}
       icon_template: >-
         mdi:lightning-bolt 
 
@@ -203,7 +202,7 @@
       unit_of_measurement: 'kWh'
       device_class: 'energy'
       value_template: >-
-        {{ states('sensor.yearly_energy_off_peak')|float + states('sensor.yearly_energy_peak')|float }}
+        {{ states('sensor.yearly_energy_off_peak') | float(0) + states('sensor.yearly_energy_peak') | float(0) }}
       icon_template: >-
         mdi:lightning-bolt 
 
@@ -327,17 +326,17 @@
       friendly_name: "Watering level"
       unit_of_measurement: "%"
       value_template: >-
-          {% set rain = states('sensor.buienradar_rain_last_24h') | float %}
-          {% set humidity = states('sensor.avarage_humidity') | float %}
-          {% set temperature = states('sensor.avarage_ground_temperature') | float %}
+          {% set rain = states('sensor.buienradar_rain_last_24h') | float(0) %}
+          {% set humidity = states('sensor.avarage_humidity') | float(0) %}
+          {% set temperature = states('sensor.avarage_ground_temperature') | float(0) %}
 
-          {% set threshold = states('input_number.rain_threshold') | float %}
-          {% set B_humidity = states('input_number.base_humidity') | float %}
-          {% set B_temperature = states('input_number.base_temperature') | float %}
-          {% set cutoff = states('input_number.watering_cutoff') | int %}
+          {% set threshold = states('input_number.rain_threshold') | float(0) %}
+          {% set B_humidity = states('input_number.base_humidity') | float(0) %}
+          {% set B_temperature = states('input_number.base_temperature') | float(0) %}
+          {% set cutoff = states('input_number.watering_cutoff') | int(0) %}
 
-          {% set F_humidity = B_humidity / humidity | float %}
-          {% set F_temperature = temperature / B_temperature | float %}
+          {% set F_humidity = B_humidity / humidity | float(0) %}
+          {% set F_temperature = temperature / B_temperature | float(0) %}
           {% set level = 100 * F_humidity * F_temperature | round(2) %}
 
           {% if rain > threshold or level < cutoff %}
