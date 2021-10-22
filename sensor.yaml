@@ -193,7 +193,7 @@
       unit_of_measurement: 'kWh'
       device_class: 'energy'
       value_template: >-
-        {{ states('sensor.monthly_energy_off_peak')|float + states('sensor.monthly_energy_peak') | float(0) }}
+        {{ states('sensor.monthly_energy_off_peak') | float(0) + states('sensor.monthly_energy_peak') | float(0) }}
       icon_template: >-
         mdi:lightning-bolt 
 
@@ -212,11 +212,11 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = ( state_attr('sensor.alarm_panel_power', 'battery_voltage') - 5.6)/0.8 * 100 |int('unknown') %}
-        {{ (battery_level|int / 10)|int * 10 }}
+        {% set battery_level = ( state_attr('sensor.alarm_panel_power', 'battery_voltage') - 5.6)/0.8 * 100 | int('unknown') %}
+        {{ (battery_level | int / 10 ) | int * 10 }}
       icon_template: >-
         {% set battery_level = states('sensor.alarm_panel_battery') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% set battery_round = (battery_level | int / 10) | int * 10 %}
         {% if battery_level == 'unknown' %}
           mdi:battery-unknown
         {% else %}
@@ -235,7 +235,7 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = state_attr('binary_sensor.livingroom_motion', 'battery_level') |int('unknown') %}
+        {% set battery_level = state_attr('binary_sensor.livingroom_motion', 'battery_level') | int('unknown') %}
         {{ (battery_level|int / 10)|int * 10 }}
       icon_template: >-
         {% set battery_level = states('sensor.livingroom_motion_battery') %}
@@ -340,25 +340,25 @@
           {% set level = 100 * F_humidity * F_temperature | round(2) %}
 
           {% if rain > threshold or level < cutoff %}
-              {{ 0 | int }}
+              {{ 0 | int(0) }}
           {% else %}
-              {{ level | int}}
+              {{ level | int(0) }}
           {% endif %}
     
     # Calculate watering time for front sprinkler
     front_watering_time:
       friendly_name: "Front watering time"
       value_template: >-
-          {% set base_time = states('input_number.front_sprinkler_base_time') | int * 60 %}
-          {% set level = states('sensor.watering_level') | float / 100 %}
+          {% set base_time = states('input_number.front_sprinkler_base_time') | int(0) * 60 %}
+          {% set level = states('sensor.watering_level') | float(0) / 100 %}
           {{base_time * level}}
     
     # Calculate watering time for back sprinkler
     back_watering_time:
       friendly_name: "Back watering time"
       value_template: >-
-          {% set base_time = states('input_number.back_sprinkler_base_time') | int * 60 %}
-          {% set level = states('sensor.watering_level') | float / 100 %}
+          {% set base_time = states('input_number.back_sprinkler_base_time') | int(0) * 60 %}
+          {% set level = states('sensor.watering_level') | float(0) / 100 %}
           {{base_time * level}}
           
     somebody_home:
@@ -508,7 +508,7 @@
         {% elif is_state('sensor.time', "00:01") %}
           0
         {% else %}
-          {{((states('sensor.daily_gas')|float*states('input_number.gas_tariff')|float)+(states('input_number.fixed_gas_tariff')|float/365)) | round(2)}}
+          {{((states('sensor.daily_gas') | float(0) * states('input_number.gas_tariff') | float(0) )+(states('input_number.fixed_gas_tariff') | float(0) /365)) | round(2)}}
         {% endif %}
       icon_template: >-
         mdi:cash
@@ -518,11 +518,11 @@
       friendly_name: "Daily energy costs off-peak"
       unit_of_measurement: "€"
       value_template: >-
-        {% set fixed = states('input_number.fixed_energy_tariff') | float %}
+        {% set fixed = states('input_number.fixed_energy_tariff') | float(0) %}
         {% set fixed_day = fixed / 365 %}
-        {% set tariff_1 = states('input_number.energy_tariff_1') | float %}
-        {% set useage_1 = states('sensor.daily_energy_off_peak') | float %}
-        {% set useage_2 = states('sensor.daily_energy_peak') | float %}
+        {% set tariff_1 = states('input_number.energy_tariff_1') | float(0) %}
+        {% set useage_1 = states('sensor.daily_energy_off_peak') | float(0) %}
+        {% set useage_2 = states('sensor.daily_energy_peak') | float(0) %}
         {% set usage = useage_1 + useage_2 %}
         {% set fixed_1 = useage_1 / usage * fixed_day %}
         {% set result = (tariff_1 * useage_1 + fixed_1) | round(2) %}
@@ -540,11 +540,11 @@
       friendly_name: "Daily energy costs peak"
       unit_of_measurement: "€"
       value_template: >-
-        {% set fixed = states('input_number.fixed_energy_tariff') | float %}
+        {% set fixed = states('input_number.fixed_energy_tariff') | float(0) %}
         {% set fixed_day = fixed / 365 %}
-        {% set tariff_2 = states('input_number.energy_tariff_2') | float %}
-        {% set useage_1 = states('sensor.daily_energy_off_peak') | float %}
-        {% set useage_2 = states('sensor.daily_energy_peak') | float %}
+        {% set tariff_2 = states('input_number.energy_tariff_2') | float(0) %}
+        {% set useage_1 = states('sensor.daily_energy_off_peak') | float(0) %}
+        {% set useage_2 = states('sensor.daily_energy_peak') | float(0) %}
         {% set usage = useage_1 + useage_2 %}
         {% set fixed_2 = useage_2 / usage * fixed_day %}
         {% set result = (tariff_2 * useage_2 + fixed_2) | round(2) %}
@@ -562,7 +562,7 @@
       friendly_name: "Daily energy costs"
       unit_of_measurement: "€"
       value_template: >-
-        {{ states('sensor.daily_energy_costs_1') | float + states('sensor.daily_energy_costs_2') | float}}
+        {{ states('sensor.daily_energy_costs_1') | float(0) + states('sensor.daily_energy_costs_2') | float(0) }}
       icon_template: >-
         mdi:cash
         
@@ -571,7 +571,7 @@
       friendly_name: "Daily utility costs"
       unit_of_measurement: "€"
       value_template: >-
-        {{states('sensor.daily_energy_costs')|float + states('sensor.daily_gas_costs')|float}}
+        {{states('sensor.daily_energy_costs') | float(0) + states('sensor.daily_gas_costs') | float(0) }}
       icon_template: >-
         mdi:cash
 
@@ -579,7 +579,7 @@
     carbon_dioxide_state:
       friendly_name: "Carbon dioxide"
       value_template: >-
-        {% set co = states('sensor.carbon_dioxide') | int%}
+        {% set co = states('sensor.carbon_dioxide') | int(0) %}
         {% if co < 800 %}
           Good
         {% elif 800 < co < 1200 %}
@@ -600,7 +600,7 @@
     humidity_state:
       friendly_name: "Humidity"
       value_template: >-
-        {% set hum = states('sensor.indoor_humidity') | int %}
+        {% set hum = states('sensor.indoor_humidity') | int(0) %}
         {% if 40 < hum < 60 %}
           Good
         {% elif hum < 40 %}
@@ -621,7 +621,7 @@
     voc_state:
       friendly_name: "VOC"
       value_template: >-
-        {% set voc = states('sensor.voc') | int %}
+        {% set voc = states('sensor.voc') | int(0) %}
         {% if voc < 250 %}
           Good
         {% elif 250 < voc < 2000 %}
