@@ -258,7 +258,7 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = state_attr('binary_sensor.motion_downstairs_hallway', 'battery_level') |int('unknown') %}
+        {% set battery_level = state_attr('binary_sensor.downstairs_hallway_motion', 'battery_level') |int('unknown') %}
         {{ (battery_level|int / 10)|int * 10 }}
       icon_template: >-
         {% set battery_level = states('sensor.downstairs_hallway_motion_battery') %}
@@ -304,7 +304,7 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = state_attr('binary_sensor.sensor_motion', 'battery_level') |int('unknown') %}
+        {% set battery_level = state_attr('binary_sensor.stair_closet_motion', 'battery_level') |int('unknown') %}
         {{ (battery_level|int / 10)|int * 10 }}
       icon_template: >-
         {% set battery_level = states('sensor.stairs_closet_motion_battery') %}
@@ -330,19 +330,24 @@
           {% set humidity = states('sensor.avarage_humidity') | float(0) %}
           {% set temperature = states('sensor.avarage_ground_temperature') | float(0) %}
 
-          {% set threshold = states('input_number.rain_threshold') | float(0) %}
-          {% set B_humidity = states('input_number.base_humidity') | float(0) %}
-          {% set B_temperature = states('input_number.base_temperature') | float(0) %}
-          {% set cutoff = states('input_number.watering_cutoff') | int(0) %}
-
-          {% set F_humidity = B_humidity / humidity | float(0) %}
-          {% set F_temperature = temperature / B_temperature | float(0) %}
-          {% set level = 100 * F_humidity * F_temperature | round(2) %}
-
-          {% if rain > threshold or level < cutoff %}
-              {{ 0 | int(0) }}
+          {% if temperature == 0 or humidity == 0 %}
+            not
           {% else %}
-              {{ level | int(0) }}
+
+            {% set threshold = states('input_number.rain_threshold') | float(0) %}
+            {% set B_humidity = states('input_number.base_humidity') | float(0) %}
+            {% set B_temperature = states('input_number.base_temperature') | float(0) %}
+            {% set cutoff = states('input_number.watering_cutoff') | int(0) %}
+
+            {% set F_humidity = B_humidity / humidity | float(0) %}
+            {% set F_temperature = temperature / B_temperature | float(0) %}
+            {% set level = 100 * F_humidity * F_temperature | round(2) %}
+
+            {% if rain > threshold or level < cutoff %}
+                {{ 0 | int(0) }}
+            {% else %}
+                {{ level | int(0) }}
+            {% endif %}
           {% endif %}
     
     # Calculate watering time for front sprinkler
