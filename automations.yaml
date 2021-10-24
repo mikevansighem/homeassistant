@@ -804,8 +804,6 @@
   description: Update the central heating setpoint when the climate period changes.
   trigger:
   - platform: state
-    entity_id: sensor.climate_period
-  - platform: state
     entity_id: sensor.climate_setpoint
   condition: []
   action:
@@ -813,8 +811,8 @@
     target:
       entity_id: climate.central_heating
     data:
-      temperature: '{{ states(''sensor.climate_setpoint'') }}'
-  mode: queued
+      temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
+  mode: single
   max: 3
 - id: '1631815874577'
   alias: Climate - Floor heating pump
