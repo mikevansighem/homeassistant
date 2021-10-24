@@ -72,8 +72,8 @@ include:
     
     # Motion
     - binary_sensor.livingroom_motion
-    - binary_sensor.motion_downstairs_hallway
-    - binary_sensor.sensor_motion
+    - binary_sensor.downstairs_hallway_motion
+    - binary_sensor.stair_closet_motion
     - binary_sensor.upstairs_hallway_motion
     
     # Other
