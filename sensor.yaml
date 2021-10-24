@@ -77,7 +77,7 @@
   entity_ids:
     - sensor.downstairs_hallway_temperature
     - sensor.livingroom_temperature
-    - sensor.sensor_temperature
+    - sensor.stair_closet_temperature
 
 #------------------------------------------------------------------------------
 # SYSTEM MONITOR
@@ -364,7 +364,7 @@
     somebody_home:
       friendly_name: "Somebody home"
       value_template: >-
-          {% set mike_home = is_state('person.mike_van_sighem', 'home') %}
+          {% set mike_home = is_state('person.tmp', 'home') %}
           {% set anneloes_home = is_state('person.anneloes_jagt', 'home') %}
           {% if mike_home or anneloes_home %}
               true

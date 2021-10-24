@@ -47,13 +47,13 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.sensor_motion
+    entity_id: binary_sensor.stair_closet_motion
     to: 'on'
   - platform: state
     entity_id: binary_sensor.livingroom_motion
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.motion_downstairs_hallway
+    entity_id: binary_sensor.downstairs_hallway_motion
     to: 'on'
   - platform: state
     entity_id: binary_sensor.upstairs_hallway_motion
@@ -276,13 +276,13 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.sensor_motion
+    entity_id: binary_sensor.stair_closet_motion
     to: 'on'
   - platform: state
     entity_id: binary_sensor.livingroom_motion
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.motion_downstairs_hallway
+    entity_id: binary_sensor.downstairs_hallway_motion
     to: 'on'
   condition:
   - condition: state
@@ -299,7 +299,7 @@
   description: Turn lights off when no motion is detected
   trigger:
   - platform: state
-    entity_id: binary_sensor.sensor_motion
+    entity_id: binary_sensor.stair_closet_motion
     to: 'off'
     for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
   condition:
@@ -511,7 +511,7 @@
   description: Turn lights off when no motion is detected
   trigger:
   - platform: state
-    entity_id: binary_sensor.motion_downstairs_hallway
+    entity_id: binary_sensor.downstairs_hallway_motion
     to: 'off'
     for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
   condition:
