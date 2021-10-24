@@ -3,10 +3,10 @@
   description: Takes snapshot and uploads to Dropbox
   trigger:
   - platform: time
-    at: '1:00:00'
+    at: '1:00'
   condition: []
   action:
-  - service: hassio.snapshot_full
+  - service: hassio.backup_full
     data_template:
       name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
   - service: hassio.addon_stdin
