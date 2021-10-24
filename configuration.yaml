@@ -16,7 +16,6 @@ alarm_control_panel: !include alarm_control_panel.yaml
 media_player: !include media_player.yaml
 utility_meter: !include utility_meter.yaml
 sensor: !include sensor.yaml
-switch: !include switch.yaml
 recorder: !include recorder.yaml
 
 # Enable themes
