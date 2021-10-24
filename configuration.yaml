@@ -52,7 +52,7 @@ proximity:
   home_mike:
     zone: home
     devices:
-      - device_tracker.phone_mike
+      - device_tracker.sm_g960f
       - device_tracker.ping_phone_mike
     tolerance: 50
     unit_of_measurement: km

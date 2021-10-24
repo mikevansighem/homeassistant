@@ -903,7 +903,7 @@
     from: 'on'
   condition: []
   action:
-  - service: notify.mobile_app_phone_mike
+  - service: notify.mobile_app_sm_g960f
     data:
       message: '{{ state_attr(trigger.to_state.entity_id, ''friendly_name'') }} is
         offline more than 5 minutes.'
@@ -930,7 +930,7 @@
     value_template: "  {% if states('sensor.latest_version') != states('sensor.current_version')\
       \ %}\n    true\n  {% endif %}"
   action:
-  - service: notify.mobile_app_phone_mike
+  - service: notify.mobile_app_sm_g960f
     data:
       title: Update available 🎉
       message: New version available {{states('sensor.latest_version')}}
@@ -980,7 +980,7 @@
     entity_id: person.anneloes_jagt
     state: home
   action:
-  - service: notify.mobile_app_phone_anneloes
+  - service: notify.mobile_app_sm_a202f
     data:
       message: Er is iemand aan de voordeur.
       title: Ding dong 🔔
@@ -1003,7 +1003,7 @@
     entity_id: person.mike_van_sighem
     state: home
   action:
-  - service: notify.mobile_app_phone_mike
+  - service: notify.mobile_app_sm_g960f
     data:
       message: Er is iemand aan de voordeur.
       title: Ding dong 🔔
