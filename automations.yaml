@@ -998,7 +998,7 @@
     entity_id: switch.doorbell_chime_active
     state: 'on'
   - condition: state
-    entity_id: person.mike_van_sighem
+    entity_id: person.tmp
     state: home
   action:
   - service: notify.mobile_app_sm_g960f

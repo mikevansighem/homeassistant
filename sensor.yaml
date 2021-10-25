@@ -525,19 +525,24 @@
       value_template: >-
         {% set fixed = states('input_number.fixed_energy_tariff') | float(0) %}
         {% set fixed_day = fixed / 365 %}
-        {% set tariff_1 = states('input_number.energy_tariff_1') | float(0) %}
+        {% set tariff_1 = states('input_number.energy_tariff_1') | float(0)
         {% set useage_1 = states('sensor.daily_energy_off_peak') | float(0) %}
         {% set useage_2 = states('sensor.daily_energy_peak') | float(0) %}
         {% set usage = useage_1 + useage_2 %}
-        {% set fixed_1 = useage_1 / usage * fixed_day %}
-        {% set result = (tariff_1 * useage_1 + fixed_1) | round(2) %}
-        
-        {% if result > 0 %}
-          {{ result }}
-        {% else %}
-          0
-        {% endif %} 
 
+        {% if usage == 0 %}
+          0
+        {% else %}
+
+          {% set fixed_1 = useage_1 / usage * fixed_day %}
+          {% set result = (tariff_1 * useage_1 + fixed_1) | round(2) %}
+        
+          {% if result > 0 %}
+            {{ result }}
+          {% else %}
+            0
+          {% endif %}
+        {% endif %}
       icon_template: >-
         mdi:cash
         
@@ -551,13 +556,19 @@
         {% set useage_1 = states('sensor.daily_energy_off_peak') | float(0) %}
         {% set useage_2 = states('sensor.daily_energy_peak') | float(0) %}
         {% set usage = useage_1 + useage_2 %}
-        {% set fixed_2 = useage_2 / usage * fixed_day %}
-        {% set result = (tariff_2 * useage_2 + fixed_2) | round(2) %}
-        
-        {% if result > 0 %}
-          {{ result }}
-        {% else %}
+
+        {% if usage == 0 %}
           0
+        {% else %}
+
+          {% set fixed_2 = useage_2 / usage * fixed_day %}
+          {% set result = (tariff_2 * useage_2 + fixed_2) | round(2) %}
+        
+          {% if result > 0 %}
+            {{ result }}
+          {% else %}
+            0
+          {% endif %}
         {% endif %} 
       icon_template: >-
         mdi:cash
