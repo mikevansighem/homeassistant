@@ -827,11 +827,7 @@
     entity_id: climate.central_heating
     id: 'OFF'
     to: 'off'
-    for:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
+    for: '{{states(''input_datetime.floor_heating_pump_delay'')}}'
   - platform: state
     entity_id: switch.floor_heating_pump_on_off
     id: TIME
