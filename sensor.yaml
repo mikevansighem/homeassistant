@@ -525,7 +525,7 @@
       value_template: >-
         {% set fixed = states('input_number.fixed_energy_tariff') | float(0) %}
         {% set fixed_day = fixed / 365 %}
-        {% set tariff_1 = states('input_number.energy_tariff_1') | float(0)
+        {% set tariff_1 = states('input_number.energy_tariff_1') | float(0) %}
         {% set useage_1 = states('sensor.daily_energy_off_peak') | float(0) %}
         {% set useage_2 = states('sensor.daily_energy_peak') | float(0) %}
         {% set usage = useage_1 + useage_2 %}

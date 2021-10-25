@@ -1143,3 +1143,15 @@
           message: 💧 Luchtvochtigheid te laag
     default: []
   mode: single
+- id: '1635185749340'
+  alias: Utility - Set theme
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: frontend.set_theme
+    data:
+      name: outline
+  mode: single
