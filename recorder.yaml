@@ -49,7 +49,7 @@ include:
     
     # System monitor
     - sensor.disk_free
-    - sensor.processor_use_percent
+    - sensor.processor_use
     - sensor.memory_use_percent
     - sensor.disk_use_percent
     - sensor.processor_temperature
