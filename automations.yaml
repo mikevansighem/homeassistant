@@ -909,35 +909,17 @@
       title: Device offline
   mode: single
 - id: '1632764660880'
-  alias: Utility - Notify for update
+  alias: Utility - Notify on restart
   description: ''
   trigger:
-  - platform: state
-    entity_id: sensor.latest_version
-  condition:
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.latest_version
-      state: unknown
-  - condition: template
-    value_template: "  {% if states('sensor.latest_version') != states('sensor.current_version')\
-      \ %}\n    true\n  {% endif %}"
+  - platform: homeassistant
+    event: start
+  condition: []
   action:
   - service: notify.mobile_app_sm_g960f
     data:
-      title: Update available 🎉
-      message: New version available {{states('sensor.latest_version')}}
-      data:
-        clickAction: https://www.home-assistant.io/latest-release-notes/
-        actions:
-        - action: URI
-          title: More info
-          uri: https://www.home-assistant.io/latest-release-notes/
-  - service: notify.persistent_notification
-    data:
-      title: Update available 🎉
-      message: New version available {{states('sensor.latest_version')}}
+      title: Restarted 🌟
+      message: Home Assistant has restarted.
   mode: single
 - id: '1633712008868'
   alias: Chime - Notify
