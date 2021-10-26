@@ -35,6 +35,13 @@ http:
 tts:
   - platform: google_translate
 
+# logger
+logger:
+  default: debug
+  logs:
+    pychromecast.socket_client: fatal
+    homeassistant.components.webhook: error
+
 ###############################################################################
 # ZIGBEE
 ###############################################################################
