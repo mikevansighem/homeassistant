@@ -243,3 +243,62 @@ spriklers_run_front_for_input_time:
       run_seconds: '{{states("input_number.front_sprinkler_time") | int * 60}}'
   mode: single
   icon: mdi:sprinkler-variant
+notify_who_is_home:
+  alias: Notify who is home
+  fields:
+    title:
+      description: The title of the notification
+      example: State change
+      required: 'yes'
+    message:
+      description: The message content
+      example: The light is on!
+      required: 'yes'
+    timeout:
+      description: Time after which the message disappears
+      example: 120
+      required: 'no'
+      default: 0
+  sequence:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: person.tmp
+          state: home
+        - condition: state
+          entity_id: person.anneloes_jagt
+          state: home
+      sequence:
+      - service: notify.notify
+        data:
+          title: '{{ title }}'
+          message: '{{ message }}'
+          data:
+            timeout: '{{ timeout|int(0) }}'
+    - conditions:
+      - condition: state
+        entity_id: person.tmp
+        state: home
+      sequence:
+      - service: notify.mobile_app_sm_g960f
+        data:
+          title: '{{ title }}'
+          message: '{{ message }}'
+          data:
+            timeout: '{{ timeout|int(0) }}'
+    - conditions:
+      - condition: state
+        entity_id: person.anneloes_jagt
+        state: home
+      sequence:
+      - service: notify.mobile_app_sm_a202f
+        data:
+          title: '{{ title }}'
+          message: '{{ message }}'
+          data:
+            timeout: '{{ timeout|int(0) }}'
+    default: []
+  mode: single
+  icon: mdi:message

@@ -934,57 +934,16 @@
     entity_id: switch.doorbell_chime_active
     state: 'on'
   action:
+  - service: script.notify_who_is_home
+    data:
+      message: Er is iemand aan de voordeur.
+      title: Ding dong 🔔
+      timeout: 120
   - service: tts.cloud_say
     data:
       entity_id: media_player.speaker_group
       message: Er staat iemand aan de voordeur.
       language: nl-NL
-  mode: single
-- id: '1633713021889'
-  alias: Chime - Notify Anneloes
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.doorbell_pressed
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: switch.doorbell_chime_active
-    state: 'on'
-  - condition: state
-    entity_id: person.anneloes_jagt
-    state: home
-  action:
-  - service: notify.mobile_app_sm_a202f
-    data:
-      message: Er is iemand aan de voordeur.
-      title: Ding dong 🔔
-      data:
-        timeout: 120
-  mode: single
-- id: '1633713193626'
-  alias: Chime - Notify Mike
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.doorbell_pressed
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: switch.doorbell_chime_active
-    state: 'on'
-  - condition: state
-    entity_id: person.tmp
-    state: home
-  action:
-  - service: notify.mobile_app_sm_g960f
-    data:
-      message: Er is iemand aan de voordeur.
-      title: Ding dong 🔔
-      data:
-        timeout: 120
   mode: single
 - id: '1634576080537'
   alias: Air - Notify
@@ -1091,10 +1050,11 @@
         - condition: trigger
           id: CO2_BAD
       sequence:
-      - service: notify.notify
+      - service: script.notify_who_is_home
         data:
           title: CO2 te hoog; zet de ventilator hoger
           message: ⚠️ CO2 te hoog
+          timeout: 0
     - conditions:
       - condition: or
         conditions:
@@ -1103,26 +1063,29 @@
         - condition: trigger
           id: VOC_BAD
       sequence:
-      - service: notify.notify
+      - service: script.notify_who_is_home
         data:
           title: VOC te hoog; zet de ventilator hoger
           message: ⚠️ VOC te hoog
+          timeout: 0
     - conditions:
       - condition: trigger
         id: HUM_HIGH
       sequence:
-      - service: notify.notify
+      - service: script.notify_who_is_home
         data:
           title: Luchtvochtigheid te hoog; zet de ventilator hoger
           message: 💧 Luchtvochtigheid te hoog
+          timeout: 0
     - conditions:
       - condition: trigger
         id: HUM_LOW
       sequence:
-      - service: notify.notify
+      - service: script.notify_who_is_home
         data:
           title: Luchtvochtigheid te laag; sluit de ramen
           message: 💧 Luchtvochtigheid te laag
+          timeout: 0
     default: []
   mode: single
 - id: '1635185749340'
