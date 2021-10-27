@@ -4,7 +4,7 @@
 
 substitutions:
   devicename: test-device
-  upper_devicename: Test-device
+  upper_devicename: Test device
 
 esphome:
   name: $devicename
@@ -16,6 +16,8 @@ logger:
 
 # Enable Home Assistant API
 api:
+  encryption:
+    key: !secret encryption_key
 
 # Enable ota update with a password
 ota:
@@ -27,7 +29,7 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "${devicename} Fallback"
+    ssid: "${devicename} fallback"
     password: !secret esphome_fallback_password
 
 captive_portal:
@@ -38,4 +40,4 @@ captive_portal:
 
 binary_sensor:
   - platform: status
-    name: "ESPHome test device"
+    name: "${devicename} status"

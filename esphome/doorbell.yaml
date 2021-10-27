@@ -13,6 +13,9 @@ logger:
  
 # Enable Home Assistant API
 api:
+  encryption:
+    key: !secret encryption_key
+    
   # Add service for the chime
   services:
     - service: chime
