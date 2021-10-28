@@ -11,7 +11,7 @@ flash_licht:
       - light.stairs_closet
       - light.downstairs_hallway
       - light.upstairs_hallway
-      - light.attict_hallway
+      - light.attic_hallway
       - light.attict
       - light.bedroom
       - light.closet
