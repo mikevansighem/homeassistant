@@ -44,6 +44,10 @@ input_boolean:
   quiet:
     name: Quiet
     icon: mdi:volume-off
+    
+  holiday:
+    name: Holiday
+    icon: mdi:beach
 
 ###############################################################################
 # LOGGER
