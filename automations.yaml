@@ -1158,3 +1158,27 @@
         domain: switch
     default: []
   mode: single
+- id: '1635875380581'
+  alias: Utility - Notify when boiler offline
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.boiler_temperature
+    to: '0'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: notify.mobile_app_sm_g960f
+    data:
+      message: The boiler is offline more than 5 minutes.
+      data:
+        actions:
+        - action: URI
+          title: More info
+          uri: /lovelace/climate
+      title: Boiler offline
+  mode: single
