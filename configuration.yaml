@@ -34,13 +34,70 @@ http:
 # Text to speech
 tts:
   - platform: google_translate
+
+###############################################################################
+# INPUT SELECT
+###############################################################################
+
+input_select:
   
+  # Manual override for house state
+  house_state_override:
+    name: House state override
+    options:
+      - auto
+      - home
+      - away
+      - night
+      - holiday
+    initial: auto
+    icon: mdi:home
+    
+  # Manual override for climate state
+  climate_period_override:
+    name: Climate period override
+    options:
+      - auto
+      - morning
+      - day
+      - evening
+      - night
+    initial: auto
+    icon: mdi:home-thermometer
+
+
+###############################################################################
+# INPUT NUMBER
+###############################################################################
+  
+input_number:
+  
+  # Volume fot alarm
+  alarm_volume:
+    name: Alarm volume
+    icon: mdi:volume-high
+    initial: 1
+    min: 0
+    max: 1
+    step: 0.1
+    mode: slider
+  
+  # Volume for pending and arming beep
+  aux_volume:
+    name: Aux volume
+    icon: mdi:volume-medium
+    initial: 0.4
+    min: 0
+    max: 1
+    step: 0.1
+    mode: slider
 
 ###############################################################################
 # INPUT BOOLEAN
 ###############################################################################
 
 input_boolean:
+
   quiet:
     name: Quiet
     icon: mdi:volume-off
