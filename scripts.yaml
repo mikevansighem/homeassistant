@@ -245,6 +245,8 @@ spriklers_run_front_for_input_time:
   icon: mdi:sprinkler-variant
 notify_who_is_home:
   alias: Notify who is home
+  mode: single
+  icon: mdi:message
   fields:
     title:
       description: The title of the notification
@@ -300,5 +302,24 @@ notify_who_is_home:
           data:
             timeout: '{{ timeout|int(0) }}'
     default: []
+speak:
+  alias: Speak
   mode: single
-  icon: mdi:message
+  icon: mdi:account-voice
+  fields:
+    message:
+      description: The message content
+      example: The light is on!
+      required: 'yes'
+  sequence:
+  - condition: state
+    entity_id: input_boolean.quiet
+    state: 'off'
+  - condition: state
+    entity_id: sensor.house_state
+    state: home
+  - service: tts.cloud_say
+    data:
+      entity_id: media_player.speaker_group
+      message: '{{message}}'
+      language: nl-NL

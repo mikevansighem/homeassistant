@@ -105,37 +105,7 @@
   - service: script.flash_licht
   mode: single
 - id: '1629106372874'
-  alias: Alarm - Play pending sound
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: alarm_control_panel.home_alarm
-    to: pending
-  condition: []
-  action:
-  - service: scene.create
-    data:
-      snapshot_entities: media_player.speaker_group
-      scene_id: before_alarm_sound
-  - service: script.alarm_sound_pending
-  mode: single
-- id: '1629124515237'
-  alias: Alarm - Play arming
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: alarm_control_panel.home_alarm
-    to: arming
-  condition: []
-  action:
-  - service: script.alarm_sound_arming
-  - service: scene.create
-    data:
-      snapshot_entities: media_player.speaker_group
-      scene_id: before_alarm_sound
-  mode: single
-- id: '1629190065593'
-  alias: Alarm  - Send notification when pending
+  alias: Alarm - Pending
   description: ''
   trigger:
   - platform: state
@@ -161,6 +131,26 @@
           uri: /lovelace/alarm
         - action: ALARM
           title: Alarm
+  - service: scene.create
+    data:
+      snapshot_entities: media_player.speaker_group
+      scene_id: before_alarm_sound
+  - service: script.alarm_sound_pending
+  mode: single
+- id: '1629124515237'
+  alias: Alarm - Play arming
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: arming
+  condition: []
+  action:
+  - service: script.alarm_sound_arming
+  - service: scene.create
+    data:
+      snapshot_entities: media_player.speaker_group
+      scene_id: before_alarm_sound
   mode: single
 - id: '1629192620074'
   alias: Alarm - Trigger from notification
@@ -893,6 +883,7 @@
     - binary_sensor.dining_room_home_mini
     - binary_sensor.esp_home_test_device
     - binary_sensor.slimme_lezer
+    - binary_sensor.reindeer_status
     for:
       hours: 0
       minutes: 5
@@ -944,11 +935,9 @@
       message: Er is iemand aan de voordeur.
       title: Ding dong 🔔
       timeout: 120
-  - service: tts.cloud_say
+  - service: script.speak
     data:
-      entity_id: media_player.speaker_group
       message: Er staat iemand aan de voordeur.
-      language: nl-NL
   mode: single
 - id: '1634576080537'
   alias: Air - Notify
@@ -1104,4 +1093,68 @@
   - service: frontend.set_theme
     data:
       name: outline
+  mode: single
+- id: '1635571062556'
+  alias: Utility - Update quiet helper
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: night
+    id: QUIET
+  - platform: state
+    entity_id: sensor.house_state
+    from: night
+    id: SOUND
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: QUIET
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.quiet
+    - conditions:
+      - condition: trigger
+        id: SOUND
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.quiet
+    default: []
+  mode: single
+- id: '1635792969335'
+  alias: 'Lights - Reindeer follows decorations '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.decorations
+    to: 'on'
+    id: 'ON'
+  - platform: state
+    entity_id: light.decorations
+    id: 'OFF'
+    to: 'off'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - type: turn_on
+        device_id: 5c76869dfc323722f7676b7a0448a090
+        entity_id: switch.reindeer_light
+        domain: switch
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - type: turn_off
+        device_id: 5c76869dfc323722f7676b7a0448a090
+        entity_id: switch.reindeer_light
+        domain: switch
+    default: []
   mode: single

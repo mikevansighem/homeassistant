@@ -3,8 +3,8 @@
 ################################################################################
 
 substitutions:
-  devicename: test-device
-  upper_devicename: Test device
+  devicename: reindeer
+  upper_devicename: Reindeer
 
 esphome:
   name: $devicename
@@ -38,6 +38,14 @@ captive_portal:
 # SPECIFIC 
 ################################################################################
 
+switch:
+  - platform: gpio
+    pin: GPIO14
+    name: "Reindeer light"
+    icon: "mdi:lightbulb"
+    restore_mode: ALWAYS_ON 
+
 binary_sensor:
   - platform: status
     name: "${devicename} status"
+    icon: "mdi:wifi"
