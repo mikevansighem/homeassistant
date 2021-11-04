@@ -20,6 +20,7 @@ include:
     - sensor.downstairs_temperature 
     - sensor.boiler_target_temperature 
     - sensor.watering_level 
+    - sensor.boiler_temperature
     
     # Utilities
     - sensor.grid_fossil_fuel_percentage

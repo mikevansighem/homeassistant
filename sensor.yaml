@@ -212,14 +212,18 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = ( state_attr('sensor.alarm_panel_power', 'battery_voltage') - 5.6)/0.8 * 100 | int('unknown') %}
-        {{ (battery_level | int / 10 ) | int * 10 }}
+        {% set battery_level = state_attr('sensor.alarm_panel_power', 'battery_voltage') %}
+        {% if is_number(battery_level) %}
+          {{ (battery_level - 5.6)/0.8 * 100 | int('unknown') }}
+        {% else %}
+          {{ 'unknown' }}
+        {% endif %}
       icon_template: >-
         {% set battery_level = states('sensor.alarm_panel_battery') %}
-        {% set battery_round = (battery_level | int / 10) | int * 10 %}
-        {% if battery_level == 'unknown' %}
+        {% if not is_number(battery_level) %}
           mdi:battery-unknown
         {% else %}
+          {% set battery_round = (battery_level|int / 10)|int * 10 %}
           {% if battery_round >= 100 %}
             mdi:battery
           {% elif battery_round > 0 %}
@@ -235,14 +239,18 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = state_attr('binary_sensor.livingroom_motion', 'battery_level') | int('unknown') %}
-        {{ (battery_level|int / 10)|int * 10 }}
+        {% set battery_level = state_attr('binary_sensor.livingroom_motion', 'battery_level')%}
+        {% if is_number(battery_level) %}
+          {{ battery_level }}
+        {% else %}
+          {{ 'unknown' }}
+        {% endif %}
       icon_template: >-
         {% set battery_level = states('sensor.livingroom_motion_battery') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
-        {% if battery_level == 'unknown' %}
+        {% if not is_number(battery_level) %}
           mdi:battery-unknown
         {% else %}
+          {% set battery_round = (battery_level|int / 10)|int * 10 %}
           {% if battery_round >= 100 %}
             mdi:battery
           {% elif battery_round > 0 %}
@@ -258,14 +266,18 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = state_attr('binary_sensor.downstairs_hallway_motion', 'battery_level') |int('unknown') %}
-        {{ (battery_level|int / 10)|int * 10 }}
+        {% set battery_level = state_attr('binary_sensor.downstairs_hallway_motion', 'battery_level')%}
+        {% if is_number(battery_level) %}
+          {{ battery_level }}
+        {% else %}
+          {{ 'unknown' }}
+        {% endif %}
       icon_template: >-
         {% set battery_level = states('sensor.downstairs_hallway_motion_battery') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
-        {% if battery_level == 'unknown' %}
+        {% if not is_number(battery_level) %}
           mdi:battery-unknown
         {% else %}
+          {% set battery_round = (battery_level|int / 10)|int * 10 %}
           {% if battery_round >= 100 %}
             mdi:battery
           {% elif battery_round > 0 %}
@@ -281,14 +293,18 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = state_attr('binary_sensor.upstairs_hallway_motion', 'battery_level') |int('unknown') %}
-        {{ (battery_level|int / 10)|int * 10 }}
+        {% set battery_level = state_attr('binary_sensor.upstairs_hallway_motion', 'battery_level')%}
+        {% if is_number(battery_level) %}
+          {{ battery_level }}
+        {% else %}
+          {{ 'unknown' }}
+        {% endif %}
       icon_template: >-
         {% set battery_level = states('sensor.upstairs_hallway_motion_battery') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
-        {% if battery_level == 'unknown' %}
+        {% if not is_number(battery_level) %}
           mdi:battery-unknown
         {% else %}
+          {% set battery_round = (battery_level|int / 10)|int * 10 %}
           {% if battery_round >= 100 %}
             mdi:battery
           {% elif battery_round > 0 %}
@@ -304,14 +320,18 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = state_attr('binary_sensor.stair_closet_motion', 'battery_level') |int('unknown') %}
-        {{ (battery_level|int / 10)|int * 10 }}
+        {% set battery_level = state_attr('binary_sensor.stairs_closet_motion', 'battery_level')%}
+        {% if is_number(battery_level) %}
+          {{ battery_level }}
+        {% else %}
+          {{ 'unknown' }}
+        {% endif %}
       icon_template: >-
         {% set battery_level = states('sensor.stairs_closet_motion_battery') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
-        {% if battery_level == 'unknown' %}
+        {% if not is_number(battery_level) %}
           mdi:battery-unknown
         {% else %}
+          {% set battery_round = (battery_level|int / 10)|int * 10 %}
           {% if battery_round >= 100 %}
             mdi:battery
           {% elif battery_round > 0 %}
