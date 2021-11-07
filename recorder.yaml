@@ -21,6 +21,7 @@ include:
     - sensor.boiler_target_temperature 
     - sensor.watering_level 
     - sensor.boiler_temperature
+    - sun.sun
     
     # Utilities
     - sensor.grid_fossil_fuel_percentage

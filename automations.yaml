@@ -1182,3 +1182,34 @@
           uri: /lovelace/climate
       title: Boiler offline
   mode: single
+- id: '1636210209751'
+  alias: Lights - Outdoor decorations
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.outdoor_lights
+    to: 'on'
+    id: 'ON'
+  - platform: state
+    entity_id: sensor.outdoor_lights
+    to: 'off'
+    id: 'OFF'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.front_garden
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.front_garden
+    default: []
+  mode: single

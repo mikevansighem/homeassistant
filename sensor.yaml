@@ -320,7 +320,7 @@
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
-        {% set battery_level = state_attr('binary_sensor.stairs_closet_motion', 'battery_level')%}
+        {% set battery_level = state_attr('binary_sensor.stair_closet_motion', 'battery_level')%}
         {% if is_number(battery_level) %}
           {{ battery_level }}
         {% else %}
@@ -341,6 +341,20 @@
           {% endif %}
         {% endif %}
         
+    # outdoor light schedule
+    outdoor_lights:
+      friendly_name: "Outdoor lights"
+      value_template: >-
+        {% if (is_state('sensor.house_state', 'home') or states('proximity.home_mike')|int < 2 or states('proximity.home_anneloes')|int < 2) %}
+          {% if (state_attr('sun.sun', 'elevation') < 8) and not is_state('sensor.house_state', 'night') %}
+            on
+          {%else%}
+            off
+          {%endif%}
+        {%else%}
+          off
+        {%endif%}
+        
     # Calculate watering level
     watering_level:
       friendly_name: "Watering level"
@@ -351,7 +365,7 @@
           {% set temperature = states('sensor.avarage_ground_temperature') | float(0) %}
 
           {% if temperature == 0 or humidity == 0 %}
-            not
+            0
           {% else %}
 
             {% set threshold = states('input_number.rain_threshold') | float(0) %}
