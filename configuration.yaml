@@ -105,6 +105,10 @@ input_boolean:
   holiday:
     name: Holiday
     icon: mdi:beach
+    
+  first_down:
+    name: First down
+    icon: mdi:motion-sensor
 
 ###############################################################################
 # LOGGER
