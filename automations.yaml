@@ -1213,3 +1213,41 @@
           entity_id: light.front_garden
     default: []
   mode: single
+- id: '1636297508172'
+  alias: Lights - Turn on lights when first down
+  description: Turn the downstairs lights on when the first person is downstairs.
+    The state is saved in an input boolean.
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: night
+    id: RESET
+  - platform: state
+    entity_id: binary_sensor.downstairs_hallway_motion
+    to: 'on'
+    id: TRIGGER
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: RESET
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.first_down
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.first_down
+        state: 'off'
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.first_down
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.living_room
+          - light.decorations
+    default: []
+  mode: single
