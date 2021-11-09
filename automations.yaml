@@ -1251,3 +1251,34 @@
           - light.decorations
     default: []
   mode: single
+- id: '1636480621793'
+  alias: Utility - Notify for update
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.latest_version
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.latest_version
+      state: unknown
+  - condition: template
+    value_template: "  {% if states('sensor.latest_version') != states('sensor.current_version')\
+      \ %}\n    true\n  {% endif %}"
+  action:
+  - service: notify.mobile_app_sm_g960f
+    data:
+      title: Update available 🎉
+      message: New version available {{states('sensor.latest_version')}}
+      data:
+        clickAction: https://www.home-assistant.io/latest-release-notes/
+        actions:
+        - action: URI
+          title: More info
+          uri: https://www.home-assistant.io/latest-release-notes/
+  - service: notify.persistent_notification
+    data:
+      title: Update available 🎉
+      message: New version available {{states('sensor.latest_version')}}
+  mode: single
