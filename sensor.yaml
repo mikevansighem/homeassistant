@@ -214,7 +214,7 @@
       value_template: >-
         {% set battery_level = state_attr('sensor.alarm_panel_power', 'battery_voltage') %}
         {% if is_number(battery_level) %}
-          {{ (battery_level - 5.6)/0.8 * 100 | int('unknown') }}
+          {{ ((battery_level - 3.6)/2.4 * 100) | int('unknown') }}
         {% else %}
           {{ 'unknown' }}
         {% endif %}

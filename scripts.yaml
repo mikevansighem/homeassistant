@@ -84,6 +84,7 @@ lights_turn_off_all_lights:
       - stairs_closet
       - toilet
       - upstairs_hallway
+      - front_garden
   mode: single
   icon: mdi:lightbulb-group-off
 alarm_sound_alarm:
