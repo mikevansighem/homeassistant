@@ -168,9 +168,8 @@
   mode: single
 - id: '1629220722760'
   alias: Alarm - Auto (dis-)arming
-  description: '- Disarm alarm
-
-    - Arm alarm'
+  description: (Dis-)arm the alarm when the house state changes taking into account
+    the early off and delay helpers.
   trigger:
   - platform: state
     entity_id: sensor.house_state
@@ -695,7 +694,7 @@
   max: 10
 - id: '1631038917696'
   alias: Alarm - Link panel
-  description: ''
+  description: Ensure both the software and physical alarm panel are linked.
   trigger:
   - platform: state
     entity_id: alarm_control_panel.alarm_panel_ias_ace
@@ -941,7 +940,7 @@
   mode: single
 - id: '1634576080537'
   alias: Air - Notify
-  description: ''
+  description: Send a notification when any of the air quality values is out of limits.
   trigger:
   - platform: state
     entity_id: sensor.carbon_dioxide_state
@@ -1084,7 +1083,7 @@
   mode: single
 - id: '1635185749340'
   alias: Utility - Set theme
-  description: ''
+  description: Ensure the preffered theme is allways used.
   trigger:
   - platform: homeassistant
     event: start
@@ -1127,7 +1126,7 @@
   mode: single
 - id: '1635792969335'
   alias: 'Lights - Reindeer follows decorations '
-  description: ''
+  description: Have the ESPHome reindeer follow the decorations light group.
   trigger:
   - platform: state
     entity_id: light.decorations
@@ -1184,7 +1183,7 @@
   mode: single
 - id: '1636210209751'
   alias: Lights - Outdoor decorations
-  description: ''
+  description: Turn on outdoor decorations when (close to) home and the sun is down.
   trigger:
   - platform: state
     entity_id: sensor.outdoor_lights
@@ -1253,7 +1252,7 @@
   mode: single
 - id: '1636480621793'
   alias: Utility - Notify for update
-  description: ''
+  description: Send a notification when a new update is available.
   trigger:
   - platform: state
     entity_id: sensor.latest_version
