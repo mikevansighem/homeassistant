@@ -924,10 +924,7 @@
     entity_id: binary_sensor.doorbell_pressed
     from: 'off'
     to: 'on'
-  condition:
-  - condition: state
-    entity_id: switch.doorbell_chime_active
-    state: 'on'
+  condition: []
   action:
   - service: script.notify_who_is_home
     data:
@@ -1095,7 +1092,7 @@
   mode: single
 - id: '1635571062556'
   alias: Utility - Update quiet helper
-  description: ''
+  description: Set quiet when when house state is night.
   trigger:
   - platform: state
     entity_id: sensor.house_state
