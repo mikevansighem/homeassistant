@@ -262,6 +262,11 @@ notify_who_is_home:
       example: 120
       required: 'no'
       default: 0
+    group:
+      description: Combine notifications in a group visually
+      example: Utility
+      required: 'no'
+      default: default
   sequence:
   - choose:
     - conditions:
@@ -280,6 +285,7 @@ notify_who_is_home:
           message: '{{ message }}'
           data:
             timeout: '{{ timeout|int(0) }}'
+            group: '{{ group }}'
     - conditions:
       - condition: state
         entity_id: person.tmp
@@ -291,6 +297,7 @@ notify_who_is_home:
           message: '{{ message }}'
           data:
             timeout: '{{ timeout|int(0) }}'
+            group: '{{ group }}'
     - conditions:
       - condition: state
         entity_id: person.anneloes_jagt
@@ -302,6 +309,7 @@ notify_who_is_home:
           message: '{{ message }}'
           data:
             timeout: '{{ timeout|int(0) }}'
+            group: '{{ group }}'
     default: []
 speak:
   alias: Speak

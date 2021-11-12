@@ -897,11 +897,12 @@
       message: '{{ state_attr(trigger.to_state.entity_id, ''friendly_name'') }} is
         offline more than 5 minutes.'
       data:
+        group: Utility
         actions:
         - action: URI
           title: More info
           uri: /lovelace/network
-      title: Device offline
+      title: Device offline ❌
   mode: single
 - id: '1632764660880'
   alias: Utility - Notify on restart
@@ -915,6 +916,8 @@
     data:
       title: Restarted 🌟
       message: Home Assistant has restarted.
+      data:
+        group: Utility
   mode: single
 - id: '1633712008868'
   alias: Chime - Notify
@@ -928,9 +931,10 @@
   action:
   - service: script.notify_who_is_home
     data:
-      message: Er is iemand aan de voordeur.
+      message: Er staat iemand aan de voordeur.
       title: Ding dong 🔔
       timeout: 120
+      group: Chime
   - service: script.speak
     data:
       message: Er staat iemand aan de voordeur.
@@ -1044,7 +1048,8 @@
         data:
           title: CO2 te hoog; zet de ventilator hoger
           message: ⚠️ CO2 te hoog
-          timeout: 0
+          timeout: 3600
+          group: Air
     - conditions:
       - condition: or
         conditions:
@@ -1057,7 +1062,8 @@
         data:
           title: VOC te hoog; zet de ventilator hoger
           message: ⚠️ VOC te hoog
-          timeout: 0
+          timeout: 3600
+          group: Air
     - conditions:
       - condition: trigger
         id: HUM_HIGH
@@ -1066,7 +1072,8 @@
         data:
           title: Luchtvochtigheid te hoog; zet de ventilator hoger
           message: 💧 Luchtvochtigheid te hoog
-          timeout: 0
+          timeout: 1800
+          group: Air
     - conditions:
       - condition: trigger
         id: HUM_LOW
@@ -1075,7 +1082,8 @@
         data:
           title: Luchtvochtigheid te laag; sluit de ramen
           message: 💧 Luchtvochtigheid te laag
-          timeout: 0
+          timeout: 1800
+          group: Air
     default: []
   mode: single
 - id: '1635185749340'
@@ -1171,12 +1179,13 @@
   - service: notify.mobile_app_sm_g960f
     data:
       message: The boiler is offline more than 5 minutes.
+      title: Boiler offline ❌
       data:
         actions:
         - action: URI
           title: More info
           uri: /lovelace/climate
-      title: Boiler offline
+        group: Utility
   mode: single
 - id: '1636210209751'
   alias: Lights - Outdoor decorations
@@ -1268,13 +1277,10 @@
       title: Update available 🎉
       message: New version available {{states('sensor.latest_version')}}
       data:
+        group: Utility
         clickAction: https://www.home-assistant.io/latest-release-notes/
         actions:
         - action: URI
           title: More info
           uri: https://www.home-assistant.io/latest-release-notes/
-  - service: notify.persistent_notification
-    data:
-      title: Update available 🎉
-      message: New version available {{states('sensor.latest_version')}}
   mode: single
