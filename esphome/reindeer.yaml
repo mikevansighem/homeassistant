@@ -1,13 +1,19 @@
 ################################################################################
-# GENERAL 
+# SUBSTITUTIONS
 ################################################################################
 
 substitutions:
-  devicename: reindeer
+  device_name: reindeer
   upper_devicename: Reindeer
+  device_description: "A simple reindeer light"
+
+################################################################################
+# GENERAL 
+################################################################################
 
 esphome:
-  name: $devicename
+  name: $device_name
+  comment: "${device_description}"
   platform: ESP8266
   board: esp01_1m
 
@@ -29,8 +35,9 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "${devicename} fallback"
+    ssid: "${device_name} fallback"
     password: !secret esphome_fallback_password
+    ap_timeout: 15s
 
 captive_portal:
 
@@ -45,7 +52,11 @@ switch:
     icon: "mdi:lightbulb"
     restore_mode: ALWAYS_ON 
 
+################################################################################
+# STATUS SENSOR 
+################################################################################
+
 binary_sensor:
   - platform: status
-    name: "${devicename} status"
+    name: "${device_name} status"
     icon: "mdi:wifi"

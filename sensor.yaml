@@ -174,7 +174,7 @@
       device_class: 'energy'
       unit_of_measurement: 'W'
       value_template: >-
-        {{ (((states('sensor.power_consumed') | float(0) )/10) | round(0) ) * 10 }}
+        {{ (((states('sensor.power_consumed') | float(0))*100)| round(0))*10|int }}
       icon_template: >-
         mdi:lightning-bolt 
   

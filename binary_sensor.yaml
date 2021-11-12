@@ -58,8 +58,3 @@
   host: 192.168.2.196
   name: "Range extender"
   scan_interval: 30
-  
-- platform: ping
-  host: 192.168.2.199
-  name: "Slimme lezer"
-  scan_interval: 30

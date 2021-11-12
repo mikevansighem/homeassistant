@@ -1,21 +1,44 @@
+################################################################################
+# SUBSTITUTIONS
+################################################################################
+
+substitutions:
+  device_name: doorbell
+  upper_devicename: Doorbell
+  device_description: "Doorbell and chime"
+
+################################################################################
+# GENERAL 
+################################################################################
+
 esphome:
-  name: doorbell
+  name: $device_name
+  comment: "${device_description}"
   platform: ESP8266
   board: d1_mini
  
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
- 
- 
+  
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${device_name} fallback"
+    password: !secret esphome_fallback_password
+    ap_timeout: 15s
+    
 # Enable logging
 logger:
- 
+
+# Enable ota update with a password
+ota:
+  password: !secret ota_password
+
 # Enable Home Assistant API
 api:
   encryption:
     key: !secret encryption_key
-    
+
   # Add service for the chime
   services:
     - service: chime
@@ -32,8 +55,10 @@ api:
             - delay: 400ms
             - switch.turn_off: relay
  
-ota:
- 
+################################################################################
+# SPECIFIC 
+################################################################################
+
 time:
   - platform: homeassistant
     id: homeassistant_time
@@ -92,5 +117,10 @@ binary_sensor:
             - delay: 400ms
             - switch.turn_off: relay
 
+################################################################################
+# STATUS SENSOR 
+################################################################################
+
   - platform: status
-    name: "Doorbell"
+    name: "${device_name} status"
+    icon: "mdi:wifi"
