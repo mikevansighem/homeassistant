@@ -34,7 +34,7 @@ jobs:
           
   home-assistant:
     name: "Home Assistant Core ${{ matrix.version }} Configuration Check"
-    needs: [yamllint]
+    #needs: [yamllint]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -51,7 +51,7 @@ jobs:
 
   esphome:
     runs-on: ubuntu-latest
-    needs: [yamllint]
+    #needs: [yamllint]
     steps:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v2.4.0
