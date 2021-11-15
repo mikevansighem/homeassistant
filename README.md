@@ -1,9 +1,10 @@
 # Mike's Home Assistant Configuration
 
-[![License](https://img.shields.io/github/license/mikevansighem/homeassistant?style=flat-square)](https://github.com/mikevansighem/homeassistant/blob/master/LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/mikevansighem/homeassistant?style=flat-square)](https://github.com/mikevansighem/homeassistant/commits/master)
 [![Commits per month](https://img.shields.io/github/commit-activity/m/mikevansighem/homeassistant?style=flat-square)](https://github.com/mikevansighem/homeassistant/commits/master)
-[![GitHub branch checks state](https://img.shields.io/github/checks-status/mikevansighem/homeassistant/master?style=flat-square)](https://github.com/mikevansighem/homeassistant/actions)
+[![License](https://img.shields.io/github/license/mikevansighem/homeassistant?style=flat-square)](https://github.com/mikevansighem/homeassistant/blob/master/LICENSE)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mikevansighem/homeassistant/Home%20Assistant%20CI?style=flat-square)](https://github.com/mikevansighem/homeassistant/actions)
+[![GitHub issues](https://img.shields.io/github/issues-raw/mikevansighem/homeassistant?style=flat-square)](https://github.com/mikevansighem/homeassistant/issues)
 
 ## :page_facing_up: About
 
