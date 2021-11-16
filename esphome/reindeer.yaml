@@ -1,3 +1,4 @@
+---
 ################################################################################
 # SUBSTITUTIONS
 ################################################################################
@@ -16,7 +17,7 @@ esphome:
   comment: "${device_description}"
   platform: ESP8266
   board: esp01_1m
-
+  
 # Enable logging
 logger:
 
@@ -41,16 +42,24 @@ wifi:
 
 captive_portal:
 
+# Enable webserver
+web_server:
+  port: 80
+
 ################################################################################
 # SPECIFIC 
 ################################################################################
 
-switch:
-  - platform: gpio
+output:
+  - platform: esp8266_pwm
     pin: GPIO14
-    name: "Reindeer light"
-    icon: "mdi:lightbulb"
-    restore_mode: ALWAYS_ON 
+    frequency: 1000 Hz
+    id: pwm_output
+
+light:
+  - platform: monochromatic
+    output: pwm_output
+    name: "Reindeer Light"
 
 ################################################################################
 # STATUS SENSOR 

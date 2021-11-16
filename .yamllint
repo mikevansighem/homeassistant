@@ -3,6 +3,7 @@ ignore: |
   automations.yaml
   blueprints/*/homeassistant/*.yaml
   scenes.yaml
+  esphome/opentherm.yaml
 
 rules:
   braces:

@@ -1,3 +1,4 @@
+---
 ################################################################################
 # SUBSTITUTIONS
 ################################################################################
@@ -16,19 +17,23 @@ esphome:
   comment: "${device_description}"
   platform: ESP8266
   board: d1_mini
- 
+
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  
+
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "${device_name} fallback"
     password: !secret esphome_fallback_password
     ap_timeout: 15s
-    
+
 # Enable logging
 logger:
+
+# Enable webserver
+web_server:
+  port: 80
 
 # Enable ota update with a password
 ota:
@@ -54,7 +59,7 @@ api:
             - switch.turn_on: relay
             - delay: 400ms
             - switch.turn_off: relay
- 
+
 ################################################################################
 # SPECIFIC 
 ################################################################################
@@ -62,13 +67,13 @@ api:
 time:
   - platform: homeassistant
     id: homeassistant_time
- 
+
 globals:
   - id: chime
     type: bool
     restore_value: true
     initial_value: 'true'
- 
+
 switch:
   - platform: gpio
     pin:
@@ -92,7 +97,7 @@ switch:
           value: 'false'
     lambda: |-
       return id(chime);
-     
+
 binary_sensor:
   - platform: gpio
     pin:

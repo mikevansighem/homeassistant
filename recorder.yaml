@@ -1,9 +1,11 @@
+---
 ###############################################################################
 # RECORDER
 ###############################################################################
 
-purge_keep_days: 8 #days
-commit_interval: 5 #seconds
+purge_keep_days: 8 # days
+commit_interval: 5 # seconds
+
 include:
   domains:
     - alarm_control_panel
@@ -11,7 +13,7 @@ include:
     - climate
     - device_tracker
     - person
-  
+
   entities:
     # General
     - sensor.house_state
@@ -21,7 +23,7 @@ include:
     - sensor.boiler_target_temperature 
     - sensor.watering_level 
     - sensor.boiler_temperature
-    
+
     # Utilities
     - sensor.grid_fossil_fuel_percentage
     - sensor.co2_intensity
@@ -41,20 +43,20 @@ include:
     - sensor.daily_energy_off_peak_2
     - sensor.monthly_energy_costs_off_peak
     - sensor.daily_gas
-    
+
     # Air quality
     - sensor.carbon_dioxide
     - sensor.formaldehyde
     - sensor.indoor_humidity
     - sensor.voc
-    
+
     # System monitor
     - sensor.disk_free
     - sensor.processor_use
     - sensor.memory_use_percent
     - sensor.disk_use_percent
     - sensor.processor_temperature
-    
+
     # Binary sensors
     - binary_sensor.kpn_tv
     - binary_sensor.hue_utility_bridge
@@ -70,13 +72,13 @@ include:
     - binary_sensor.esphome_test_device
     - binary_sensor.doorbell
     - binary_sensor.doorbell_pressed
-    
+
     # Motion
     - binary_sensor.livingroom_motion
     - binary_sensor.downstairs_hallway_motion
     - binary_sensor.stair_closet_motion
     - binary_sensor.upstairs_hallway_motion
-    
+
     # Other
     - input_boolean.holiday 
     - switch.floor_heating_pump_on_off 

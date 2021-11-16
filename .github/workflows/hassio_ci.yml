@@ -1,3 +1,5 @@
+---
+
 name: Home Assistant CI
 
 # Controls when the workflow will run
@@ -6,7 +8,7 @@ on:
   pull_request:
   schedule:
     - cron: 0 12 * * *
-    
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -31,10 +33,10 @@ jobs:
         continue-on-error: true
         with:
           args: "remark --no-stdout --color --frail --use preset-lint-recommended ."
-          
+
   home-assistant:
     name: "Home Assistant Core ${{ matrix.version }} configuration check"
-    #needs: [yamllint]
+    # needs: [yamllint]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -51,7 +53,7 @@ jobs:
 
   ESPHome:
     runs-on: ubuntu-latest
-    #needs: [yamllint]
+    # needs: [yamllint]
     steps:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v2.4.0

@@ -1150,16 +1150,16 @@
       sequence:
       - type: turn_on
         device_id: 5c76869dfc323722f7676b7a0448a090
-        entity_id: switch.reindeer_light
-        domain: switch
+        entity_id: light.reindeer_light
+        domain: light
     - conditions:
       - condition: trigger
         id: 'OFF'
       sequence:
       - type: turn_off
         device_id: 5c76869dfc323722f7676b7a0448a090
-        entity_id: switch.reindeer_light
-        domain: switch
+        entity_id: light.reindeer_light
+        domain: light
     default: []
   mode: single
 - id: '1635875380581'
