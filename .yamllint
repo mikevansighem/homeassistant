@@ -64,9 +64,12 @@ rules:
     spaces: 2
     indent-sequences: true
     check-multi-line-strings: false
+    ignore: |
+      scripts.yaml
 
   key-duplicates:
     level: error
+    
   line-length:
     ignore: |
       .github/support.yml

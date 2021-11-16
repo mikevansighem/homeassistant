@@ -3,9 +3,7 @@
 # UTILITY METERS
 ###############################################################################
 
-#------------------------------------------------------------------------------
 # ENERGY
-#------------------------------------------------------------------------------
 
 daily_energy_tariff_1_copy:
   source: sensor.energy_consumed_tariff_1
@@ -42,9 +40,7 @@ yearly_energy_tariff_2:
   name: Yearly energy - Peak
   cycle: yearly
 
-#------------------------------------------------------------------------------
 # ENERGY COSTS
-#------------------------------------------------------------------------------
 
 monthly_energy_costs_1:
   source: sensor.daily_energy_costs_1
@@ -76,9 +72,7 @@ yearly_energy_costs:
   name: Yearly energy costs
   cycle: yearly
 
-#------------------------------------------------------------------------------
 # GAS
-#------------------------------------------------------------------------------
 
 daily_gas:
   source: sensor.gas_consumed
@@ -95,9 +89,7 @@ yearly_gas:
   name: Yearly Gas
   cycle: yearly
 
-#------------------------------------------------------------------------------
 # GAS
-#------------------------------------------------------------------------------
 
 daily_gas_costs:
   source: sensor.daily_gas_costs_temp
@@ -114,9 +106,7 @@ yearly_gas_costs:
   name: Yearly Gas Costs
   cycle: yearly
 
-#------------------------------------------------------------------------------
 # UTILITY COSTS
-#------------------------------------------------------------------------------
 
 monthly_utility_costs:
   source: sensor.daily_utility_costs
