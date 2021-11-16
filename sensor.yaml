@@ -1,3 +1,4 @@
+---
 ###############################################################################
 # SENSORS
 ###############################################################################
@@ -37,7 +38,7 @@
   start: >
     {{ as_timestamp(now()) - (7*86400) }}
   duration: 00:00:30
-  
+
 - platform: history_stats
   name: "replay_dining_room"
   entity_id: light.dining_room
@@ -46,7 +47,7 @@
   start: >
     {{ as_timestamp(now()) - (7*86400) }}
   duration: 00:00:30
-  
+
 - platform: history_stats
   name: "replay_closet"
   entity_id: light.closet
@@ -55,7 +56,7 @@
   start: >
     {{ as_timestamp(now()) - (7*86400) }}
   duration: 00:00:30
-      
+
 - platform: history_stats
   name: "replay_kitchen"
   entity_id: light.kitchen
@@ -115,7 +116,7 @@
   value_template: "{{ value }}"
   unit_of_measurement: '°C'
   icon: mdi:thermometer
-  
+
 - platform: mqtt
   name: "Target thermostat temperature"
   device_class: temperature
@@ -123,7 +124,7 @@
   value_template: "{{ value }}"
   unit_of_measurement: '°C'
   icon: mdi:thermometer
-  
+
 - platform: mqtt
   name: "Boiler temperature"
   device_class: temperature
@@ -131,7 +132,7 @@
   value_template: "{{ value }}"
   unit_of_measurement: '°C'
   icon: mdi:thermometer
-  
+
 - platform: mqtt
   name: "Boiler target temperature"
   device_class: temperature
@@ -139,7 +140,7 @@
   value_template: "{{ value }}"
   unit_of_measurement: '°C'
   icon: mdi:thermometer
-  
+
 - platform: mqtt
   name: "Boiler mode"
   device_class: temperature
@@ -154,7 +155,7 @@
   value_template: "{{ value }}"
   unit_of_measurement: '°C'
   icon: mdi:thermometer
-  
+
 - platform: mqtt
   name: "Water service"
   state_topic: "opentherm-thermostat/dhw-state/get"
@@ -167,7 +168,7 @@
 
 - platform: template
   sensors:
-  
+
     # Rounded power usage
     power_usage_round:
       friendly_name: "Power usage"
@@ -177,7 +178,7 @@
         {{ (((states('sensor.power_consumed') | float(0))*100)| round(0))*10|int }}
       icon_template: >-
         mdi:lightning-bolt 
-  
+
   # Combined energy sensors
     daily_energy:
       friendly_name: "Daily energy"
@@ -187,7 +188,7 @@
         {{ states('sensor.daily_energy_off_peak') | float(0) + states('sensor.daily_energy_peak') | float(0) }}
       icon_template: >-
         mdi:lightning-bolt 
-      
+
     monthly_energy:
       friendly_name: "Monthly energy"
       unit_of_measurement: 'kWh'
@@ -232,7 +233,7 @@
             mdi:battery-alert
           {% endif %}
         {% endif %}
-        
+
     # Battery level of motion sensor
     livingroom_motion_battery:
       friendly_name: "Livingroom motion battery"
@@ -259,7 +260,7 @@
             mdi:battery-alert
           {% endif %}
         {% endif %}
-        
+
     # Battery level of motion sensor
     downstairs_hallway_motion_battery:
       friendly_name: "Downstairs hallway motion battery"
@@ -286,7 +287,7 @@
             mdi:battery-alert
           {% endif %}
         {% endif %}
-        
+
     # Battery level of motion sensor
     upstairs_hallway_motion_battery:
       friendly_name: "Upstairs hallway motion battery"
@@ -313,7 +314,7 @@
             mdi:battery-alert
           {% endif %}
         {% endif %}
-        
+
     # Battery level of motion sensor
     stairs_closet_motion_battery:
       friendly_name: "Stairs closet motion battery"
@@ -340,7 +341,7 @@
             mdi:battery-alert
           {% endif %}
         {% endif %}
-        
+
     # outdoor light schedule
     outdoor_lights:
       friendly_name: "Outdoor lights"
@@ -354,7 +355,7 @@
         {%else%}
           off
         {%endif%}
-        
+
     # Calculate watering level
     watering_level:
       friendly_name: "Watering level"
@@ -383,7 +384,7 @@
                 {{ level | int(0) }}
             {% endif %}
           {% endif %}
-    
+
     # Calculate watering time for front sprinkler
     front_watering_time:
       friendly_name: "Front watering time"
@@ -391,7 +392,7 @@
           {% set base_time = states('input_number.front_sprinkler_base_time') | int(0) * 60 %}
           {% set level = states('sensor.watering_level') | float(0) / 100 %}
           {{base_time * level}}
-    
+
     # Calculate watering time for back sprinkler
     back_watering_time:
       friendly_name: "Back watering time"
@@ -399,7 +400,7 @@
           {% set base_time = states('input_number.back_sprinkler_base_time') | int(0) * 60 %}
           {% set level = states('sensor.watering_level') | float(0) / 100 %}
           {{base_time * level}}
-          
+
     somebody_home:
       friendly_name: "Somebody home"
       value_template: >-
@@ -410,7 +411,7 @@
           {% else %}
               false
           {% endif %}
-          
+
     house_state:
       friendly_name: "House state"
       value_template: >-
@@ -450,7 +451,7 @@
           {% elif is_state('sensor.house_state', 'night') %}
             mdi:weather-night
           {% endif %}
-          
+
     climate_period:
       friendly_name: "Climate period"
       value_template: >-
@@ -467,7 +468,6 @@
         {% set work_night_start_time = (night_start_work - early_stop)  | timestamp_utc %} 
         {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'timestamp') %} 
         {% set free_night_start_time = (night_start_free - early_stop)  | timestamp_utc %}
-
 
         {% if is_state('input_select.climate_period_override', 'auto') %}
           {% if is_state('binary_sensor.workday_sensor', 'off') %}
@@ -504,7 +504,7 @@
           {% elif is_state('sensor.climate_period', 'night') %}
             mdi:minus
           {% endif %}
-          
+
     # Thermostat setpoint for time of the day.
     climate_setpoint:
       friendly_name: "Climate setpoint"
@@ -520,7 +520,7 @@
        {% else %}
          {{ states('input_number.night_temperature') }}
        {% endif %}
-    
+
     # Duplicate workday sensor with nice icons for dashboard 
     pretty_workday:
       friendly_name: "Pretty Workday"
@@ -536,7 +536,7 @@
           {% else %}
             mdi:party-popper
           {% endif %}
-          
+
     # Gas costs including fixed costs to be fed into an utility meter
     daily_gas_costs_temp:
       friendly_name: "Daily gas costs temp"
@@ -551,7 +551,7 @@
         {% endif %}
       icon_template: >-
         mdi:cash
-        
+
     # Daily energy costs
     daily_energy_costs_1:
       friendly_name: "Daily energy costs off-peak"
@@ -579,7 +579,7 @@
         {% endif %}
       icon_template: >-
         mdi:cash
-        
+
     daily_energy_costs_2:
       friendly_name: "Daily energy costs peak"
       unit_of_measurement: "€"
@@ -606,7 +606,7 @@
         {% endif %} 
       icon_template: >-
         mdi:cash
-        
+
     # Calculate the daily energy costs
     daily_energy_costs:
       friendly_name: "Daily energy costs"
@@ -615,7 +615,7 @@
         {{ states('sensor.daily_energy_costs_1') | float(0) + states('sensor.daily_energy_costs_2') | float(0) }}
       icon_template: >-
         mdi:cash
-        
+
     # Calculate utility costs
     daily_utility_costs:
       friendly_name: "Daily utility costs"
@@ -719,7 +719,7 @@
   sampling_size: 200
   max_age:
     hours: 24
-  
+
   # Avagage used for sprinkler water level  
 - platform: statistics
   entity_id: sensor.buienradar_ground_temperature
@@ -727,11 +727,11 @@
   sampling_size: 200
   max_age:
     hours: 24
-    
+
 #------------------------------------------------------------------------------
 # TIME
 #------------------------------------------------------------------------------
-    
+
 # Date and time sensors
 - platform: time_date
   display_options:
@@ -742,7 +742,7 @@
     - 'date_time_iso'
     - 'time_date'
     - 'time_utc'
-    
+
 #------------------------------------------------------------------------------
 # VERSION
 #------------------------------------------------------------------------------
