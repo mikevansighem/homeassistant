@@ -48,6 +48,7 @@ rules:
     present: true
     ignore: |
       known_devices.yaml
+      scripts.yaml
 
   empty-lines:
     level: error

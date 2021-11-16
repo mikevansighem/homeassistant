@@ -101,7 +101,7 @@ globals:
   - id: has_key
     type: bool
     restore_value: true
-    initial_value: "false"
+    initial_value: false
   - id: stored_decryption_key
     type: char[32]
     restore_value: true

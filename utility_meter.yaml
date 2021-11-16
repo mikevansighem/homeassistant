@@ -89,7 +89,7 @@ yearly_gas:
   name: Yearly Gas
   cycle: yearly
 
-# GAS
+# GAS COSTS
 
 daily_gas_costs:
   source: sensor.daily_gas_costs_temp
