@@ -1,9 +1,8 @@
----
 ###############################################################################
 # ALARM
 ###############################################################################
 
-# Virtual alarm panel. Linked to physical Zibee panel through automations.
+# Virtual alarm panel. Linked to physical Zigbee panel through automations.
 - platform: manual
   name: Home Alarm
   code: !secret alarm_code

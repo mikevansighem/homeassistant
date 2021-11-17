@@ -1,4 +1,3 @@
----
 ###############################################################################
 # BINARY SENSORS
 ###############################################################################
@@ -22,7 +21,7 @@
 
 - platform: ping
   host: 192.168.2.198
-  name: "Livingroom home mini"
+  name: "Living room home mini"
   scan_interval: 30
 
 - platform: ping

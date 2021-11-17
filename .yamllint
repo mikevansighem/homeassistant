@@ -1,4 +1,3 @@
----
 ignore: |
   automations.yaml
   blueprints/*/homeassistant/*.yaml
@@ -45,10 +44,7 @@ rules:
 
   document-start:
     level: error
-    present: true
-    ignore: |
-      known_devices.yaml
-      scripts.yaml
+    present: false
 
   empty-lines:
     level: error
@@ -72,9 +68,6 @@ rules:
     level: error
     
   line-length:
-    ignore: |
-      .github/support.yml
-      .github/settings.yml
     level: warning
     max: 88
     allow-non-breakable-words: true
