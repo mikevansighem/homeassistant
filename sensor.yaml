@@ -711,7 +711,7 @@
 # STATISTICS
 ###############################################################################
 
-  # Average used for sprinkler water level
+# Average used for sprinkler water level
 - platform: statistics
   entity_id: sensor.buienradar_humidity
   name: "Average humidity"
@@ -719,7 +719,7 @@
   max_age:
     hours: 24
 
-  # Average used for sprinkler water level
+# Average used for sprinkler water level
 - platform: statistics
   entity_id: sensor.buienradar_ground_temperature
   name: "Average ground temperature"
