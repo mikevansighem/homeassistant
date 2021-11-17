@@ -8,7 +8,7 @@ commit_interval: 5 # seconds
 include:
   domains:
     - alarm_control_panel
-    - light 
+    - light
     - climate
     - device_tracker
     - person
@@ -16,18 +16,18 @@ include:
   entities:
     # General
     - sensor.house_state
-    - sensor.pretty_workday 
+    - sensor.pretty_workday
     - sensor.climate_period
-    - sensor.downstairs_temperature 
-    - sensor.boiler_target_temperature 
-    - sensor.watering_level 
+    - sensor.downstairs_temperature
+    - sensor.boiler_target_temperature
+    - sensor.watering_level
     - sensor.boiler_temperature
 
     # Utilities
     - sensor.grid_fossil_fuel_percentage
     - sensor.co2_intensity
-    - sensor.power_usage_round 
-    - sensor.gas_usage 
+    - sensor.power_usage_round
+    - sensor.gas_usage
     - sensor.daily_utility_costs
     - sensor.monthly_utility_costs
     - sensor.yearly_utility_costs
@@ -79,5 +79,5 @@ include:
     - binary_sensor.upstairs_hallway_motion
 
     # Other
-    - input_boolean.holiday 
-    - switch.floor_heating_pump_on_off 
+    - input_boolean.holiday
+    - switch.floor_heating_pump_on_off

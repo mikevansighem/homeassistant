@@ -13,7 +13,7 @@ daily_energy_tariff_1:
   source: sensor.energy_consumed_tariff_1
   name: Daily energy - Off-peak
   cycle: daily
-  
+
 monthly_energy_tariff_1:
   source: sensor.energy_consumed_tariff_1
   name: Monthly energy - Off-peak

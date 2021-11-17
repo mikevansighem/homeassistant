@@ -40,7 +40,7 @@ tts:
 ###############################################################################
 
 input_select:
-  
+
   # Manual override for house state
   house_state_override:
     name: House state override
@@ -68,9 +68,9 @@ input_select:
 ###############################################################################
 # INPUT NUMBER
 ###############################################################################
-  
+
 input_number:
-  
+
   # Volume for alarm
   alarm_volume:
     name: Alarm volume
@@ -80,7 +80,7 @@ input_number:
     max: 1
     step: 0.1
     mode: slider
-  
+
   # Volume for pending and arming beep
   aux_volume:
     name: Aux volume
@@ -127,7 +127,7 @@ zha:
   zigpy_config:
     network:
       channel: 20
-   
+
 ###############################################################################
 # PRECENCE
 ###############################################################################

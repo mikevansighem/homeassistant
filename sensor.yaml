@@ -176,7 +176,7 @@
       value_template: >-
         {{ (((states('sensor.power_consumed') | float(0))*100)| round(0))*10|int }}
       icon_template: >-
-        mdi:lightning-bolt 
+        mdi:lightning-bolt
 
   # Combined energy sensors
     daily_energy:
@@ -186,7 +186,7 @@
       value_template: >-
         {{ states('sensor.daily_energy_off_peak') | float(0) + states('sensor.daily_energy_peak') | float(0) }}
       icon_template: >-
-        mdi:lightning-bolt 
+        mdi:lightning-bolt
 
     monthly_energy:
       friendly_name: "Monthly energy"
@@ -195,7 +195,7 @@
       value_template: >-
         {{ states('sensor.monthly_energy_off_peak') | float(0) + states('sensor.monthly_energy_peak') | float(0) }}
       icon_template: >-
-        mdi:lightning-bolt 
+        mdi:lightning-bolt
 
     yearly_energy:
       friendly_name: "Yearly energy"
@@ -204,7 +204,7 @@
       value_template: >-
         {{ states('sensor.yearly_energy_off_peak') | float(0) + states('sensor.yearly_energy_peak') | float(0) }}
       icon_template: >-
-        mdi:lightning-bolt 
+        mdi:lightning-bolt
 
     # Alarm panel battery sensor
     alarm_panel_battery:
@@ -454,18 +454,18 @@
     climate_period:
       friendly_name: "Climate period"
       value_template: >-
-        {% set tnow = as_timestamp(strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)) %} 
+        {% set tnow = as_timestamp(strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)) %}
 
-        {% set early_start = state_attr('input_datetime.heating_pre_heat', 'timestamp') %} 
-        {% set night_end_work = state_attr('input_datetime.end_night_workday', 'timestamp') %} 
-        {% set work_night_end_time = (night_end_work - early_start)  | timestamp_utc %} 
-        {% set night_end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %} 
+        {% set early_start = state_attr('input_datetime.heating_pre_heat', 'timestamp') %}
+        {% set night_end_work = state_attr('input_datetime.end_night_workday', 'timestamp') %}
+        {% set work_night_end_time = (night_end_work - early_start)  | timestamp_utc %}
+        {% set night_end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}
         {% set free_night_end_time = (night_end_free - early_start)  | timestamp_utc %}
 
-        {% set early_stop = state_attr('input_datetime.heating_early_stop', 'timestamp') %} 
-        {% set night_start_work = state_attr('input_datetime.start_night_workday', 'timestamp') %} 
-        {% set work_night_start_time = (night_start_work - early_stop)  | timestamp_utc %} 
-        {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'timestamp') %} 
+        {% set early_stop = state_attr('input_datetime.heating_early_stop', 'timestamp') %}
+        {% set night_start_work = state_attr('input_datetime.start_night_workday', 'timestamp') %}
+        {% set work_night_start_time = (night_start_work - early_stop)  | timestamp_utc %}
+        {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'timestamp') %}
         {% set free_night_start_time = (night_start_free - early_stop)  | timestamp_utc %}
 
         {% if is_state('input_select.climate_period_override', 'auto') %}
@@ -520,7 +520,7 @@
          {{ states('input_number.night_temperature') }}
        {% endif %}
 
-    # Duplicate workday sensor with nice icons for dashboard 
+    # Duplicate workday sensor with nice icons for dashboard
     pretty_workday:
       friendly_name: "Pretty Workday"
       value_template: >-
@@ -569,7 +569,7 @@
 
           {% set fixed_1 = useage_1 / usage * fixed_day %}
           {% set result = (tariff_1 * useage_1 + fixed_1) | round(2) %}
-        
+
           {% if result > 0 %}
             {{ result }}
           {% else %}
@@ -596,13 +596,13 @@
 
           {% set fixed_2 = useage_2 / usage * fixed_day %}
           {% set result = (tariff_2 * useage_2 + fixed_2) | round(2) %}
-        
+
           {% if result > 0 %}
             {{ result }}
           {% else %}
             0
           {% endif %}
-        {% endif %} 
+        {% endif %}
       icon_template: >-
         mdi:cash
 
@@ -710,7 +710,7 @@
 ###############################################################################
 # STATISTICS
 ###############################################################################
-  
+
   # Average used for sprinkler water level
 - platform: statistics
   entity_id: sensor.buienradar_humidity
@@ -749,7 +749,7 @@
 - platform: version
   name: "Current Version"
   source: local
-  
+
 - platform: version
   name: "Latest Version"
   source: hassio
