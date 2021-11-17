@@ -85,3 +85,5 @@ rules:
 
   truthy:
     level: error
+    ignore: |
+      hassio_ci.yml

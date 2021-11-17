@@ -88,7 +88,7 @@ external_components:
       type: git
       url: https://github.com/mmakaay/esphome
       ref: fix-dsmr-read-chunk-size
-    components: [ "dsmr" ]
+    components: ["dsmr"]
     refresh: 60s
 
 uart:

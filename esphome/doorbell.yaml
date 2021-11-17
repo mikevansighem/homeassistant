@@ -123,10 +123,7 @@ binary_sensor:
             - delay: 400ms
             - switch.turn_off: relay
 
-###############################################################################
-# STATUS SENSOR
-###############################################################################
-
+  # Status sensor
   - platform: status
     name: "${device_name} status"
     icon: "mdi:wifi"
