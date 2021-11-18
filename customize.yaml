@@ -1,7 +1,3 @@
-###############################################################################
-# CUSTOMIZE
-###############################################################################
-
 sensor.avarage_humidity:
   icon: mdi:water-percent
 sensor.avarage_ground_temperature:
@@ -77,4 +73,6 @@ binary_sensor.livingroom_home_mini:
 binary_sensor.bedroom_home_mini:
   icon: mdi:wifi
 binary_sensor.range_extender:
+  icon: mdi:wifi
+binary_sensor.living_room_home_mini:
   icon: mdi:wifi
