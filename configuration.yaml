@@ -17,6 +17,7 @@ media_player: !include media_player.yaml
 utility_meter: !include utility_meter.yaml
 sensor: !include sensor.yaml
 recorder: !include recorder.yaml
+shell_command: !include shell_command.yaml
 
 # Enable themes
 frontend:
