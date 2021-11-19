@@ -71,3 +71,12 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           for file in $(find ./esphome -type f -name "*.yaml" -maxdepth 1 -not -name "secrets.yaml"); do esphome config "${file}"; done
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [home-assistant, ESPHome]
+    steps:
+      - name: Github Action for curl
+        uses: wei/curl@v1.1.1
+        with:
+          args: curl -X POST ${{ secrets.DEPLOYMENT_WEBHOOK }}
