@@ -1290,3 +1290,20 @@
           title: More info
           uri: https://www.home-assistant.io/latest-release-notes/
   mode: single
+- id: '1637348841688'
+  alias: Utility - Pull and deploy
+  description: ''
+  trigger:
+  - platform: webhook
+    webhook_id: deploy
+  condition: []
+  action:
+  - service: shell_command.git_pull
+  - service: notify.mobile_app_sm_g960f
+    data:
+      title: A configuration update was deployed.
+      message: Updated configuration ↗️
+      data:
+        group: Utility
+  - service: homeassistant.restart
+  mode: single
