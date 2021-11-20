@@ -74,7 +74,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request'}}
+    if: ${{ github.event_name == 'push'}}
     needs: [home-assistant, ESPHome]
     steps:
       - name: Github Action for curl
