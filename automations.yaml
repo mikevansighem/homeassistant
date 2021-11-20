@@ -1301,8 +1301,8 @@
   - service: shell_command.git_pull
   - service: notify.mobile_app_sm_g960f
     data:
-      title: Updated configuration ↗️
-      message: A configuration update was deployed.
+      title: Updated configuration ↗
+      message: 'Configuration update was deployed: "{{states(''sensor.last_commit'')}}".'
       data:
         group: Utility
   - service: homeassistant.restart
