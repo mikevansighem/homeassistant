@@ -74,10 +74,12 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    # Only deploy after a new commit not after scheduled run.
     if: ${{ github.event_name == 'push'}}
     needs: [home-assistant, ESPHome]
     steps:
       - name: Github Action for curl
         uses: wei/curl@v1.1.1
         with:
+          # Trigger a webhook in Home Assistant
           args: curl -X POST ${{ secrets.DEPLOYMENT_WEBHOOK }}
