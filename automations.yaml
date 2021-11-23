@@ -113,6 +113,10 @@
     to: pending
   condition: []
   action:
+  - service: scene.create
+    data:
+      snapshot_entities: media_player.speaker_group
+      scene_id: before_alarm_sound
   - service: notify.notify
     data:
       message: The alarm was triggerd and will sound in 30 seconds.
@@ -131,10 +135,6 @@
           uri: /lovelace/alarm
         - action: ALARM
           title: Alarm
-  - service: scene.create
-    data:
-      snapshot_entities: media_player.speaker_group
-      scene_id: before_alarm_sound
   - service: script.alarm_sound_pending
   mode: single
 - id: '1629124515237'
@@ -146,11 +146,11 @@
     to: arming
   condition: []
   action:
-  - service: script.alarm_sound_arming
   - service: scene.create
     data:
       snapshot_entities: media_player.speaker_group
       scene_id: before_alarm_sound
+  - service: script.alarm_sound_arming
   mode: single
 - id: '1629192620074'
   alias: Alarm - Trigger from notification
