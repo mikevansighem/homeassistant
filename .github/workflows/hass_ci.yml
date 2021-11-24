@@ -75,7 +75,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     # Only deploy after a new commit not after scheduled run.
-    if: ${{ github.event_name == 'push' && $GITHUB_REF_NAME == 'master'}}
+    if: ${{ github.event_name == 'push' && github.ref == 'master'}}
     needs: [home-assistant, ESPHome]
     steps:
       - name: Github Action for curl
