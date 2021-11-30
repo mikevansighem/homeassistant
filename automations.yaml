@@ -1,6 +1,6 @@
 - id: '1628699826699'
-  alias: Utility - Auto snapshot and backup
-  description: Takes snapshot and uploads to Dropbox
+  alias: Utility - Auto backup and upload
+  description: Makes a backup and uploads it to Dropbox.
   trigger:
   - platform: time
     at: '1:00'
@@ -11,7 +11,7 @@
       name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
   - service: hassio.addon_stdin
     data:
-      addon: 7be23ff5_dropbox_sync
+      addon: 782428ea_dropbox-backup
       input:
         command: upload
   mode: single
