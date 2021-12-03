@@ -268,6 +268,9 @@ notify_who_is_home:
       required: 'no'
       default: default
   sequence:
+  - condition: state
+    entity_id: input_boolean.quiet
+    state: 'off'
   - choose:
     - conditions:
       - condition: and
