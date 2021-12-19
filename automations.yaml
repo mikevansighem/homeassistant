@@ -189,16 +189,15 @@
     to: night
     for: '{{ states( ''input_datetime.night_alarm_delay'' ) }}'
   - platform: template
-    value_template: "{% set early = state_attr('input_datetime.night_alarm_early_stop',\
-      \ 'timestamp') %} {% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
-      \ %} {% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
-      \ %} {% set work_end_time = (end_work - early)  | timestamp_utc %} {% set end_free\
-      \ = state_attr('input_datetime.end_night_free_day', 'timestamp') %} {% set free_end_time\
-      \ = (end_free - early)  | timestamp_utc %}\n{% if is_state('binary_sensor.workday_sensor',\
-      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
-      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
-      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
-      {% endif %}\n"
+    value_template: "{% set end_work = states('input_datetime.end_night_workday')\
+      \ %} \n{% set end_free = states('input_datetime.end_night_free_day') %} \n\n\
+      {% set early_hour = state_attr('input_datetime.night_alarm_early_stop', 'hour')\
+      \ %} \n{% set early_min = state_attr('input_datetime.night_alarm_early_stop',\
+      \ 'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min\
+      \ ) %}\n\n{% set work_on = (strptime(end_work, '%H:%M:%S') - early).strftime('%H:%M')\
+      \ %}\n{% set free_on = (strptime(end_free, '%H:%M:%S') - early).strftime('%H:%M')\
+      \ %}\n\n{% if now().strftime('%H:%M') == work_on or now().strftime('%H:%M')\
+      \ == free_on %}\n  true\n{% else %}\n  false\n{% endif %}\n"
     id: NIGHT_OFF
   condition: []
   action:
@@ -306,37 +305,25 @@
   description: ''
   trigger:
   - platform: state
+    entity_id: sensor.climate_period
+    id: 'ON'
+    from: night
+  - platform: state
     entity_id: sensor.house_state
     to: home
     id: 'ON'
   - platform: state
     entity_id: sensor.house_state
     id: 'OFF'
-    from: home
-  - platform: template
-    value_template: "{% set early = state_attr('input_datetime.hot_water_pre_heat',\
-      \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
-      \ %} \n{% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
-      \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
-      \ end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}\
-      \ \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if is_state('binary_sensor.workday_sensor',\
-      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
-      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
-      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
-      {% endif %}"
-    id: EARLY_ON
-  - platform: template
-    value_template: "{% set early = state_attr('input_datetime.hot_water_early_stop',\
-      \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
-      \ %} \n{% set end_work = state_attr('input_datetime.start_night_workday', 'timestamp')\
-      \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
-      \ end_free = state_attr('input_datetime.start_night_free_day', 'timestamp')\
-      \ %} \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if\
-      \ is_state('binary_sensor.workday_sensor', 'on') %}\n  {% if as_timestamp(work_end_time)\
-      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
-      {% else %}\n  {% if as_timestamp(free_end_time) == as_timestamp(tnow) %}\n \
-      \   true\n  {% else %}\n    false\n  {% endif %}\n{% endif %}"
-    id: EARLY_OFF
+    from: Home
+  - platform: state
+    entity_id: sensor.climate_period
+    to: night
+    id: 'OFF'
+  - platform: state
+    entity_id: sensor.house_state
+    to: away
+    id: 'OFF'
   condition: []
   action:
   - choose:
@@ -362,34 +349,6 @@
     - conditions:
       - condition: trigger
         id: 'OFF'
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id: climate.hot_water_service
-    - conditions:
-      - condition: trigger
-        id: EARLY_ON
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: input_boolean.holiday
-          state: 'on'
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id: climate.hot_water_service
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.hot_water_service
-        data:
-          temperature: '{{ states(''input_number.hot_water_temperature'') }}'
-    - conditions:
-      - condition: trigger
-        id: EARLY_OFF
       sequence:
       - service: climate.set_hvac_mode
         data:
@@ -404,33 +363,25 @@
   description: ''
   trigger:
   - platform: state
+    entity_id: sensor.climate_period
+    id: 'ON'
+    from: night
+  - platform: state
     entity_id: sensor.house_state
     to: home
     id: 'ON'
-  - platform: template
-    value_template: "{% set early = state_attr('input_datetime.heating_early_stop',\
-      \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
-      \ %} \n{% set end_work = state_attr('input_datetime.start_night_workday', 'timestamp')\
-      \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
-      \ end_free = state_attr('input_datetime.start_night_free_day', 'timestamp')\
-      \ %} \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if\
-      \ is_state('binary_sensor.workday_sensor', 'on') %}\n  {% if as_timestamp(work_end_time)\
-      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
-      {% else %}\n  {% if as_timestamp(free_end_time) == as_timestamp(tnow) %}\n \
-      \   true\n  {% else %}\n    false\n  {% endif %}\n{% endif %}"
-    id: EARLY_OFF
-  - platform: template
-    value_template: "{% set early = state_attr('input_datetime.heating_pre_heat',\
-      \ 'timestamp') %} \n{% set tnow = strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)\
-      \ %} \n{% set end_work = state_attr('input_datetime.end_night_workday', 'timestamp')\
-      \ %} \n{% set work_end_time = (end_work - early)  | timestamp_utc %} \n{% set\
-      \ end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}\
-      \ \n{% set free_end_time = (end_free - early)  | timestamp_utc %}\n\n{% if is_state('binary_sensor.workday_sensor',\
-      \ 'on') %}\n  {% if as_timestamp(work_end_time) == as_timestamp(tnow) %}\n \
-      \   true\n  {% else %}\n    false\n  {% endif %}\n{% else %}\n  {% if as_timestamp(free_end_time)\
-      \ == as_timestamp(tnow) %}\n    true\n  {% else %}\n    false\n  {% endif %}\n\
-      {% endif %}"
-    id: EARLY_ON
+  - platform: state
+    entity_id: sensor.house_state
+    id: 'OFF'
+    from: Home
+  - platform: state
+    entity_id: sensor.climate_period
+    to: night
+    id: 'OFF'
+  - platform: state
+    entity_id: sensor.house_state
+    to: away
+    id: 'OFF'
   condition: []
   action:
   - choose:
@@ -442,6 +393,11 @@
         - condition: state
           entity_id: sensor.climate_period
           state: night
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: holiday
       sequence:
       - service: climate.set_hvac_mode
         data:
@@ -455,29 +411,6 @@
       - service: climate.set_hvac_mode
         data:
           hvac_mode: 'off'
-        target:
-          entity_id: climate.central_heating
-    - conditions:
-      - condition: trigger
-        id: EARLY_OFF
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id: climate.central_heating
-    - conditions:
-      - condition: trigger
-        id: EARLY_ON
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: input_boolean.holiday
-          state: 'on'
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
         target:
           entity_id: climate.central_heating
     default: []

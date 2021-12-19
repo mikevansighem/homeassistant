@@ -459,7 +459,10 @@
     climate_period:
       friendly_name: "Climate period"
       value_template: >-
-        {% set tnow = as_timestamp(strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800)) %}
+        {%set old = as_timestamp(strptime(states('sensor.time_utc'), '%H:%M'))%}
+        {%set new = as_timestamp(strptime(states('sensor.time'), '%H:%M'))%}
+        {% set dif = new - old %}
+        {% set tnow = as_timestamp(strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800))+dif %}
 
         {% set early_start = state_attr('input_datetime.heating_pre_heat', 'timestamp') %}
         {% set night_end_work = state_attr('input_datetime.end_night_workday', 'timestamp') %}
@@ -720,6 +723,7 @@
 - platform: statistics
   entity_id: sensor.buienradar_humidity
   name: "Average humidity"
+  state_characteristic: mean
   sampling_size: 200
   max_age:
     hours: 24
@@ -728,6 +732,7 @@
 - platform: statistics
   entity_id: sensor.buienradar_ground_temperature
   name: "Average ground temperature"
+  state_characteristic: mean
   sampling_size: 200
   max_age:
     hours: 24
