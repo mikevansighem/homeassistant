@@ -242,7 +242,7 @@
     outdoor_lights:
       friendly_name: "Outdoor lights"
       value_template: >-
-        {% if (is_state('sensor.house_state', 'home') or states('proximity.home_mike')|int < 2 or states('proximity.home_anneloes')|int < 2) %}
+        {% if (is_state('sensor.house_state', 'home') or states('proximity.home_mike')|int(10) < 2 or states('proximity.home_anneloes')|int(10) < 2) %}
           {% if (state_attr('sun.sun', 'elevation') < 8) and not is_state('sensor.house_state', 'night') %}
             on
           {%else%}
