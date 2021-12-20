@@ -335,6 +335,16 @@
         - condition: state
           entity_id: sensor.climate_period
           state: night
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: holiday
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: away
       sequence:
       - service: climate.set_hvac_mode
         data:
@@ -398,6 +408,11 @@
         - condition: state
           entity_id: sensor.house_state
           state: holiday
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: away
       sequence:
       - service: climate.set_hvac_mode
         data:
