@@ -1259,3 +1259,16 @@
         group: Utility
   - service: homeassistant.restart
   mode: single
+- id: '1641105359759'
+  alias: Audio - All off when away
+  description: '- Turn off all media players when away'
+  trigger:
+  - platform: state
+    to: away
+    entity_id: sensor.house_state
+  condition: []
+  action:
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.speaker_group
+  mode: single
