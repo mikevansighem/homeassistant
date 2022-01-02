@@ -1162,14 +1162,18 @@
       sequence:
       - service: light.turn_on
         target:
-          entity_id: light.front_garden
+          entity_id:
+          - light.front_garden
+          - light.well
     - conditions:
       - condition: trigger
         id: 'OFF'
       sequence:
       - service: light.turn_off
         target:
-          entity_id: light.front_garden
+          entity_id:
+          - light.front_garden
+          - light.well
     default: []
   mode: single
 - id: '1636297508172'
