@@ -22,6 +22,11 @@ include:
     - sensor.boiler_target_temperature
     - sensor.watering_level
     - sensor.boiler_temperature
+    
+    # Network
+    - sensor.speedtest_download
+    - sensor.speedtest_upload
+    - sensor.speedtest_ping
 
     # Utilities
     - sensor.grid_fossil_fuel_percentage
