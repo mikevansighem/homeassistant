@@ -22,7 +22,7 @@ include:
     - sensor.boiler_target_temperature
     - sensor.watering_level
     - sensor.boiler_temperature
-    
+
     # Network
     - sensor.speedtest_download
     - sensor.speedtest_upload

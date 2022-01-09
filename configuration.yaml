@@ -436,7 +436,8 @@ logger:
     homeassistant.components.webhook: error
 
   filters:
-  # Ignore messages from the alarm panel
+
+    # Ignore messages from the alarm panel
     homeassistant.components.zha.core.channels.base:
       - ".*received command get_panel_status"
       - ".*Arming all IAS ACE zones"
