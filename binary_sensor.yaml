@@ -10,7 +10,7 @@
 # PING NETWORK DEVICES
 
 - platform: ping
-  host: 192.168.2.14
+  host: 192.168.2.100
   name: "Sprinkler controller"
   scan_interval: 30
 
@@ -20,7 +20,7 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.198
+  host: 192.168.2.14
   name: "Living room home mini"
   scan_interval: 30
 
@@ -35,13 +35,18 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.193
+  host: 192.168.2.20
   name: "Opentherm controller"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.32
   name: "Dining room home mini"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.33
+  name: "Attict chromecast audio"
   scan_interval: 30
 
 - platform: ping
@@ -51,5 +56,20 @@
 
 - platform: ping
   host: 192.168.2.196
-  name: "Range extender"
+  name: "Scullery range extender"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.10
+  name: "Pi-Hole"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.1
+  name: "Fritz!Box"
+  scan_interval: 30
+  
+- platform: ping
+  host: 192.168.2.22
+  name: "Attict range extender"
   scan_interval: 30

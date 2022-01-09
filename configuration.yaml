@@ -153,5 +153,5 @@ proximity:
 device_tracker:
   - platform: ping
     hosts:
-      ping_phone_mike: 192.168.2.23
+      ping_phone_mike: 192.168.2.11
       ping_phone_anneloes: 192.168.2.27

@@ -72,7 +72,11 @@ binary_sensor.livingroom_home_mini:
   icon: mdi:wifi
 binary_sensor.bedroom_home_mini:
   icon: mdi:wifi
-binary_sensor.range_extender:
+binary_sensor.scullery_range_extender:
   icon: mdi:wifi
 binary_sensor.living_room_home_mini:
+  icon: mdi:wifi
+binary_sensor.attict_chromecast_audio:
+  icon: mdi:wifi
+binary_sensor.attict_range_extender:
   icon: mdi:wifi
