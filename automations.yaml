@@ -903,90 +903,80 @@
     to: Bad
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.carbon_dioxide_state
     id: CO2_DANGER
     to: Danger
     for:
       hours: 0
-      minutes: 2
+      minutes: 5
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.carbon_dioxide_state
     id: CO2_BAD
     to: Bad
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.carbon_dioxide_state
     id: CO2_DANGER
     to: Danger
     for:
       hours: 0
-      minutes: 2
+      minutes: 5
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.carbon_dioxide_state
     id: CO2_BAD
     to: Bad
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.carbon_dioxide_state
     id: CO2_DANGER
     to: Danger
     for:
       hours: 0
-      minutes: 2
+      minutes: 5
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.voc_state
     id: VOC_BAD
     to: Bad
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.voc_state
     id: VOC_DANGER
     to: Danger
     for:
       hours: 0
-      minutes: 2
+      minutes: 5
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.humidity_state
     id: HUM_HIGH
     to: High
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: sensor.humidity_state
     id: HUM_LOW
     to: Low
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
-      milliseconds: 0
   condition: []
   action:
   - choose:
