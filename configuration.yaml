@@ -375,7 +375,6 @@ input_datetime:
     has_date: false
     initial: "21:30"
 
-
 # Alarm
 
   night_alarm_delay:
