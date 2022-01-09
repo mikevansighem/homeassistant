@@ -91,7 +91,7 @@ input_number:
     max: 1
     step: 0.1
     mode: slider
-    
+
   # Sprinkler base time
   back_sprinkler_base_time:
     name: Back sprinkler base time
@@ -102,7 +102,7 @@ input_number:
     step: 1
     unit_of_measurement: "min"
     mode: box
-    
+
   # Sprinkler base time
   front_sprinkler_base_time:
     name: Front sprinkler base time
@@ -113,7 +113,7 @@ input_number:
     step: 1
     unit_of_measurement: "min"
     mode: box
-    
+
   # Sprinkler manual run time
   back_sprinkler_time:
     name: Back sprinkler time
@@ -124,7 +124,7 @@ input_number:
     step: 0.1
     unit_of_measurement: "min"
     mode: box
-    
+
   # Sprinkler manual run time
   front_sprinkler_time:
     name: Front sprinkler time
@@ -135,7 +135,7 @@ input_number:
     step: 0.1
     unit_of_measurement: "min"
     mode: box
-    
+
   # If rain is above this number no watering
   rain_threshold:
     name: Rain threshold
@@ -168,7 +168,7 @@ input_number:
     step: 1
     unit_of_measurement: "°C"
     mode: box
-    
+
   # Cutoff sprinkler entirely
   watering_cutoff:
     name: Watering cutoff
@@ -179,7 +179,7 @@ input_number:
     step: 1
     unit_of_measurement: "%"
     mode: box
-    
+
   # Temperature for hot water
   hot_water_temperature:
     name: Hot water temperature
@@ -190,7 +190,7 @@ input_number:
     step: 1
     unit_of_measurement: "°C"
     mode: box
-    
+
   # Night temperature
   night_temperature:
     name: Night temperature
@@ -201,7 +201,7 @@ input_number:
     step: 0.5
     unit_of_measurement: "°C"
     mode: box
-    
+
   # Day temperature
   day_temperature:
     name: Day temperature
@@ -212,7 +212,7 @@ input_number:
     step: 0.5
     unit_of_measurement: "°C"
     mode: box
-    
+
   # Evening temperature
   evening_temperature:
     name: Evening temperature
@@ -223,7 +223,7 @@ input_number:
     step: 0.5
     unit_of_measurement: "°C"
     mode: box
-    
+
   # Morning  temperature
   morning_temperature:
     name: Morning temperature
@@ -234,7 +234,7 @@ input_number:
     step: 0.5
     unit_of_measurement: "°C"
     mode: box
-    
+
   # Energy tariffs
   gas_tariff:
     name: Gas tariff
@@ -245,7 +245,7 @@ input_number:
     step: 0.000001
     unit_of_measurement: "€/m³"
     mode: box
-    
+
   fixed_gas_tariff:
     name: Fixed gas tariff
     icon: mdi:cash
@@ -275,7 +275,7 @@ input_number:
     step: 0.000001
     unit_of_measurement: "€/kWh"
     mode: box
-    
+
   energy_tariff_2:
     name: Energy tariff peak
     icon: mdi:cash
@@ -300,21 +300,21 @@ input_datetime:
     has_time: true
     has_date: false
     initial: "00:50"
-    
+
   heating_early_stop:
     name: Heating early stop
     icon: mdi:clock
     has_time: true
     has_date: false
     initial: "02:00"
-    
+
   floor_heating_pump_delay:
     name: Floor heating pump delay
     icon: mdi:clock
     has_time: true
     has_date: false
     initial: "00:30"
-    
+
 # Hot water
 
   hot_water_pre_heat:
@@ -323,7 +323,7 @@ input_datetime:
     has_time: true
     has_date: false
     initial: "00:15"
-    
+
   hot_water_early_stop:
     name: Hot water early stop
     icon: mdi:clock
@@ -339,35 +339,35 @@ input_datetime:
     has_time: true
     has_date: false
     initial: "09:00"
-    
+
   evening_start:
     name: Evening start
     icon: mdi:clock
     has_time: true
     has_date: false
     initial: "16:15"
-    
+
   end_night_workday:
     name: End night - workday
     icon: mdi:clock
     has_time: true
     has_date: false
     initial: "05:30"
-    
+
   start_night_workday:
     name: Start night - workday
     icon: mdi:clock
     has_time: true
     has_date: false
     initial: "21:00"
-    
+
   end_night_free_day:
     name: End night - free day
     icon: mdi:clock
     has_time: true
     has_date: false
     initial: "07:00"
-    
+
   start_night_free_day:
     name: Start night - free day
     icon: mdi:clock
@@ -384,7 +384,7 @@ input_datetime:
     has_time: true
     has_date: false
     initial: "00:30"
-    
+
   night_alarm_early_stop:
     name: Night alarm early stop
     icon: mdi:clock
@@ -400,7 +400,7 @@ input_datetime:
     has_time: true
     has_date: false
     initial: "00:15"
-    
+
   light_motion_timeout_long:
     name: Light motion timeout - long
     icon: mdi:clock
@@ -435,14 +435,13 @@ logger:
   logs:
     pychromecast.socket_client: fatal
     homeassistant.components.webhook: error
-    
+
   filters:
   # Ignore messages from the alarm panel
     homeassistant.components.zha.core.channels.base:
       - ".*received command get_panel_status"
       - ".*Arming all IAS ACE zones"
       - ".*Disarming all IAS ACE zones"
-      
 
 ###############################################################################
 # ZIGBEE
