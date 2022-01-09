@@ -292,7 +292,7 @@ input_number:
 
 input_datetime:
 
-# Heating
+  # Heating
 
   heating_pre_heat:
     name: Heating pre-heat
@@ -315,7 +315,7 @@ input_datetime:
     has_date: false
     initial: "00:30"
 
-# Hot water
+  # Hot water
 
   hot_water_pre_heat:
     name: Hot water pre-heat
@@ -331,7 +331,7 @@ input_datetime:
     has_date: false
     initial: "01:30"
 
-# Time of day
+  # Time of day
 
   morning_end:
     name: Morning end
@@ -375,7 +375,7 @@ input_datetime:
     has_date: false
     initial: "21:30"
 
-# Alarm
+  # Alarm
 
   night_alarm_delay:
     name: Night alarm delay
@@ -391,7 +391,7 @@ input_datetime:
     has_date: false
     initial: "00:30"
 
-# Lights
+  # Lights
 
   light_motion_timeout_short:
     name: Light motion timeout - short
