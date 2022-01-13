@@ -45,7 +45,7 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.33
+  host: 192.168.2.21
   name: "Attict chromecast audio"
   scan_interval: 30
 

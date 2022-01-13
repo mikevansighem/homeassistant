@@ -27,8 +27,9 @@ frontend:
 homeassistant:
   customize: !include customize.yaml
 
-# Limit login attempts
 http:
+
+  # Limit login attempts
   ip_ban_enabled: true
   login_attempts_threshold: 5
 
@@ -329,7 +330,7 @@ input_datetime:
     icon: mdi:clock
     has_time: true
     has_date: false
-    initial: "01:30"
+    initial: "00:30"
 
   # Time of day
 
