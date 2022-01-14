@@ -531,7 +531,7 @@
         {% set co = states('sensor.carbon_dioxide') | int(0) %}
         {% if co < 800 %}
           Good
-        {% elif 800 < co < 1200 %}
+        {% elif 800 <= co <= 1200 %}
           Bad
         {% elif co > 1200 %}
           Danger
@@ -550,7 +550,7 @@
       friendly_name: "Humidity"
       value_template: >-
         {% set hum = states('sensor.indoor_humidity') | int(0) %}
-        {% if 40 < hum < 60 %}
+        {% if 40 <= hum <= 60 %}
           Good
         {% elif hum < 40 %}
           Low
@@ -573,7 +573,7 @@
         {% set voc = states('sensor.voc') | int(0) %}
         {% if voc < 250 %}
           Good
-        {% elif 250 < voc < 2000 %}
+        {% elif 250 <= voc <= 2000 %}
           Bad
         {% elif voc > 2000 %}
           Danger
