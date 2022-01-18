@@ -335,3 +335,23 @@ speak:
       entity_id: media_player.speaker_group
       message: '{{message}}'
       language: nl-NL
+fan_up:
+  alias: Fan - up
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: fan.fan
+        state: 'off'
+      sequence:
+      - service: fan.turn_on
+        target:
+          entity_id: fan.fan
+        data:
+          percentage: 50
+    default:
+    - service: fan.increase_speed
+      target:
+        entity_id: fan.fan
+  mode: single
+  icon: mdi:fan-chevron-up

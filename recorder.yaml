@@ -53,6 +53,7 @@ include:
     - sensor.formaldehyde
     - sensor.indoor_humidity
     - sensor.voc
+    - sensor.fan_controller_speed
 
     # System monitor
     - sensor.disk_free
