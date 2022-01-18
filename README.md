@@ -22,6 +22,7 @@ by the house state.
 | Floor heating pump | On (3)       | Off        | Off (4)         | Off        |
 | Hot water          | On (3)       | Off        | Off (4)         | Off        |
 | Holiday lights     | Off          | Off        | Off             | On         |
+| ventilation        | On           | On         | On (5)          | Off        |
 
 Footnotes:
 
@@ -29,6 +30,7 @@ Footnotes:
 2. When going from home to night the alarm arming is delayed to prevent accidental triggers.
 3. Switched on early using helper to pre-heat the home.
 4. Switched off early using helper to preserve energy.
+5. Speed limited to low.
 
 ## :bell: Alarm
 
