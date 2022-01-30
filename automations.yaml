@@ -1364,3 +1364,65 @@
           fan_speed: 1
     default: []
   mode: single
+- id: '1643568222724'
+  alias: Utility - Notify for low battery
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:00'
+  condition:
+    condition: or
+    conditions:
+    - condition: template
+      value_template: "{% set min_battery_level = 10 -%} {% set ns = namespace(found=false)\
+        \ -%} {% for entity_id in states.group.battery_levels.attributes.entity_id\
+        \ -%}\n  {% set parts = entity_id.split('.') -%}\n  {% if (states(entity_id)\
+        \ | replace(\"%\",\"\") | int) < min_battery_level -%}\n    {% set ns.found\
+        \ = true -%}\n  {% endif -%}\n{% endfor -%} {{ ns.found }}\n"
+  action:
+  - service: notify.mobile_app_sm_g960f
+    data:
+      message: "{% set min_battery_level = 10 %} {% for entity_id in states.group.battery_levels.attributes.entity_id\
+        \ %}\n  {% set parts = entity_id.split('.') %}\n    {% if (states(entity_id)\
+        \ | replace(\"%\",\"\") | int) < min_battery_level %}\n      {{ states[parts[0]][parts[1]].name\
+        \ }} battery level is {{ states(entity_id) }}.{{ '\\n' }}\n  {% endif %}\n\
+        {% endfor %}\n"
+      data:
+        group: Utility
+        actions:
+        - action: URI
+          title: More info
+          uri: /lovelace/network
+      title: Battery low ⚠️
+  mode: single
+- id: '1643568224230'
+  alias: Utility - Notify for low battery
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:00'
+  condition:
+    condition: or
+    conditions:
+    - condition: template
+      value_template: "{% set min_battery_level = 10 -%} {% set ns = namespace(found=false)\
+        \ -%} {% for entity_id in states.group.battery_levels.attributes.entity_id\
+        \ -%}\n  {% set parts = entity_id.split('.') -%}\n  {% if (states(entity_id)\
+        \ | replace(\"%\",\"\") | int) < min_battery_level -%}\n    {% set ns.found\
+        \ = true -%}\n  {% endif -%}\n{% endfor -%} {{ ns.found }}\n"
+  action:
+  - service: notify.mobile_app_sm_g960f
+    data:
+      message: "{% set min_battery_level = 10 %} {% for entity_id in states.group.battery_levels.attributes.entity_id\
+        \ %}\n  {% set parts = entity_id.split('.') %}\n    {% if (states(entity_id)\
+        \ | replace(\"%\",\"\") | int) < min_battery_level %}\n      {{ states[parts[0]][parts[1]].name\
+        \ }} battery level is {{ states(entity_id) }}.{{ '\\n' }}\n  {% endif %}\n\
+        {% endfor %}\n"
+      data:
+        group: Utility
+        actions:
+        - action: URI
+          title: More info
+          uri: /lovelace/network
+      title: Battery low
+  mode: single
