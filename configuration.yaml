@@ -407,6 +407,13 @@ input_datetime:
     has_time: true
     has_date: false
     initial: "01:00"
+    
+  outdoor_lights_offset:
+    name: Outdoor lights offset
+    icon: mdi:clock
+    has_time: true
+    has_date: false
+    initial: "01:00"
 
 ###############################################################################
 # INPUT BOOLEAN

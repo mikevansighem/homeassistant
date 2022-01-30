@@ -242,8 +242,16 @@
     outdoor_lights:
       friendly_name: "Outdoor lights"
       value_template: >-
+        {%set dawn = as_local(as_datetime(state_attr('sun.sun', 'next_dawn')))%}
+        {%set dusk = as_local(as_datetime(state_attr('sun.sun', 'next_dusk')))%}
+        
+        {% set hour = state_attr('input_datetime.outdoor_lights_offset', 'hour')%}
+        {% set minute = state_attr('input_datetime.outdoor_lights_offset', 'minute')%}
+        {%set offset_dawn = dawn + timedelta( hours = hour, minutes = minute )%}
+        {%set offset_dusk = dusk - timedelta( hours = hour, minutes = minute )%}
+      
         {% if (is_state('sensor.house_state', 'home') or states('proximity.home_mike')|int(10) < 2 or states('proximity.home_anneloes')|int(10) < 2) %}
-          {% if (state_attr('sun.sun', 'elevation') < 8) and not is_state('sensor.house_state', 'night') %}
+          {% if ((now() < offset_dawn) or (now() > offset_dusk)) and not is_state('sensor.house_state', 'night') %}
             on
           {%else%}
             off
@@ -591,9 +599,9 @@
     air_quality_state:
       friendly_name: "Air quality"
       value_template: >-
-        {% if is_state('sensor.carbon_dioxide_state','Danger') or is_state('sensor.humidity_state','Danger') or is_state('sensor.voc_state','Danger') %}
+        {% if is_state('sensor.carbon_dioxide_state','Danger') or is_state('sensor.voc_state','Danger') %}
           Danger
-        {% elif is_state('sensor.carbon_dioxide_state','Bad') or is_state('sensor.humidity_state','Low') or is_state('sensor.humidity_state','High') or is_state('sensor.voc_state','Bad') %}
+        {% elif is_state('sensor.carbon_dioxide_state','Bad') or is_state('sensor.voc_state','Bad') %}
           Bad
         {% else %}
           Good

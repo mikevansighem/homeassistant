@@ -1262,3 +1262,105 @@
     target:
       entity_id: media_player.speaker_group
   mode: single
+- id: '1642531564644'
+  alias: Air - Fan control
+  description: '- Turn off fan when holiday;
+
+    - Limit fan speed during the night;
+
+    - Increase fan speed when air quality is bad.'
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: holiday
+    id: 'OFF'
+  - platform: state
+    entity_id: sensor.air_quality_state
+    to: Bad
+    id: BAD
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - platform: state
+    entity_id: sensor.air_quality_state
+    id: DANGER
+    to: Danger
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - platform: state
+    entity_id: sensor.air_quality_state
+    to: Good
+    id: GOOD
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - platform: state
+    entity_id: sensor.house_state
+    id: 'ON'
+    from: holiday
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - device_id: 1d6db28ce04bb5fe9bbcdd10589e01e7
+        domain: fan
+        entity_id: fan.fan
+        type: turn_off
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - device_id: 1d6db28ce04bb5fe9bbcdd10589e01e7
+        domain: fan
+        entity_id: fan.fan
+        type: turn_on
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: BAD
+        - condition: trigger
+          id: DANGER
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: holiday
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: night
+      sequence:
+      - device_id: 1d6db28ce04bb5fe9bbcdd10589e01e7
+        domain: fan
+        entity_id: fan.fan
+        type: turn_on
+      - service: esphome.fan_controller_set_speed
+        data:
+          fan_speed: 2
+    - conditions:
+      - condition: trigger
+        id: GOOD
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: holiday
+      sequence:
+      - device_id: 1d6db28ce04bb5fe9bbcdd10589e01e7
+        domain: fan
+        entity_id: fan.fan
+        type: turn_on
+      - service: esphome.fan_controller_set_speed
+        data:
+          fan_speed: 1
+    default: []
+  mode: single
