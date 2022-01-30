@@ -1,0 +1,222 @@
+################################################################################
+# SUBSTITUTIONS
+################################################################################
+
+substitutions:
+  device_name: fan-controller
+  upper_devicename: Fan-controller
+  device_description: "Two speed fan controller with control buttons."
+
+###############################################################################
+# GENERAL
+###############################################################################
+
+esphome:
+  name: $device_name
+  comment: "${device_description}"
+  platform: ESP8266
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable ota update with a password
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${device_name} fallback"
+    password: !secret esphome_fallback_password
+    ap_timeout: 15s
+
+captive_portal:
+
+# Enable webserver
+web_server:
+  port: 80
+
+###############################################################################
+# SPECIFIC
+###############################################################################
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret encryption_key
+
+  # Add callable service for setting fan speed
+  services:
+    - service: set_speed
+      variables:
+        fan_speed: int
+      then:
+        lambda: |-
+          auto call = id(my_fan).turn_on();
+          call.set_speed(fan_speed);
+          call.perform();
+
+fan:
+  - platform: speed
+    output: my_output
+    name: "Fan"
+    speed_count: 2
+    id: my_fan
+
+output:
+
+  - platform: template
+    id: my_output
+    type: float
+    write_action:
+      if:
+        condition:
+          lambda: return (state > 0);
+        then:
+          - output.turn_on: power_relay
+          - switch.turn_on: debug_power_relay
+          - logger.log:
+                    format: "[OUTPUT] PRE: speed: %.1f"
+                    args: [ 'id(my_fan).speed' ]
+
+          - if:
+              condition:
+                lambda: return ((id(my_fan).speed) == 2);
+              then:
+                - output.turn_on: speed_relay
+                - switch.turn_on: debug_speed_relay
+                - logger.log:
+                    format: "[OUTPUT] action: high, speed: %.1f"
+                    args: [ 'id(my_fan).speed' ]
+              else:
+                - output.turn_off: speed_relay
+                - switch.turn_off: debug_speed_relay
+                - logger.log:
+                    format: "[OUTPUT] action: low, speed: %.1f"
+                    args: [ 'id(my_fan).speed' ]
+
+        else:
+          - output.turn_off: power_relay
+          - switch.turn_off: debug_power_relay
+          - output.turn_off: speed_relay
+          - switch.turn_off: debug_speed_relay
+
+  - platform: gpio
+    pin: GPIO13
+    id: power_relay
+
+  - platform: gpio
+    pin: GPIO12
+    id: speed_relay
+
+switch:
+  - platform: template
+    optimistic: true
+    id: debug_power_relay
+    name: "Debug power"
+
+  - platform: template
+    optimistic: true
+    id: debug_speed_relay
+    name: "Debug speed"
+
+binary_sensor:
+
+  - platform: status
+    name: "${device_name} status"
+    icon: "mdi:wifi"
+
+  - platform: gpio
+    name: "${upper_devicename} button up"
+    pin:
+      number: GPIO5
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on: 50ms
+    on_press:
+      if:
+        condition:
+          lambda: return ((id(my_fan).state) > 0);
+
+        then:
+          # If allready on increase speed
+          - logger.log: "[INPUT] up pressed once, increase speed"
+          - lambda: |-
+              auto call = id(my_fan).turn_on();
+              call.set_speed(2);
+              call.perform();
+
+        else:
+          # If off turn on at half speed
+          - logger.log: "[INPUT] up pressed once, turn on"
+          - fan.turn_on: my_fan
+
+    on_click:
+      min_length: 800ms
+      max_length: 8000ms
+      then:
+        # Set to max
+        - logger.log: "[INPUT] up held, max speed"
+        - lambda: |-
+            auto call = id(my_fan).turn_on();
+            call.set_speed(2);
+            call.perform();
+
+  - platform: gpio
+    name: "${upper_devicename} button down"
+    pin:
+      number: GPIO4
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on: 50ms
+    on_press:
+      if:
+        condition:
+          lambda: return ((id(my_fan).speed) == 2);
+
+        then:
+          # If allready at max lower speed
+          - logger.log: "[INPUT] down pressed once, decrease speed"
+          - lambda: |-
+              auto call = id(my_fan).turn_on();
+              call.set_speed(1);
+              call.perform();
+
+        else:
+          # If at min turn off
+          - logger.log: "[INPUT] down pressed once, turn off"
+          - fan.turn_off: my_fan
+
+    on_click:
+      min_length: 800ms
+      max_length: 8000ms
+      then:
+        # Turn off
+        - logger.log: "[INPUT] down held, off"
+        - fan.turn_off: my_fan
+
+sensor:
+
+  # Sensor to trach the speed of the fan in history
+  - platform: template
+    name: "${upper_devicename} speed"
+    icon: mdi:fan
+    accuracy_decimals: 0
+    state_class: measurement
+    lambda: |-
+      if (id(my_fan).state) {
+        if (id(my_fan).speed == 1) {
+          return 1;
+        } else {
+          return 2;
+        }
+      } else {
+        return 0;
+      }
+    update_interval: 1s
