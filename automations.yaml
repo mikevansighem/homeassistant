@@ -1217,13 +1217,13 @@
       entity_id: sensor.latest_version
       state: unknown
   - condition: template
-    value_template: "  {% if states('sensor.latest_version') != states('sensor.current_version')\
+    value_template: "  {% if states('sensor.latest_version_2') != states('sensor.current_version_2')\
       \ %}\n    true\n  {% endif %}"
   action:
   - service: notify.mobile_app_sm_g960f
     data:
       title: Update available 🎉
-      message: New version available {{states('sensor.latest_version')}}
+      message: New version available {{states('sensor.latest_version_2')}}
       data:
         group: Utility
         clickAction: https://www.home-assistant.io/latest-release-notes/
@@ -1231,6 +1231,9 @@
         - action: URI
           title: More info
           uri: https://www.home-assistant.io/latest-release-notes/
+        - action: URI
+          title: Update
+          uri: http://homeassistant.local:8123/config/dashboard
   mode: single
 - id: '1637348841688'
   alias: Utility - Pull and deploy
