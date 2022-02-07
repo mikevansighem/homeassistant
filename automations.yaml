@@ -1217,8 +1217,8 @@
       entity_id: sensor.latest_version
       state: unknown
   - condition: template
-    value_template: "  {% if states('sensor.latest_version_2') != states('sensor.current_version_2')\
-      \ %}\n    true\n  {% endif %}"
+    value_template: '{{ iif( states(''sensor.latest_version_2'') != states(''sensor.current_version_2'')
+      )}}'
   action:
   - service: notify.mobile_app_sm_g960f
     data:
