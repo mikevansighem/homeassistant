@@ -80,8 +80,8 @@ output:
           - output.turn_on: power_relay
           - switch.turn_on: debug_power_relay
           - logger.log:
-                    format: "[OUTPUT] PRE: speed: %.1f"
-                    args: [ 'id(my_fan).speed' ]
+              format: "[OUTPUT] PRE: speed: %.1f"
+              args: ['id(my_fan).speed']
 
           - if:
               condition:
@@ -91,13 +91,13 @@ output:
                 - switch.turn_on: debug_speed_relay
                 - logger.log:
                     format: "[OUTPUT] action: high, speed: %.1f"
-                    args: [ 'id(my_fan).speed' ]
+                    args: ['id(my_fan).speed']
               else:
                 - output.turn_off: speed_relay
                 - switch.turn_off: debug_speed_relay
                 - logger.log:
                     format: "[OUTPUT] action: low, speed: %.1f"
-                    args: [ 'id(my_fan).speed' ]
+                    args: ['id(my_fan).speed']
 
         else:
           - output.turn_off: power_relay

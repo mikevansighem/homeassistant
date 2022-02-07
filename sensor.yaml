@@ -244,12 +244,12 @@
       value_template: >-
         {%set dawn = as_local(as_datetime(state_attr('sun.sun', 'next_dawn')))%}
         {%set dusk = as_local(as_datetime(state_attr('sun.sun', 'next_dusk')))%}
-        
+
         {% set hour = state_attr('input_datetime.outdoor_lights_offset', 'hour')%}
         {% set minute = state_attr('input_datetime.outdoor_lights_offset', 'minute')%}
         {%set offset_dawn = dawn + timedelta( hours = hour, minutes = minute )%}
         {%set offset_dusk = dusk - timedelta( hours = hour, minutes = minute )%}
-      
+
         {% if (is_state('sensor.house_state', 'home') or states('proximity.home_mike')|int(10) < 2 or states('proximity.home_anneloes')|int(10) < 2) %}
           {% if ((now() < offset_dawn) or (now() > offset_dusk)) and not is_state('sensor.house_state', 'night') %}
             on
