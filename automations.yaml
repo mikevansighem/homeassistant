@@ -1209,7 +1209,7 @@
   description: Send a notification when a new update is available.
   trigger:
   - platform: state
-    entity_id: sensor.latest_version
+    entity_id: sensor.latest_version_2
   condition:
   - condition: not
     conditions:
