@@ -42,8 +42,8 @@ tts:
 ###############################################################################
 
 spotify:
-  client_id: 2238efa0e7fe4088a4f2bd0c2f4d6050
-  client_secret: 09c5a5b2e32340468996b03654ae2a8d
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_client_secret
 
 ###############################################################################
 # INPUT SELECT
