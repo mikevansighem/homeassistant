@@ -6,13 +6,16 @@
 !.gitignore
 !.HA_VERSION
 !/*
+!/DOCS/*
+!/DOCS/images/*
+!/esphome/*
 
 # Ignore specific files
 ip_bans.yaml
 secrets.yaml
 known_devices.yaml
 
-# Ignore some file tupes
+# Ignore some file types
 *.db*
 *.log*
 *.json
