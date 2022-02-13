@@ -54,26 +54,26 @@ binary_sensor:
   - platform: status
     name: "${device_name} status"
     icon: "mdi:wifi"
-    
+
 sensor:
   - platform: homeassistant
     id: downstairs_temperature
     entity_id: sensor.downstairs_temperature
-    
+
   - platform: pid
     name: "PID Climate Result"
     type: RESULT
-    
+
   - platform: pid
     name: "PID Climate Heat"
     type: HEAT
-    
+
 output:
   - platform: esp8266_pwm
     pin: GPIO5
     frequency: 1000 Hz
     id: sample_output
-    
+
 climate:
   - platform: pid
     name: "PID Climate Controller"

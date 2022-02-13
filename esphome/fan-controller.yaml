@@ -107,16 +107,15 @@ output:
 
   - platform: gpio
     id: power_relay
-    pin: 
+    pin:
       number: GPIO13
       inverted: true
 
   - platform: gpio
     id: speed_relay
-    pin: 
+    pin:
       number: GPIO12
       inverted: true
-
 
 switch:
   - platform: template
