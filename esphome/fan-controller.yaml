@@ -106,12 +106,17 @@ output:
           - switch.turn_off: debug_speed_relay
 
   - platform: gpio
-    pin: GPIO13
     id: power_relay
+    pin: 
+      number: GPIO13
+      inverted: true
 
   - platform: gpio
-    pin: GPIO12
     id: speed_relay
+    pin: 
+      number: GPIO12
+      inverted: true
+
 
 switch:
   - platform: template

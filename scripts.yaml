@@ -355,3 +355,12 @@ fan_up:
         entity_id: fan.fan
   mode: single
   icon: mdi:fan-chevron-up
+fan_down:
+  alias: Fan - down
+  sequence:
+  - service: fan.decrease_speed
+    data: {}
+    target:
+      entity_id: fan.fan
+  mode: single
+  icon: mdi:fan-chevron-down

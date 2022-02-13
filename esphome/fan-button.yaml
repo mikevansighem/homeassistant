@@ -1,0 +1,105 @@
+################################################################################
+# SUBSTITUTIONS
+################################################################################
+
+substitutions:
+  device_name: fan-button
+  upper_devicename: Fan-Button
+  device_description: "Two buttons to control the speed of the fan."
+
+###############################################################################
+# GENERAL
+###############################################################################
+
+esphome:
+  name: $device_name
+  comment: "${device_description}"
+  platform: ESP8266
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable ota update with a password
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${device_name} fallback"
+    password: !secret esphome_fallback_password
+    ap_timeout: 15s
+
+captive_portal:
+
+# Enable webserver
+web_server:
+  port: 80
+  
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret encryption_key
+
+###############################################################################
+# SPECIFIC
+###############################################################################
+
+binary_sensor:
+
+  - platform: status
+    name: "${device_name} status"
+    icon: "mdi:wifi"
+
+  - platform: gpio
+    name: "${upper_devicename} button up"
+    pin:
+      number: GPIO5
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on: 50ms
+    on_press:
+      then:
+        - logger.log: "[INPUT] up pressed"
+        - homeassistant.service:
+            service: script.fan_up
+
+    on_click:
+      min_length: 800ms
+      max_length: 8000ms
+      then:
+        - logger.log: "[INPUT] up held, max speed"
+        - homeassistant.service:
+            service: script.fan_up
+        - homeassistant.service:
+            service: script.fan_up
+
+  - platform: gpio
+    name: "${upper_devicename} button down"
+    pin:
+      number: GPIO4
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on: 50ms
+    on_press:
+      then:
+        - logger.log: "[INPUT] down pressed"
+        - homeassistant.service:
+            service: script.fan_down
+
+    on_click:
+      min_length: 800ms
+      max_length: 8000ms
+      then:
+        # Turn off
+        - logger.log: "[INPUT] down held, off"
+        - homeassistant.service:
+            service: script.fan_down
+        - homeassistant.service:
+            service: script.fan_down
