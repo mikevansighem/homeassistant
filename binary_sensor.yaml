@@ -35,7 +35,7 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.20
+  host: 192.168.2.34
   name: "Opentherm controller"
   scan_interval: 30
 
