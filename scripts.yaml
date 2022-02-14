@@ -97,11 +97,10 @@ alarm_sound_alarm:
       entity_id: media_player.speaker_group
   - service: media_player.play_media
     data:
+      media_content_id: media-source://media_source/local/system/alarm_sound_long.mp3
       media_content_type: audio/mp3
-      media_content_id: https://www.dropbox.com/s/qtb2xln4vudjwpp/alarm_sound_long.mp3?dl=1
     target:
-      entity_id:
-      - media_player.speaker_group
+      entity_id: media_player.speaker_group
   - repeat:
       until:
       - condition: not
@@ -118,9 +117,11 @@ alarm_sound_alarm:
   - service: media_player.turn_off
     target:
       entity_id: media_player.speaker_group
+    data: {}
   - service: scene.turn_on
     target:
       entity_id: scene.before_alarm_sound
+    data: {}
   mode: single
   icon: mdi:volume-medium
 alarm_sound_pending:
@@ -133,8 +134,8 @@ alarm_sound_pending:
       entity_id: media_player.speaker_group
   - service: media_player.play_media
     data:
+      media_content_id: media-source://media_source/local/system/pending_sound_long.mp3
       media_content_type: audio/mp3
-      media_content_id: https://www.dropbox.com/s/38ng65r7u4w45vp/pending_sound_long.mp3?dl=1
     target:
       entity_id: media_player.speaker_group
   - repeat:
@@ -164,9 +165,11 @@ alarm_sound_pending:
   - service: media_player.turn_off
     target:
       entity_id: media_player.speaker_group
+    data: {}
   - service: scene.turn_on
     target:
       entity_id: scene.before_alarm_sound
+    data: {}
   mode: single
   icon: mdi:volume-medium
 alarm_sound_arming:
@@ -179,10 +182,10 @@ alarm_sound_arming:
       entity_id: media_player.living_room_home_mini
   - service: media_player.play_media
     data:
+      media_content_id: media-source://media_source/local/system/pending_sound_long.mp3
       media_content_type: audio/mp3
-      media_content_id: https://www.dropbox.com/s/38ng65r7u4w45vp/pending_sound_long.mp3?dl=1
     target:
-      entity_id: media_player.living_room_home_mini
+      entity_id: media_player.downstairs_speakers
   - repeat:
       until:
       - condition: not
@@ -210,9 +213,11 @@ alarm_sound_arming:
   - service: media_player.turn_off
     target:
       entity_id: media_player.living_room_home_mini
+    data: {}
   - service: scene.turn_on
     target:
       entity_id: scene.before_alarm_sound
+    data: {}
   mode: single
   icon: mdi:volume-medium
 sprinkler_stop:
