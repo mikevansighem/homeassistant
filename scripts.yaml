@@ -100,7 +100,8 @@ alarm_sound_alarm:
       media_content_id: media-source://media_source/local/system/alarm_sound_long.mp3
       media_content_type: audio/mp3
     target:
-      entity_id: media_player.speaker_group
+      entity_id:
+      - media_player.whole_home
   - repeat:
       until:
       - condition: not
@@ -137,7 +138,7 @@ alarm_sound_pending:
       media_content_id: media-source://media_source/local/system/pending_sound_long.mp3
       media_content_type: audio/mp3
     target:
-      entity_id: media_player.speaker_group
+      entity_id: media_player.whole_home
   - repeat:
       until:
       - condition: not
@@ -337,7 +338,7 @@ speak:
     state: home
   - service: tts.cloud_say
     data:
-      entity_id: media_player.speaker_group
+      entity_id: media_player.whole_home
       message: '{{message}}'
       language: nl-NL
 fan_up:
