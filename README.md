@@ -10,10 +10,12 @@
 
 This is my personal Home Assistant configuration.
 
+![Home Dashboard](DOCS/images/dashboard-home.png)
+
 ## :house_with_garden: House state
 
-The house state is used to schedule automations. Below table shows devices used 
-by the house state.
+The house state is a template sensor used to schedule most automations. Below table shows
+devices using the house state sensor.
 
 | House state        | Home         | Away       | Night           | Holiday    |
 |--------------------|--------------|------------|-----------------|------------|
@@ -22,7 +24,7 @@ by the house state.
 | Floor heating pump | On (3)       | Off        | Off (4)         | Off        |
 | Hot water          | On (3)       | Off        | Off (4)         | Off        |
 | Holiday lights     | Off          | Off        | Off             | On         |
-| ventilation        | On           | On         | On (5)          | Off        |
+| Ventilation fan    | On           | On         | On (5)          | Off        |
 
 Footnotes:
 
@@ -50,6 +52,10 @@ Using a simple Zigbee plug the floor heating pump is turned off whenever the cen
 ### Hot water
 
 The same boiler that serves the central heating systems is used for hot water. This is controlled in a similar manner as the boiler using the Weemos D1 Mini.
+
+## :star: Custom extra`s
+
+A full list of all custon addons, integrations and cards can be found [here](DOCS/custom_extras.md).
 
 ## :bookmark_tabs: License
 
