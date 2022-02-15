@@ -1,5 +1,7 @@
 # Air quality notes
 
+Some notes on good air quality.
+
 ## CO2
 
 - Groen: < 800 ppm
