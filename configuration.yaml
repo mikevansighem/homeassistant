@@ -13,7 +13,6 @@ scene: !include scenes.yaml
 binary_sensor: !include binary_sensor.yaml
 climate: !include climate.yaml
 alarm_control_panel: !include alarm_control_panel.yaml
-media_player: !include media_player.yaml
 utility_meter: !include utility_meter.yaml
 sensor: !include sensor.yaml
 recorder: !include recorder.yaml

@@ -10,7 +10,7 @@
 # PING NETWORK DEVICES
 
 - platform: ping
-  host: 192.168.2.100
+  host: 192.168.2.38
   name: "Sprinkler controller"
   scan_interval: 30
 
@@ -30,7 +30,7 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.16
+  host: 192.168.2.36
   name: "KPN TV"
   scan_interval: 30
 

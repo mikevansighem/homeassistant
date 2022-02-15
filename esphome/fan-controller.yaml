@@ -109,13 +109,13 @@ output:
     id: power_relay
     pin:
       number: GPIO13
-      inverted: true
+      inverted: false
 
   - platform: gpio
     id: speed_relay
     pin:
       number: GPIO12
-      inverted: true
+      inverted: false
 
 switch:
   - platform: template
@@ -207,7 +207,7 @@ binary_sensor:
 
 sensor:
 
-  # Sensor to trach the speed of the fan in history
+  # Sensor to trace the speed of the fan in history
   - platform: template
     name: "${upper_devicename} speed"
     icon: mdi:fan
@@ -223,4 +223,23 @@ sensor:
       } else {
         return 0;
       }
-    update_interval: 1s
+    update_interval: 500ms
+
+text_sensor:
+
+  # Sensor to show current speed in the UI
+  - platform: template
+    name: "${upper_devicename} friendly speed"
+    icon: mdi:fan
+    lambda: |-
+      if (id(my_fan).state) {
+        if (id(my_fan).speed == 1) {
+          return {"Medium"};
+        } else {
+          return {"High"};
+        }
+      } else {
+        return {"Off"};
+      }
+    update_interval: 500ms
+

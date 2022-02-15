@@ -1299,7 +1299,7 @@
     to: Danger
     for:
       hours: 0
-      minutes: 5
+      minutes: 2
       seconds: 0
   - platform: state
     entity_id: sensor.air_quality_state
