@@ -1437,3 +1437,27 @@
           uri: /lovelace/network
       title: Battery low
   mode: single
+- id: '1644948589594'
+  alias: Lights - Well flicker
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.well
+    to: 'on'
+  condition: []
+  action:
+  - repeat:
+      until:
+      - condition: state
+        entity_id: light.well
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data_template:
+          entity_id: light.well
+          brightness: '{{ (range(150, 200)|random) }}'
+          color_temp: '{{ (range(400, 500)|random) }}'
+          transition: 1
+      - delay:
+          milliseconds: '{{ (range(200, 500)|random) }}'
+  mode: single
