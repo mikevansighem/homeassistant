@@ -30,7 +30,11 @@ Below most of the hardware used in my smart home.
 
 ## Ventilation
 
-My whole home ventilation fan is controlled by a [Weemos D1 mini Pro](https://www.reichelt.nl/nl/nl/d1-mini-pro-esp8266-cp2104-set-met-antenne-d1-mini-pro-ant-p266067.html?PROVID=2809&gclid=Cj0KCQiAu62QBhC7ARIsALXijXQn38Q0QUMiXuzFMO3BO-2k9uRrYD0neozTwTfkxbrbTWj1Ko_sDvkaAhOcEALw_wcB) running ESPHome. To handle the power required a [2 channel solid state realy board](https://www.kiwi-electronics.nl/nl/2-kanaals-solid-state-relais-module-3590?language=nl-nl&currency=EUR&gclid=Cj0KCQiAu62QBhC7ARIsALXijXQdtHvYIT8GQoag8DIRF1jLQdCzRRlR2_2QVZZVt1MnALTHdgkp2toaArXbEALw_wcB) is used. Previously I used regular relays but they were having "sticking" issues due to the ramp-up current spike produced by the fan.
+My whlation fan is controlled by a [Weemos D1 mini Pro](https://www.reichelt.nl/nl/nl/d1-mini-pro-esp8266-cp2104-set-met-antenne-d1-mini-pro-ant-pole home venti266067.html?PROVID=2809&gclid=Cj0KCQiAu62QBhC7ARIsALXijXQn38Q0QUMiXuzFMO3BO-2k9uRrYD0neozTwTfkxbrbTWj1Ko_sDvkaAhOcEALw_wcB) running ESPHome. The AC fan has a power and a speed lead. By switching the speed connection the speed can be changed from medium to high. To handle the power required a [2 channel solid state relay board](https://www.kiwi-electronics.nl/nl/2-kanaals-solid-state-relais-module-3590?language=nl-nl&currency=EUR&gclid=Cj0KCQiAu62QBhC7ARIsALXijXQdtHvYIT8GQoag8DIRF1jLQdCzRRlR2_2QVZZVt1MnALTHdgkp2toaArXbEALw_wcB) is used. Previously I used regular relays but they were having "sticking" issues due to the ramp-up current spike produced by the fan.
+
+![Fan-Controller-Layout](DOCS/images/hardware-fan-controller.png)
+
+Checkout the [ESPHome code](esphome/fan-controller.yaml) and [Fritzing file](DOCS/layouts/fan-controller.fzz).
 
 ## Boiler
 

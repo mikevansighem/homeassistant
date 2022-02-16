@@ -10,6 +10,9 @@
 !/DOCS/images/*
 !/esphome/*
 
+# Include Fritzing files
+!*.fzz
+
 # Ignore specific files
 ip_bans.yaml
 secrets.yaml
