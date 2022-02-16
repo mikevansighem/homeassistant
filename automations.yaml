@@ -1213,7 +1213,7 @@
     default: []
   mode: single
 - id: '1636480621793'
-  alias: Utility - Notify for update
+  alias: Utility - Notify for Home Assiatant update
   description: Send a notification when a new update is available.
   trigger:
   - platform: state
@@ -1222,7 +1222,7 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: sensor.latest_version
+      entity_id: sensor.latest_version_2
       state: unknown
   - condition: template
     value_template: '{{ iif( states(''sensor.latest_version_2'') != states(''sensor.current_version_2'')
@@ -1436,4 +1436,28 @@
           title: More info
           uri: /lovelace/network
       title: Battery low
+  mode: single
+- id: '1644948589594'
+  alias: Lights - Well flicker
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.well
+    to: 'on'
+  condition: []
+  action:
+  - repeat:
+      until:
+      - condition: state
+        entity_id: light.well
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data_template:
+          entity_id: light.well
+          brightness: '{{ (range(200, 250)|random) }}'
+          color_temp: '{{ (range(400, 500)|random) }}'
+          transition: 1
+      - delay:
+          milliseconds: '{{ (range(200, 500)|random) }}'
   mode: single
