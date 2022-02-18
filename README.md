@@ -12,9 +12,15 @@ This is my personal Home Assistant configuration.
 
 ![Home Dashboard](DOCS/images/dashboard-home.png)
 
-## :house_with_garden: House state
+## :computer: Hardware
 
-The house state is a template sensor used to schedule most automations. Below table shows
+A list of most hardware used can be found [here](DOCS/hardware.md).
+
+## :house_with_garden: Automation based on "House state"
+
+The house state is a template sensor used to schedule most automations. 
+It takes into account precense, time of day and work schedule. 
+I use this method to simplify the logic within all of my automations. Below table shows
 devices using the house state sensor.
 
 | House state        | Home         | Away       | Night           | Holiday    |
@@ -55,9 +61,15 @@ Using a simple Zigbee plug the floor heating pump is turned off whenever the cen
 
 The same boiler that serves the central heating systems is used for hot water. This is controlled in a similar manner as the boiler using the Weemos D1 Mini.
 
-## :computer: Hardware
+## :sunflower: Plants
 
-A list of most hardware used can be found [here](DOCS/hardware.md).
+### Sprinklers
+
+My sprinkler systems is controlled by Home Assistant trough a Raspberry Pi running OpenSprinkler. Full hardware list can be found [here](https://github.com/mikevansighem/homeassistant/blob/master/DOCS/hardware.md#sprinkler). Originally I used OpenSprinkler its built in watering prediction. However I found it always was a bit off, especially in spring and autumn. I switched to calculating the watering amount based on Buienradar weather data, specifically ground temperature, humidity and rain in the last 24 hours.
+
+### Indoor grow light
+
+Some of my indoor plants are in rather dark corners. To ensure they get enough light I use purple grow lights. Since they are in the living room and you don't want them on when you home theay are switched on and off based on the house state. Since the lights itself are not smart I control them with a Hue plug.
 
 ## :star: Custom extras
 
