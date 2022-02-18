@@ -42,6 +42,8 @@ jobs:
     steps:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v2.4.0
+      - name: Redact custom componets
+        run: python hass_ci_ignore.py
       - name: 🚀 Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.3
         with:

@@ -1,0 +1,8 @@
+# Any text included in this file will be removed from configuration.yaml
+# prior to running the configuration check. This is to stop it failing
+# on custom components from HACS.
+
+spotcast:
+  sp_dc: !secret sp_dc
+  sp_key: !secret sp_key
+  country: NL
