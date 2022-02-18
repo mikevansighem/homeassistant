@@ -1461,3 +1461,36 @@
       - delay:
           milliseconds: '{{ (range(200, 500)|random) }}'
   mode: single
+- id: '1645177798808'
+  alias: Lights - Grow light
+  description: Turn on growlight when nobody is home and the sun is up.
+  trigger:
+  - platform: state
+    entity_id: sensor.grow_light_scheduler
+    to: 'true'
+    id: 'ON'
+  - platform: state
+    entity_id: sensor.grow_light_scheduler
+    to: 'false'
+    id: 'OFF'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - type: turn_on
+        device_id: e39945bdea53a2cf8d8d9f5ad9aeab9e
+        entity_id: light.grow_light
+        domain: light
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - type: turn_off
+        device_id: e39945bdea53a2cf8d8d9f5ad9aeab9e
+        entity_id: light.grow_light
+        domain: light
+    default: []
+  mode: single

@@ -444,6 +444,19 @@
             mdi:party-popper
           {% endif %}
 
+    # A template to determine if the growlight should be on.
+    # It will turn on the grow light if nobody is home and the sun is up.
+    grow_light_scheduler:
+      friendly_name: "Grow light scheduler"
+      value_template: >-
+        {% set house = states('sensor.house_state') %}
+        {% set sun = states('sun.sun') %}
+        {%if ((house == 'away') or (house == 'holiday')) and (sun == 'above_horizon')%}
+          true
+        {%else%}
+          false
+        {%endif%}
+
     # Gas costs including fixed costs to be fed into an utility meter
     daily_gas_costs_temp:
       friendly_name: "Daily gas costs temp"

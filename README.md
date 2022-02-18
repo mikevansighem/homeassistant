@@ -25,6 +25,7 @@ devices using the house state sensor.
 | Hot water          | On (3)       | Off        | Off (4)         | Off        |
 | Holiday lights     | Off          | Off        | Off             | On         |
 | Ventilation fan    | On           | On         | On (5)          | Off        |
+| Grow light         | Off          | On (6)     | Off             | On (6)     |
 
 Footnotes:
 
@@ -33,6 +34,7 @@ Footnotes:
 3. Switched on early using helper to pre-heat the home.
 4. Switched off early using helper to preserve energy.
 5. Speed limited to low.
+6. If sun is above the horizon. This to give the plants a rest during the night.
 
 ## :bell: Alarm
 
