@@ -58,7 +58,7 @@ binary_sensor:
   - platform: gpio
     name: "${upper_devicename} button up"
     pin:
-      number: GPIO5
+      number: GPIO4
       mode: INPUT_PULLUP
       inverted: true
     filters:
@@ -82,7 +82,7 @@ binary_sensor:
   - platform: gpio
     name: "${upper_devicename} button down"
     pin:
-      number: GPIO4
+      number: GPIO5
       mode: INPUT_PULLUP
       inverted: true
     filters:
