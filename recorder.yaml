@@ -87,3 +87,4 @@ include:
     # Other
     - input_boolean.holiday
     - switch.floor_heating_pump_on_off
+    - sensor.outdoor_lights
