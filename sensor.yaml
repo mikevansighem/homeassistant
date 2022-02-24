@@ -242,16 +242,21 @@
     outdoor_lights:
       friendly_name: "Outdoor lights"
       value_template: >-
+        {% set mod_now = now().hour * 60 + now().minute %}
         {%set dawn = as_local(as_datetime(state_attr('sun.sun', 'next_dawn')))%}
         {%set dusk = as_local(as_datetime(state_attr('sun.sun', 'next_dusk')))%}
 
         {% set hour = state_attr('input_datetime.outdoor_lights_offset', 'hour')%}
         {% set minute = state_attr('input_datetime.outdoor_lights_offset', 'minute')%}
-        {%set offset_dawn = dawn + timedelta( hours = hour, minutes = minute ) - timedelta( days = 1 )%}
+        {%set offset_dawn = dawn + timedelta( hours = hour, minutes = minute )%}
         {%set offset_dusk = dusk - timedelta( hours = hour, minutes = minute )%}
+        {%set mod_dawn = offset_dawn.hour * 60 + offset_dawn.minute %}
+        {%set mod_dusk = offset_dusk.hour * 60 + offset_dusk.minute %}
 
-        {% if (is_state('sensor.house_state', 'home') or states('proximity.home_mike')|int(10) < 2 or states('proximity.home_anneloes')|int(10) < 2) %}
-          {% if ((now() < offset_dawn) or (now() > offset_dusk)) and not is_state('sensor.house_state', 'night') %}
+        {% if ((is_state('sensor.house_state', 'home') or states('proximity.home_mike')|int(10) < 2 or states('proximity.home_anneloes')|int(10) < 2)) and not is_state('sensor.house_state', 'night') %}
+          {% if mod_now < mod_dawn %}
+            on 
+          {% elif mod_now > mod_dusk %}
             on
           {%else%}
             off
