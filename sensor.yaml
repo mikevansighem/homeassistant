@@ -255,7 +255,7 @@
 
         {% if ((is_state('sensor.house_state', 'home') or states('proximity.home_mike')|int(10) < 2 or states('proximity.home_anneloes')|int(10) < 2)) and not is_state('sensor.house_state', 'night') %}
           {% if mod_now < mod_dawn %}
-            on 
+            on
           {% elif mod_now > mod_dusk %}
             on
           {%else%}
