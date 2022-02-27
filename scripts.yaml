@@ -116,9 +116,9 @@ alarm_sound_alarm:
           seconds: 0
           milliseconds: 100
   - service: media_player.turn_off
-    target:
-      entity_id: media_player.speaker_group
     data: {}
+    target:
+      entity_id: media_player.whole_home
   - service: scene.turn_on
     target:
       entity_id: scene.before_alarm_sound
@@ -164,9 +164,9 @@ alarm_sound_pending:
       entity_id: alarm_control_panel.home_alarm
       state: armed_away
   - service: media_player.turn_off
-    target:
-      entity_id: media_player.speaker_group
     data: {}
+    target:
+      entity_id: media_player.whole_home
   - service: scene.turn_on
     target:
       entity_id: scene.before_alarm_sound
@@ -212,9 +212,9 @@ alarm_sound_arming:
       entity_id: alarm_control_panel.home_alarm
       state: armed_night
   - service: media_player.turn_off
-    target:
-      entity_id: media_player.living_room_home_mini
     data: {}
+    target:
+      entity_id: media_player.downstairs_speakers
   - service: scene.turn_on
     target:
       entity_id: scene.before_alarm_sound
