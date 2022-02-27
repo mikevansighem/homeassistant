@@ -1178,8 +1178,13 @@
   condition: []
   action:
   - service: media_player.turn_off
+    data: {}
     target:
-      entity_id: media_player.speaker_group
+      entity_id:
+      - media_player.bedroom_home_mini
+      - media_player.dining_room_speaker
+      - media_player.living_room_home_mini
+      - media_player.attict_speaker
   mode: single
 - id: '1642531564644'
   alias: Air - Fan control
