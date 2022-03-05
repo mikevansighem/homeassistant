@@ -83,9 +83,11 @@
   action:
   - service: scene.create
     data:
-      snapshot_entities: media_player.speaker_group
+      snapshot_entities: media_player.attict_speaker media_player.bedroom_home_mini
+        media_player.dining_room_speaker media_player.living_room_home_mini
       scene_id: before_alarm_sound
   - service: script.alarm_sound_alarm
+    data: {}
   - service: notify.notify
     data:
       message: The alarm has been triggered at {{ states('sensor.time') }}.
@@ -103,6 +105,7 @@
           title: Disarm
           uri: /lovelace/alarm
   - service: script.flash_licht
+    data: {}
   mode: single
 - id: '1629106372874'
   alias: Alarm - Pending
