@@ -62,6 +62,13 @@
   - condition: state
     entity_id: alarm_control_panel.home_alarm
     state: armed_away
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: 21772c2aaa1ef8b8657a520b4486f31f
+      domain: vacuum
+      entity_id: vacuum.noenoe
+      type: is_cleaning
   action:
   - service: alarm_control_panel.alarm_trigger
     target:
@@ -283,6 +290,13 @@
   - condition: state
     entity_id: alarm_control_panel.home_alarm
     state: armed_night
+  - condition: not
+    conditions:
+    - condition: device
+      device_id: 21772c2aaa1ef8b8657a520b4486f31f
+      domain: vacuum
+      entity_id: vacuum.noenoe
+      type: is_cleaning
   action:
   - service: alarm_control_panel.alarm_trigger
     target:
@@ -1413,4 +1427,43 @@
         entity_id: light.grow_light
         domain: light
     default: []
+  mode: single
+- id: '1647193940696'
+  alias: Vacuum - Start when away
+  description: Clean when away and battery full.
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: away
+  condition:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  - condition: state
+    entity_id: sensor.noenoe_battery_level
+    state: '100'
+  action:
+  - device_id: 21772c2aaa1ef8b8657a520b4486f31f
+    domain: vacuum
+    entity_id: vacuum.noenoe
+    type: clean
+  mode: single
+- id: '1647194306332'
+  alias: Vacuum - Notify when bin full
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.noenoe_bin_full
+    to: 'on'
+  condition: []
+  action:
+  - service: script.notify_who_is_home
+    data:
+      message: NoeNoe wil geleegd worden.
+      title: NoeNoe vol ♻️
+      timeout: 0
+      group: Vacuum
+  - service: script.speak
+    data:
+      message: Noenoe wil geleegd worden.
   mode: single
