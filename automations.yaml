@@ -1442,11 +1442,18 @@
   - condition: state
     entity_id: sensor.noenoe_battery_level
     state: '100'
+  - condition: state
+    entity_id: input_boolean.vacumed
+    state: 'off'
   action:
   - device_id: 21772c2aaa1ef8b8657a520b4486f31f
     domain: vacuum
     entity_id: vacuum.noenoe
     type: clean
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.vacumed
   mode: single
 - id: '1647194306332'
   alias: Vacuum - Notify when bin full
@@ -1466,4 +1473,18 @@
   - service: script.speak
     data:
       message: Noenoe wil geleegd worden.
+  mode: single
+- id: '1647452482457'
+  alias: Vacuum - Reset vacumed helper
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: night
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.vacumed
   mode: single
