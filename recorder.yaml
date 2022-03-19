@@ -86,6 +86,7 @@ include:
 
     # Other
     - input_boolean.holiday
+    - input_boolean.quiet
     - switch.floor_heating_pump_on_off
     - sensor.outdoor_lights
     - vacuum.noenoe
