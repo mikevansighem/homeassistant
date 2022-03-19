@@ -271,8 +271,8 @@
       unit_of_measurement: "%"
       value_template: >-
           {% set rain = states('sensor.buienradar_rain_last_24h') | float(0) %}
-          {% set humidity = states('sensor.avarage_humidity') | float(0) %}
-          {% set temperature = states('sensor.avarage_ground_temperature') | float(0) %}
+          {% set humidity = states('sensor.average_humidity') | float(0) %}
+          {% set temperature = states('sensor.average_ground_temperature') | float(0) %}
 
           {% if temperature == 0 or humidity == 0 %}
             0
@@ -293,7 +293,7 @@
                 {{ level | int(0) }}
             {% endif %}
           {% endif %}
-
+          
     # Calculate watering time for front sprinkler
     front_watering_time:
       friendly_name: "Front watering time"
