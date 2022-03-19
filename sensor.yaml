@@ -293,7 +293,7 @@
                 {{ level | int(0) }}
             {% endif %}
           {% endif %}
-          
+
     # Calculate watering time for front sprinkler
     front_watering_time:
       friendly_name: "Front watering time"
