@@ -306,6 +306,13 @@ input_number:
 
 input_datetime:
 
+  watering_time:
+    name: Watering time
+    icon: mdi:clock
+    has_time: true
+    has_date: false
+    initial: "00:50"
+
   # Heating
 
   heating_pre_heat:
