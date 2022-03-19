@@ -1464,12 +1464,12 @@
     to: 'on'
   condition: []
   action:
-  - service: script.notify_who_is_home
+  - service: notify.notify
     data:
       message: NoeNoe wil geleegd worden.
       title: NoeNoe vol ♻️
-      timeout: 0
-      group: Vacuum
+      data:
+        group: Vacuum
   - service: script.speak
     data:
       message: Noenoe wil geleegd worden.
@@ -1487,4 +1487,26 @@
     data: {}
     target:
       entity_id: input_boolean.vacumed
+  mode: single
+- id: '1647545719116'
+  alias: Vacuum - Stop if stuck
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: vacuum.noenoe
+    to: error
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 21772c2aaa1ef8b8657a520b4486f31f
+    entity_id: switch.irobot_1ecca3a2fc0241908a42273509b043d3_internet_access
+    domain: switch
+  - service: notify.notify
+    data:
+      message: NoeNoe heeft hulp nodig.
+      title: NoeNoe in de nesten ❌
   mode: single
