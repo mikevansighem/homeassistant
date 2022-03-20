@@ -165,7 +165,7 @@ input_number:
   base_humidity:
     name: Base humidity
     icon: mdi:water-percent
-    initial: 75
+    initial: 70
     min: 0
     max: 100
     step: 1
@@ -176,7 +176,7 @@ input_number:
   base_temperature:
     name: Base temperature
     icon: mdi:thermometer
-    initial: 75
+    initial: 20
     min: 0
     max: 100
     step: 1
@@ -311,7 +311,7 @@ input_datetime:
     icon: mdi:clock
     has_time: true
     has_date: false
-    initial: "00:50"
+    initial: "5:00"
 
   # Heating
 
