@@ -132,7 +132,7 @@ alarm_sound_pending:
     data:
       volume_level: '{{states(''input_number.aux_volume'') | float}}'
     target:
-      entity_id: media_player.speaker_group
+      entity_id: media_player.whole_home
   - service: media_player.play_media
     data:
       media_content_id: media-source://media_source/local/system/pending_sound_long.mp3
@@ -180,13 +180,13 @@ alarm_sound_arming:
     data:
       volume_level: '{{states(''input_number.aux_volume'') | float}}'
     target:
-      entity_id: media_player.living_room_home_mini
+      entity_id: media_player.whole_home
   - service: media_player.play_media
     data:
       media_content_id: media-source://media_source/local/system/pending_sound_long.mp3
       media_content_type: audio/mp3
     target:
-      entity_id: media_player.downstairs_speakers
+      entity_id: media_player.whole_home
   - repeat:
       until:
       - condition: not
@@ -214,7 +214,7 @@ alarm_sound_arming:
   - service: media_player.turn_off
     data: {}
     target:
-      entity_id: media_player.downstairs_speakers
+      entity_id: media_player.whole_home
   - service: scene.turn_on
     target:
       entity_id: scene.before_alarm_sound

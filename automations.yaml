@@ -125,9 +125,8 @@
   action:
   - service: scene.create
     data:
-      snapshot_entities: media_player.attict_speaker media_player.bedroom_home_mini
-        media_player.dining_room_speaker media_player.living_room_home_mini
       scene_id: before_alarm_sound
+      snapshot_entities: media_player.whole_home
   - service: notify.notify
     data:
       message: The alarm was triggerd and will sound in 30 seconds.
@@ -160,9 +159,8 @@
   action:
   - service: scene.create
     data:
-      snapshot_entities: media_player.attict_speaker media_player.bedroom_home_mini
-        media_player.dining_room_speaker media_player.living_room_home_mini
       scene_id: before_alarm_sound
+      snapshot_entities: media_player.whole_home
   - service: script.alarm_sound_arming
     data: {}
   mode: single
