@@ -367,7 +367,7 @@
         {%set old = as_timestamp(strptime(states('sensor.time_utc'), '%H:%M'))%}
         {%set new = as_timestamp(strptime(states('sensor.time'), '%H:%M'))%}
         {% set dif = new - old %}
-        {% set tnow = as_timestamp(strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208988800))+dif %}
+        {% set tnow = as_timestamp(strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208985200))+dif %}
 
         {% set early_start = state_attr('input_datetime.heating_pre_heat', 'timestamp') %}
         {% set night_end_work = state_attr('input_datetime.end_night_workday', 'timestamp') %}
