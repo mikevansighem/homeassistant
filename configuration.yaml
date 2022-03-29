@@ -110,7 +110,6 @@ input_number:
   back_sprinkler_base_time:
     name: Back sprinkler base time
     icon: mdi:clock
-    initial: 2
     min: 0
     max: 10
     step: 1
@@ -121,7 +120,6 @@ input_number:
   front_sprinkler_base_time:
     name: Front sprinkler base time
     icon: mdi:clock
-    initial: 2
     min: 0
     max: 10
     step: 1
@@ -154,7 +152,6 @@ input_number:
   rain_threshold:
     name: Rain threshold
     icon: mdi:weather-pouring
-    initial: 2
     min: 0
     max: 20
     step: 1
@@ -165,7 +162,6 @@ input_number:
   base_humidity:
     name: Base humidity
     icon: mdi:water-percent
-    initial: 70
     min: 0
     max: 100
     step: 1
@@ -176,7 +172,6 @@ input_number:
   base_temperature:
     name: Base temperature
     icon: mdi:thermometer
-    initial: 20
     min: 0
     max: 100
     step: 1
@@ -187,7 +182,6 @@ input_number:
   watering_cutoff:
     name: Watering cutoff
     icon: mdi:sprinkler-variant
-    initial: 75
     min: 0
     max: 100
     step: 1
