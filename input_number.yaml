@@ -1,0 +1,199 @@
+###############################################################################
+# INPUT NUMBER
+###############################################################################
+
+# Volume for alarm
+alarm_volume:
+  name: Alarm volume
+  icon: mdi:volume-high
+  min: 0
+  max: 1
+  step: 0.1
+  mode: slider
+
+# Volume for pending and arming beep
+aux_volume:
+  name: Aux volume
+  icon: mdi:volume-medium
+  min: 0
+  max: 1
+  step: 0.1
+  mode: slider
+
+# Sprinkler base time
+back_sprinkler_base_time:
+  name: Back sprinkler base time
+  icon: mdi:clock
+  min: 0
+  max: 10
+  step: 1
+  unit_of_measurement: "min"
+  mode: box
+
+# Sprinkler base time
+front_sprinkler_base_time:
+  name: Front sprinkler base time
+  icon: mdi:clock
+  min: 0
+  max: 10
+  step: 1
+  unit_of_measurement: "min"
+  mode: box
+
+# Sprinkler manual run time
+back_sprinkler_time:
+  name: Back sprinkler time
+  icon: mdi:clock
+  initial: 2.5
+  min: 0
+  max: 10
+  step: 0.1
+  unit_of_measurement: "min"
+  mode: box
+
+# Sprinkler manual run time
+front_sprinkler_time:
+  name: Front sprinkler time
+  icon: mdi:clock
+  initial: 2
+  min: 0
+  max: 10
+  step: 0.1
+  unit_of_measurement: "min"
+  mode: box
+
+# If rain is above this number no watering
+rain_threshold:
+  name: Rain threshold
+  icon: mdi:weather-pouring
+  min: 0
+  max: 20
+  step: 1
+  unit_of_measurement: "mm"
+  mode: box
+
+# Avarage humidity
+base_humidity:
+  name: Base humidity
+  icon: mdi:water-percent
+  min: 0
+  max: 100
+  step: 1
+  unit_of_measurement: "%"
+  mode: box
+
+# Avarage temperature
+base_temperature:
+  name: Base temperature
+  icon: mdi:thermometer
+  min: 0
+  max: 100
+  step: 1
+  unit_of_measurement: "°C"
+  mode: box
+
+# Cutoff sprinkler entirely
+watering_cutoff:
+  name: Watering cutoff
+  icon: mdi:sprinkler-variant
+  min: 0
+  max: 100
+  step: 1
+  unit_of_measurement: "%"
+  mode: box
+
+# Temperature for hot water
+hot_water_temperature:
+  name: Hot water temperature
+  icon: mdi:water-pump
+  min: 45
+  max: 85
+  step: 1
+  unit_of_measurement: "°C"
+  mode: box
+
+# Night temperature
+night_temperature:
+  name: Night temperature
+  icon: mdi:thermometer
+  min: 0
+  max: 30
+  step: 0.5
+  unit_of_measurement: "°C"
+  mode: box
+
+# Day temperature
+day_temperature:
+  name: Day temperature
+  icon: mdi:thermometer
+  min: 0
+  max: 30
+  step: 0.5
+  unit_of_measurement: "°C"
+  mode: box
+
+# Evening temperature
+evening_temperature:
+  name: Evening temperature
+  icon: mdi:thermometer
+  min: 0
+  max: 30
+  step: 0.5
+  unit_of_measurement: "°C"
+  mode: box
+
+# Morning  temperature
+morning_temperature:
+  name: Morning temperature
+  icon: mdi:thermometer
+  min: 0
+  max: 30
+  step: 0.5
+  unit_of_measurement: "°C"
+  mode: box
+
+# Energy tariffs
+gas_tariff:
+  name: Gas tariff
+  icon: mdi:cash
+  min: 0
+  max: 500
+  step: 0.000001
+  unit_of_measurement: "€/m³"
+  mode: box
+
+fixed_gas_tariff:
+  name: Fixed gas tariff
+  icon: mdi:cash
+  min: 0
+  max: 500
+  step: 0.01
+  unit_of_measurement: "€/Year"
+  mode: box
+
+fixed_energy_tariff:
+  name: Fixed energy tariff
+  icon: mdi:cash
+  min: -500
+  max: 500
+  step: 0.01
+  unit_of_measurement: "€/Year"
+  mode: box
+
+energy_tariff_1:
+  name: Energy tariff off-peak
+  icon: mdi:cash
+  min: 0
+  max: 100
+  step: 0.000001
+  unit_of_measurement: "€/kWh"
+  mode: box
+
+energy_tariff_2:
+  name: Energy tariff peak
+  icon: mdi:cash
+  min: 0
+  max: 100
+  step: 0.000001
+  unit_of_measurement: "€/kWh"
+  mode: box

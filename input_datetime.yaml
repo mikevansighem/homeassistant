@@ -1,0 +1,115 @@
+###############################################################################
+# INPUT DATETIME
+###############################################################################
+
+watering_time:
+  name: Watering time
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+# Heating
+
+heating_pre_heat:
+  name: Heating pre-heat
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+heating_early_stop:
+  name: Heating early stop
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+floor_heating_pump_delay:
+  name: Floor heating pump delay
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+# Hot water
+
+hot_water_pre_heat:
+  name: Hot water pre-heat
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+hot_water_early_stop:
+  name: Hot water early stop
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+# Time of day
+
+morning_end:
+  name: Morning end
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+evening_start:
+  name: Evening start
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+end_night_workday:
+  name: End night - workday
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+start_night_workday:
+  name: Start night - workday
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+end_night_free_day:
+  name: End night - free day
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+start_night_free_day:
+  name: Start night - free day
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+# Alarm
+
+night_alarm_delay:
+  name: Night alarm delay
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+night_alarm_early_stop:
+  name: Night alarm early stop
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+# Lights
+
+light_motion_timeout_short:
+  name: Light motion timeout - short
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+light_motion_timeout_long:
+  name: Light motion timeout - long
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+outdoor_lights_offset:
+  name: Outdoor lights offset
+  icon: mdi:clock
+  has_time: true
+  has_date: false

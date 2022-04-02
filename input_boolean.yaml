@@ -1,0 +1,19 @@
+###############################################################################
+# INPUT BOOLEAN
+###############################################################################
+
+quiet:
+  name: Quiet
+  icon: mdi:volume-off
+
+holiday:
+  name: Holiday
+  icon: mdi:beach
+
+first_down:
+  name: First down
+  icon: mdi:motion-sensor
+
+vacumed:
+  name: vacumed
+  icon: mdi:vacuum

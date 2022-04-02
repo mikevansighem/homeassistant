@@ -1,0 +1,27 @@
+###############################################################################
+# INPUT SELECT
+###############################################################################
+
+# Manual override for house state
+house_state_override:
+  name: House state override
+  options:
+    - auto
+    - home
+    - away
+    - night
+    - holiday
+  initial: auto
+  icon: mdi:home
+
+# Manual override for climate state
+climate_period_override:
+  name: Climate period override
+  options:
+    - auto
+    - morning
+    - day
+    - evening
+    - night
+  initial: auto
+  icon: mdi:home-thermometer
