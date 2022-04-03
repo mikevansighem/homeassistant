@@ -30,6 +30,10 @@ Below all of my current dashboard views. Further explanation will follow.
 
 ![Sprinkler dashboard](images/dashboard-sprinkler.png)
 
+## Media
+
+![Sprinkler dashboard](images/dashboard-media.png)
+
 ## Network
 
 ![Network dashboard](images/dashboard-network.png)
