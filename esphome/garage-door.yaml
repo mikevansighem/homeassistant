@@ -94,6 +94,7 @@ cover:
   - platform: template
     device_class: garage
     name: "Garage door"
+    id: garage_door
 
     # Used to determine the state.
     lambda: |-
@@ -108,6 +109,15 @@ cover:
       }
 
     open_action:
-      - switch.turn_on: garage_door_relay
+      if:
+        condition:
+          lambda: return (id(garage_door).position != COVER_OPEN);
+        then:
+          - switch.turn_on: garage_door_relay
+
     close_action:
-      - switch.turn_on: garage_door_relay
+      if:
+        condition:
+          lambda: return (id(garage_door).position != COVER_CLOSED);
+        then:
+          - switch.turn_on: garage_door_relay

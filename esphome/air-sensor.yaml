@@ -52,6 +52,43 @@ api:
 binary_sensor:
 
   - platform: status
-    name: "${device_name} status"
+    name: "${upper_devicename} status"
     icon: "mdi:wifi"
-    
+
+# Setup i2c for CCS811 Air quality sensor
+i2c:
+  sda: D0
+  scl: D1
+
+sensor:
+
+  # CCS811 Air quality sensor
+  - platform: ccs811
+    address: 0x5A
+    update_interval: 30s
+
+    eco2:
+      name: "${upper_devicename} CO2"
+      device_class: "carbon_dioxide"
+      state_class: "measurement"
+
+    tvoc:
+      name: "${upper_devicename} Volatile organic compounds"
+      device_class: "volatile_organic_compounds"
+      state_class: "measurement"
+
+  # Humdity and temperature by DHT22 Shield Wemos D1.
+  - platform: dht
+    update_interval: 30s
+    pin: D2
+
+    temperature:
+      name: "${upper_devicename} Temperature"
+      device_class: "temperature"
+      state_class: "measurement"
+
+    humidity:
+      name: "${upper_devicename} Humidity"
+      device_class: "humidity"
+      state_class: "measurement"
+
