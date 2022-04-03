@@ -1435,9 +1435,6 @@
     to: away
   condition:
   - condition: state
-    entity_id: binary_sensor.workday_sensor
-    state: 'on'
-  - condition: state
     entity_id: sensor.noenoe_battery_level
     state: '100'
   - condition: state
