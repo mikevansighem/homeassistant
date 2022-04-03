@@ -87,8 +87,8 @@ switch:
     id: garage_door_relay
     name: "Toggle garage door"
     on_turn_on:
-    - delay: 500ms
-    - switch.turn_off: garage_door_relay
+      - delay: 500ms
+      - switch.turn_off: garage_door_relay
 
 cover:
   - platform: template
