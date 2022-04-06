@@ -19,8 +19,14 @@ include:
     - sensor.climate_period
     - sensor.downstairs_temperature
     - sensor.boiler_target_temperature
-    - sensor.watering_level
     - sensor.boiler_temperature
+
+    # Watering
+    - sensor.watering_level
+    - sensor.average_ground_temperature
+    - sensor.average_humidity
+    - sensor.buienradar_ground_temperature
+    - sensor.buienradar_humidity
 
     # Network
     - sensor.speedtest_download
