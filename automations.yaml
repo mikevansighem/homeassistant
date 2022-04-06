@@ -1144,16 +1144,9 @@
   description: Send a notification when a new update is available.
   trigger:
   - platform: state
-    entity_id: sensor.latest_version_2
-  condition:
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.latest_version_2
-      state: unknown
-  - condition: template
-    value_template: '{{ iif( states(''sensor.latest_version_2'') != states(''sensor.current_version_2'')
-      )}}'
+    entity_id: binary_sensor.latest_version_update_available
+    to: 'on'
+  condition: []
   action:
   - service: notify.mobile_app_sm_g960f
     data:
