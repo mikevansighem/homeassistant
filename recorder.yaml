@@ -10,7 +10,6 @@ include:
     - alarm_control_panel
     - light
     - climate
-    - device_tracker
     - person
 
   entities:
@@ -83,6 +82,10 @@ include:
     - binary_sensor.downstairs_hallway_motion
     - binary_sensor.stair_closet_motion
     - binary_sensor.upstairs_hallway_motion
+
+    # Device tracker
+    - device_tracker.sm_g960f
+    - device_tracker.sm_a202f
 
     # Other
     - input_boolean.holiday
