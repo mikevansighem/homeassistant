@@ -54,11 +54,11 @@ include:
     - sensor.daily_gas
 
     # Air quality
-    - sensor.air_sensor_co2 
+    - sensor.air_sensor_co2
     - sensor.air_sensor_temperature
     - sensor.air_sensor_quality
     - sensor.air_sensor_humidity
-    - sensor.air_sensor_volatile_organic_compounds 
+    - sensor.air_sensor_volatile_organic_compounds
     - sensor.fan_controller_speed
 
     # System monitor
