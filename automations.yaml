@@ -920,51 +920,6 @@
     data:
       message: Er staat iemand aan de voordeur.
   mode: single
-- id: '1634576080537'
-  alias: Air - Notify
-  description: Send a notification when any of the air quality values is out of limits.
-  trigger:
-  - platform: state
-    entity_id: sensor.humidity_state
-    id: HUM_HIGH
-    to: High
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-  - platform: state
-    entity_id: sensor.humidity_state
-    id: HUM_LOW
-    to: Low
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: HUM_HIGH
-      sequence:
-      - service: script.notify_who_is_home
-        data:
-          title: Luchtvochtigheid te hoog; zet de ventilator hoger
-          message: 💧 Luchtvochtigheid te hoog
-          timeout: 1800
-          group: Air
-    - conditions:
-      - condition: trigger
-        id: HUM_LOW
-      sequence:
-      - service: script.notify_who_is_home
-        data:
-          title: Luchtvochtigheid te laag; sluit de ramen
-          message: 💧 Luchtvochtigheid te laag
-          timeout: 1800
-          group: Air
-    default: []
-  mode: single
 - id: '1635185749340'
   alias: Utility - Set theme
   description: Ensure the preffered theme is allways used.
@@ -1204,31 +1159,35 @@
 
     - Limit fan speed during the night;
 
-    - Increase fan speed when air quality is bad.'
+    - Increase fan speed when air quality is bad.
+
+    - Keep as is when quality is moderate'
   trigger:
   - platform: state
     entity_id: sensor.house_state
     to: holiday
     id: 'OFF'
   - platform: state
-    entity_id: sensor.air_quality_state
-    to: Bad
+    entity_id: sensor.air_sensor_quality
     id: BAD
     for:
       hours: 0
       minutes: 5
       seconds: 0
+    to: Poor
   - platform: state
-    entity_id: sensor.air_quality_state
+    entity_id: sensor.air_sensor_quality
     id: DANGER
-    to: Danger
+    to: Unhealty
     for:
       hours: 0
       minutes: 2
       seconds: 0
   - platform: state
     entity_id: sensor.air_quality_state
-    to: Good
+    to:
+    - Good
+    - Excellent
     id: GOOD
     for:
       hours: 0
