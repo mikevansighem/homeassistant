@@ -83,14 +83,6 @@ web_server:
 # SPECIFIC
 ################################################################################
 
-external_components:
-  - source:
-      type: git
-      url: https://github.com/mmakaay/esphome
-      ref: fix-dsmr-read-chunk-size
-    components: ["dsmr"]
-    refresh: 60s
-
 uart:
   baud_rate: 115200
   rx_pin: D7
