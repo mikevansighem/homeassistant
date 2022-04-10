@@ -3,3 +3,7 @@
 ###############################################################################
 
 git_pull: git pull
+
+git_push: git push
+
+git_commit: 'git commit -a -m {{ states("input_text.commit_message") }}'
