@@ -370,3 +370,14 @@ fan_down:
       entity_id: fan.fan
   mode: single
   icon: mdi:fan-chevron-down
+commit_and_clear:
+  alias: Commit and clear
+  sequence:
+  - service: shell_command.git_commit
+    data: {}
+  - service: input_text.set_value
+    data: {}
+    target:
+      entity_id: input_text.commit_message
+  mode: single
+  icon: mdi:shape-rectangle-plus
