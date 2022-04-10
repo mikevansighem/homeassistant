@@ -66,7 +66,7 @@ sensor:
   - platform: ccs811
     address: 0x5B
     update_interval: 30s
-    baseline: 0x0478
+    # baseline: 0x0478
 
     eco2:
       name: "${upper_devicename} CO2"
