@@ -377,7 +377,7 @@ commit_and_clear:
     data: {}
   - service: input_text.set_value
     data:
-      value: ''
+      value: Your commit message
     target:
       entity_id: input_text.commit_message
   mode: single
