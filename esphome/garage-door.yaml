@@ -15,7 +15,7 @@ esphome:
   name: $device_name
   comment: "${device_description}"
   platform: ESP8266
-  board: d1_mini_pro
+  board: esp01_1m 
 
 # Enable logging
 logger:
@@ -49,6 +49,16 @@ api:
 # SPECIFIC
 ###############################################################################
 
+status_led:
+  pin: GPIO13
+
+# Connect to RF receiver
+remote_receiver:
+  pin: GPIO2
+  dump: 
+    - rc_switch
+    - rc5
+
 binary_sensor:
 
   - platform: status
@@ -56,68 +66,64 @@ binary_sensor:
     icon: "mdi:wifi"
 
   - platform: gpio
-    name: "Door open sensor"
-    id: "open_sensor"
     pin:
-      number: D3
-      mode: INPUT_PULLUP
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
       inverted: true
-    filters:
-      - delayed_on: 50ms
+    name: "Button 1"
     on_press:
       then:
-        - logger.log: "[SENSOR] Door open"
-
+        - switch.toggle: R1
   - platform: gpio
-    name: "Door closed sensor"
-    id: "closed_sensor"
     pin:
-      number: D4
-      mode: INPUT_PULLUP
+      number: GPIO9
+      mode:
+        input: true
+        pullup: true
       inverted: true
-    filters:
-      - delayed_on: 50ms
+    name: "Button 2"
     on_press:
       then:
-        - logger.log: "[SENSOR] Door closed"
+        - switch.toggle: R2
+  - platform: gpio
+    pin:
+      number: GPIO10
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "Button 3"
+    on_press:
+      then:
+        - switch.toggle: R3
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "Button 4"
+    on_press:
+      then:
+        - switch.toggle: R4
 
 switch:
   - platform: gpio
-    pin: D8
-    id: garage_door_relay
-    name: "Toggle garage door"
-    on_turn_on:
-      - delay: 500ms
-      - switch.turn_off: garage_door_relay
-
-cover:
-  - platform: template
-    device_class: garage
-    name: "Garage door"
-    id: garage_door
-
-    # Used to determine the state.
-    lambda: |-
-      if (id(open_sensor).state) {
-        return COVER_OPEN;
-      } else {
-        if (id(closed_sensor).state) {
-          return COVER_CLOSED;
-        } else {
-          return {};
-        }
-      }
-
-    open_action:
-      if:
-        condition:
-          lambda: return (id(garage_door).position != COVER_OPEN);
-        then:
-          - switch.turn_on: garage_door_relay
-
-    close_action:
-      if:
-        condition:
-          lambda: return (id(garage_door).position != COVER_CLOSED);
-        then:
-          - switch.turn_on: garage_door_relay
+    name: "Relay 1"
+    pin: GPIO12
+    id: R1
+  - platform: gpio
+    name: "Relay 2"
+    pin: GPIO5
+    id: R2
+  - platform: gpio
+    name: "Relay 3"
+    pin: GPIO4
+    id: R3
+  - platform: gpio
+    name: "Relay 4"
+    pin: GPIO15
+    id: R4
