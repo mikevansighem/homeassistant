@@ -845,7 +845,6 @@
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.kpn_tv
     - binary_sensor.hue_utility_bridge
     - binary_sensor.range_extender
     - binary_sensor.hue_garden_bridge
@@ -865,6 +864,9 @@
     - binary_sensor.bedroom_home_mini
     - binary_sensor.pi_hole
     - binary_sensor.fritz_box
+    - binary_sensor.noenoe
+    - binary_sensor.garage_door_status
+    - binary_sensor.air_sensor_status
     for:
       hours: 0
       minutes: 5
