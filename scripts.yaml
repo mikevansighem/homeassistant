@@ -376,7 +376,8 @@ commit_and_clear:
   - service: shell_command.git_commit
     data: {}
   - service: input_text.set_value
-    data: {}
+    data:
+      value: '""'
     target:
       entity_id: input_text.commit_message
   mode: single
