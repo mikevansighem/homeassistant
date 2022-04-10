@@ -58,7 +58,7 @@ include:
     - sensor.air_sensor_temperature
     - sensor.air_sensor_quality
     - sensor.air_sensor_humidity
-    - sensor.air_sensor_volatile_organic_compounds
+    - sensor.air_sensor_voc
     - sensor.fan_controller_speed
 
     # System monitor
