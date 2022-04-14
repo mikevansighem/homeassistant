@@ -1252,10 +1252,6 @@
           entity_id: sensor.house_state
           state: holiday
       sequence:
-      - device_id: 1d6db28ce04bb5fe9bbcdd10589e01e7
-        domain: fan
-        entity_id: fan.fan
-        type: turn_on
       - service: esphome.fan_controller_set_speed
         data:
           fan_speed: 1
