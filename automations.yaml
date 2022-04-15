@@ -1171,26 +1171,24 @@
     id: 'OFF'
   - platform: state
     entity_id: sensor.air_sensor_quality
-    id: BAD
+    id: POOR
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
     to: Poor
   - platform: state
     entity_id: sensor.air_sensor_quality
-    id: DANGER
+    id: UNHEALTHY
     to: Unhealty
     for:
       hours: 0
-      minutes: 2
+      minutes: 5
       seconds: 0
   - platform: state
     entity_id: sensor.air_quality_state
-    to:
-    - Good
-    - Excellent
-    id: GOOD
+    to: Excellent
+    id: EXCELLENT
     for:
       hours: 0
       minutes: 5
@@ -1199,6 +1197,14 @@
     entity_id: sensor.house_state
     id: 'ON'
     from: holiday
+  - platform: state
+    entity_id: sensor.air_quality_state
+    to: Good
+    id: GOOD
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
   condition: []
   action:
   - choose:
@@ -1222,9 +1228,9 @@
       - condition: or
         conditions:
         - condition: trigger
-          id: BAD
+          id: POOR
         - condition: trigger
-          id: DANGER
+          id: UNHEALTHY
       - condition: not
         conditions:
         - condition: state
@@ -1244,8 +1250,12 @@
         data:
           fan_speed: 2
     - conditions:
-      - condition: trigger
-        id: GOOD
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: GOOD
+        - condition: trigger
+          id: EXCELLENT
       - condition: not
         conditions:
         - condition: state
