@@ -1449,7 +1449,7 @@
   mode: single
 - id: '1647545719116'
   alias: Vacuum - Stop if stuck
-  description: ''
+  description: 'Stop the vacuum if it has been stuck for some time and notify. '
   trigger:
   - platform: state
     entity_id: vacuum.noenoe
@@ -1468,4 +1468,7 @@
     data:
       message: NoeNoe heeft hulp nodig.
       title: NoeNoe in de nesten ❌
+  - service: script.speak
+    data:
+      message: Noenoe heeft zich in de nesten gewerkt.
   mode: single
