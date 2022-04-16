@@ -88,9 +88,10 @@ jobs:
 
   fail:
     runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    needs: [yamllint, remarklint]
     steps:
       - name: Notify a failure happened
-        if: ${{ failure() }}
         uses: wei/curl@v1.1.1
         with:
           # Trigger a webhook in Home Assistant
