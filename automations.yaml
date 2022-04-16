@@ -1101,14 +1101,16 @@
   description: Send a notification when a new update is available.
   trigger:
   - platform: state
+    entity_id: sensor.latest_version
+  condition:
+  - condition: state
     entity_id: binary_sensor.latest_version_update_available
-    to: 'on'
-  condition: []
+    state: 'on'
   action:
   - service: notify.mobile_app_sm_g960f
     data:
       title: Update available 🎉
-      message: New version available {{states('sensor.latest_version_2')}}
+      message: New version available {{states('sensor.latest_version')}}
       data:
         group: Utility
         clickAction: https://www.home-assistant.io/latest-release-notes/
@@ -1118,7 +1120,7 @@
           uri: https://www.home-assistant.io/latest-release-notes/
         - action: URI
           title: Update
-          uri: http://homeassistant.local:8123/config/dashboard
+          uri: https://9mqwxvwint62s4ax7ut9jqqbt97ql8uc.ui.nabu.casa/config/dashboard
   mode: single
 - id: '1637348841688'
   alias: Utility - Pull and deploy
