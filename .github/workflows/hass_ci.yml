@@ -89,7 +89,7 @@ jobs:
   fail:
     runs-on: ubuntu-latest
     if: ${{ failure() }}
-    needs: [yamllint, remarklint]
+    needs: [yamllint, remarklint, home-assistant, ESPHome]
     steps:
       - name: Notify a failure happened
         uses: wei/curl@v1.1.1
