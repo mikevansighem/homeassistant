@@ -85,3 +85,13 @@ jobs:
         with:
           # Trigger a webhook in Home Assistant
           args: curl -X POST ${{ secrets.DEPLOYMENT_WEBHOOK }}
+
+  fail:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify a failure happened
+        if: ${{ failure() }}
+        uses: wei/curl@v1.1.1
+        with:
+          # Trigger a webhook in Home Assistant
+          args: curl -X POST ${{ secrets.FAIL_WEBHOOK }}
