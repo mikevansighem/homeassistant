@@ -1186,7 +1186,7 @@
       minutes: 5
       seconds: 0
   - platform: state
-    entity_id: sensor.air_quality_state
+    entity_id: sensor.air_sensor_quality
     to: Excellent
     id: EXCELLENT
     for:
@@ -1198,7 +1198,7 @@
     id: 'ON'
     from: holiday
   - platform: state
-    entity_id: sensor.air_quality_state
+    entity_id: sensor.air_sensor_quality
     to: Good
     id: GOOD
     for:
