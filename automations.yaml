@@ -1474,3 +1474,54 @@
     data:
       message: Noenoe heeft zich in de nesten gewerkt.
   mode: single
+- id: '1650130407618'
+  alias: Utility - Notify on failed configuration
+  description: ''
+  trigger:
+  - platform: webhook
+    webhook_id: fail
+  condition: []
+  action:
+  - service: notify.mobile_app_sm_g960f
+    data:
+      title: Configuation failed
+      message: A configuration deployment has failed.
+  mode: single
+- id: '1650388936451'
+  alias: Utility - Watchmen
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:04:00
+    id: TIMED_UPDATE
+  - platform: template
+    id: MISSING_ENTITIES
+    value_template: '{{not is_state(''sensor.watchman_missing_entities'', 0)}}'
+  - platform: template
+    value_template: '{{not is_state(''sensor.watchman_missing_services'', 0)}}'
+    id: MISSING_SERVICES
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: TIMED_UPDATE
+      sequence:
+      - service: watchman.report
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: MISSING_ENTITIES
+      sequence:
+      - service: persistent_notification.create
+        data:
+          message: Found {{states('sensor.watchman_missing_entities')}} missing entity(ies).
+    - conditions:
+      - condition: trigger
+        id: MISSING_SERVICES
+      sequence:
+      - service: persistent_notification.create
+        data:
+          message: Found {{states('sensor.watchman_missing_services')}} missing entity(ies).
+    default: []
+  mode: single
