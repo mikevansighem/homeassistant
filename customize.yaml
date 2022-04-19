@@ -1,18 +1,6 @@
-sensor.avarage_humidity:
-  icon: mdi:water-percent
-sensor.avarage_ground_temperature:
-  icon: mdi:thermometer
-sensor.avarage_watering_level:
-  icon: mdi:water-percent
-sensor.watering_level:
-  icon: mdi:water-percent
 sensor.somebody_home:
   icon: mdi:home
 binary_sensor.sprinkler_controller:
-  icon: mdi:wifi
-binary_sensor.laptop:
-  icon: mdi:wifi
-binary_sensor.work_laptop:
   icon: mdi:wifi
 binary_sensor.dining_room_home_mini:
   icon: mdi:wifi
@@ -36,8 +24,6 @@ sensor.yearly_gas:
   device_class: gas
   state_class: total_increasing
   icon: mdi:fire
-sensor.energy_usage:
-  icon: hass:flash
 sensor.gas_usage:
   icon: mdi:fire
 sensor.monthly_energy_costs:
@@ -64,12 +50,6 @@ binary_sensor.opentherm_controller:
   icon: mdi:wifi
 sensor.daily_gas_costs:
   icon: mdi:cash
-sensor.monthly_gas_costs_2:
-  icon: mdi:cash
-sensor.yearly_gas_costs_2:
-  icon: mdi:cash
-binary_sensor.livingroom_home_mini:
-  icon: mdi:wifi
 binary_sensor.bedroom_home_mini:
   icon: mdi:wifi
 binary_sensor.scullery_range_extender:

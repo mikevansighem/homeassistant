@@ -1488,12 +1488,9 @@
       message: A configuration deployment has failed.
   mode: single
 - id: '1650388936451'
-  alias: Utility - Watchmen
+  alias: Utility - Watchmen notification
   description: ''
   trigger:
-  - platform: time
-    at: 00:04:00
-    id: TIMED_UPDATE
   - platform: template
     id: MISSING_ENTITIES
     value_template: '{{not is_state(''sensor.watchman_missing_entities'', 0)}}'
