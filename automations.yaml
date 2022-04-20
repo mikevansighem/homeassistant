@@ -1205,6 +1205,10 @@
       hours: 0
       minutes: 5
       seconds: 0
+  - platform: state
+    entity_id: sensor.house_state
+    to: night
+    id: NIGHT
   condition: []
   action:
   - choose:
@@ -1261,6 +1265,17 @@
         - condition: state
           entity_id: sensor.house_state
           state: holiday
+      sequence:
+      - device_id: 1d6db28ce04bb5fe9bbcdd10589e01e7
+        domain: fan
+        entity_id: fan.fan
+        type: turn_on
+      - service: esphome.fan_controller_set_speed
+        data:
+          fan_speed: 1
+    - conditions:
+      - condition: trigger
+        id: NIGHT
       sequence:
       - device_id: 1d6db28ce04bb5fe9bbcdd10589e01e7
         domain: fan
