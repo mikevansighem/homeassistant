@@ -1,4 +1,4 @@
-  commit_message:
-    name: Commit message
-    initial: Your commit message
-    icon: mdi:card-text-outline
+commit_message:
+  name: Commit message
+  initial: Your commit message
+  icon: mdi:card-text-outline

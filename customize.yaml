@@ -63,7 +63,7 @@ binary_sensor.dining_room_home_mini:
   icon: mdi:wifi
 
 # Watchmen entities
-sensor.watchman_missing_entities
+sensor.watchman_missing_entities:
   icon: mdi:alert-rhombus-outline
-sensor.watchman_missing_services
+sensor.watchman_missing_services:
   icon: mdi:alert-rhombus-outline
