@@ -1491,9 +1491,11 @@
   trigger:
   - platform: template
     id: MISSING_ENTITIES
-    value_template: '{{not is_state(''sensor.watchman_missing_entities'', 0)}}'
+    value_template: '{{not is_state(''sensor.watchman_missing_entities'', ''0'') and
+      not is_state(''sensor.watchman_missing_entities'', ''unkown'')}}'
   - platform: template
-    value_template: '{{not is_state(''sensor.watchman_missing_services'', 0)}}'
+    value_template: '{{not is_state(''sensor.watchman_missing_services'', ''0'') and
+      not is_state(''sensor.watchman_missing_services'', ''unkown'')}}'
     id: MISSING_SERVICES
   - platform: time
     at: 04:00:00
