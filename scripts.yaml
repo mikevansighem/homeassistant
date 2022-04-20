@@ -12,7 +12,7 @@ flash_licht:
       - light.downstairs_hallway
       - light.upstairs_hallway
       - light.attic_hallway
-      - light.attict
+      - light.attic
       - light.bedroom
       - light.closet
       - light.car_port
@@ -59,9 +59,11 @@ flash_licht:
           seconds: 0
           milliseconds: 800
   - service: scene.reload
+    data: {}
   - service: scene.turn_on
     target:
       entity_id: scene.lights_before_alarm
+    data: {}
   mode: restart
   icon: mdi:alarm-light-outline
 lights_turn_off_all_lights:
@@ -94,7 +96,7 @@ alarm_sound_alarm:
     data:
       volume_level: '{{states(''input_number.alarm_volume'') | float}}'
     target:
-      entity_id: media_player.speaker_group
+      entity_id: media_player.whole_home
   - service: media_player.play_media
     data:
       media_content_id: media-source://media_source/local/system/alarm_sound_long.mp3

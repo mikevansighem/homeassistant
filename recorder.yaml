@@ -70,25 +70,23 @@ include:
 
     # Binary sensors
     - binary_sensor.doorbell_pressed
-    - binary_sensor.hue_utility_bridge
-    - binary_sensor.range_extender
+    - binary_sensor.fritz_box
+    - binary_sensor.pi_hole
     - binary_sensor.hue_garden_bridge
-    - binary_sensor.sprinkler_controller
-    - binary_sensor.opentherm_controller
-    - binary_sensor.dining_room_home_mini
-    - binary_sensor.esp_home_test_device
-    - binary_sensor.slimme_lezer
-    - binary_sensor.reindeer_status
-    - binary_sensor.fan_controller_status
-    - binary_sensor.fan_button_status
-    - binary_sensor.attict_chromecast_audio
-    - binary_sensor.doorbell_status
+    - binary_sensor.hue_utility_bridge
+    - binary_sensor.kpn_tv
     - binary_sensor.attict_range_extender
     - binary_sensor.scullery_range_extender
     - binary_sensor.living_room_home_mini
     - binary_sensor.bedroom_home_mini
-    - binary_sensor.pi_hole
-    - binary_sensor.fritz_box
+    - binary_sensor.dining_room_home_mini
+    - binary_sensor.opentherm_controller
+    - binary_sensor.doorbell_status
+    - binary_sensor.slimmelezer_status
+    - binary_sensor.attict_chromecast_audio
+    - binary_sensor.sprinkler_controller
+    - binary_sensor.fan_controller_status
+    - binary_sensor.reindeer_status
     - binary_sensor.noenoe
     - binary_sensor.garage_door_status
     - binary_sensor.air_sensor_status

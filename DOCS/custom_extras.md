@@ -4,7 +4,8 @@
 
 - [HACS](https://github.com/hacs/integration): A powerful UI to handle downloads of all your custom needs.
 - [OpenSprinkler](https://github.com/vinteo/hass-opensprinkler): OpenSprinkler integration for Home Assistant.
-- [Spotcast](Home assistant custom component to start Spotify playback on an idle chromecast device as well as control spotify connect devices.)
+- [Spotcast](https://github.com/fondberg/spotcast): Home assistant custom component to start Spotify playback on an idle chromecast device as well as control spotify connect devices.
+- [The Watchmen](https://github.com/dummylabs/thewatchman) Check if all enties in the configuration are present and active.
 
 ## Frontend
 
