@@ -84,6 +84,8 @@
     - sensor.livingroom_temperature
     - sensor.stair_closet_temperature
     - sensor.air_sensor_temperature
+    - sensor.epipremnum_aureum_temperature
+    - sensor.zamioculcas_temperature
 
 ###############################################################################
 # SYSTEM MONITOR

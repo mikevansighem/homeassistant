@@ -22,6 +22,7 @@ input_number: !include input_number.yaml
 input_datetime: !include input_datetime.yaml
 input_boolean: !include input_boolean.yaml
 input_text: !include input_text.yaml
+plant: !include plant.yaml
 
 # Enable themes
 frontend:

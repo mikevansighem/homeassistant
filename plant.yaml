@@ -1,0 +1,50 @@
+###############################################################################
+# PLANT
+###############################################################################
+
+# Values from https://open.plantbook.io/
+
+zamioculcas:
+  max_brightness: 20000
+  min_brightness: 600
+  max_moisture: 60
+  min_moisture: 15
+  max_temperature: 32
+  min_temperature: 10
+  max_conductivity: 2000
+  min_conductivity: 350
+  sensors:
+    moisture: sensor.zamioculcas_moisture
+    temperature: sensor.zamioculcas_temperature
+    conductivity: sensor.zamioculcas_conductivity
+    brightness: sensor.zamioculcas_illuminance
+    
+epipremnum_aureum:
+  max_brightness: 12000
+  min_brightness: 500
+  max_moisture: 60
+  min_moisture: 15
+  max_temperature: 32
+  min_temperature: 10
+  max_conductivity: 2000
+  min_conductivity: 350
+  sensors:
+    moisture: sensor.epipremnum_aureum_moisture
+    temperature: sensor.epipremnum_aureum_temperature
+    conductivity: sensor.epipremnum_aureum_conductivity
+    brightness: sensor.epipremnum_aureum_illuminance
+
+violaceae:
+  max_brightness: 50000
+  min_brightness: 4000
+  max_moisture: 60
+  min_moisture: 15
+  max_temperature: 32
+  min_temperature: 5
+  max_conductivity: 2000
+  min_conductivity: 350
+  sensors:
+    moisture: sensor.violaceae_moisture
+    temperature: sensor.violaceae_temperature
+    conductivity: sensor.violaceae_conductivity
+    brightness: sensor.violaceae_illuminance
