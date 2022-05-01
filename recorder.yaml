@@ -101,7 +101,7 @@ include:
     # Device tracker
     - device_tracker.sm_g960f
     - device_tracker.sm_a202f
-    
+
     # Plants
     - sensor.epipremnum_aureum_conductivity
     - sensor.epipremnum_aureum_illuminance
