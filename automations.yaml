@@ -1098,26 +1098,52 @@
   description: Send a notification when a new update is available.
   trigger:
   - platform: state
-    entity_id: sensor.latest_version
-  condition:
-  - condition: state
-    entity_id: binary_sensor.latest_version_update_available
-    state: 'on'
+    entity_id: update.home_assistant_core_update
+    to: 'on'
+    id: NEW_VERSION
+  - platform: event
+    event_type: mobile_app_notification_action
+    context:
+      user_id:
+      - 18da5e1069434cf3a379885f9c801772
+    event_data:
+      action: install-update
+    id: UPDATE
+  condition: []
   action:
-  - service: notify.mobile_app_sm_g960f
-    data:
-      title: Update available 🎉
-      message: New version available {{states('sensor.latest_version')}}
-      data:
-        group: Utility
-        clickAction: https://www.home-assistant.io/latest-release-notes/
-        actions:
-        - action: URI
-          title: More info
-          uri: https://www.home-assistant.io/latest-release-notes/
-        - action: URI
-          title: Update
-          uri: https://9mqwxvwint62s4ax7ut9jqqbt97ql8uc.ui.nabu.casa/config/dashboard
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: NEW_VERSION
+      sequence:
+      - service: notify.mobile_app_sm_g960f
+        data:
+          title: '{{state_attr(''update.home_assistant_core_update'', ''friendly_name'')
+            }} 🎉'
+          message: 'Latest version: {{state_attr(''update.home_assistant_core_update'',
+            ''latest_version'') }}'
+          data:
+            group: Utility
+            clickAction: '{{state_attr(''update.home_assistant_core_update'', ''release_url'')
+              }}'
+            sticky: 'true'
+            actions:
+            - action: URI
+              title: Changelog
+              uri: '{{state_attr(''update.home_assistant_core_update'', ''release_url'')
+                }}'
+            - action: install-update
+              title: Update
+              destructive: true
+              authenticationRequired: true
+    - conditions:
+      - condition: trigger
+        id: UPDATE
+      sequence:
+      - service: persistent_notification.create
+        data:
+          message: This does nothing usefull yet.
+    default: []
   mode: single
 - id: '1637348841688'
   alias: Utility - Pull and deploy
