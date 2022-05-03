@@ -18,7 +18,7 @@ zamioculcas:
     temperature: sensor.zamioculcas_temperature
     conductivity: sensor.zamioculcas_conductivity
     brightness: sensor.zamioculcas_illuminance
-    
+
 epipremnum_aureum:
   max_brightness: 12000
   min_brightness: 500
