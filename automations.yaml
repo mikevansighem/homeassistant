@@ -1094,11 +1094,19 @@
     default: []
   mode: single
 - id: '1636480621793'
-  alias: Utility - Notify for Home Assiatant update
-  description: Send a notification when a new update is available.
+  alias: Utility - Notify for update
+  description: 'Send a notification when a new update is available.
+
+    If update button is pressed, update and clear the notification.'
   trigger:
   - platform: state
-    entity_id: update.home_assistant_core_update
+    entity_id:
+    - update.home_assistant_core_update
+    - update.home_assistant_operating_system_update
+    - update.home_assistant_supervisor_update
+    - update.pi_hole_core_update_available
+    - update.pi_hole_ftl_update_available
+    - update.pi_hole_web_update_available
     to: 'on'
     id: NEW_VERSION
   - platform: event
@@ -1113,25 +1121,27 @@
   action:
   - choose:
     - conditions:
-      - condition: trigger
-        id: NEW_VERSION
+      - condition: and
+        conditions:
+        - condition: trigger
+          id: NEW_VERSION
+        - condition: template
+          value_template: '{{'' trigger.entity_id.attributes.auto_update'' == false}}'
       sequence:
       - service: notify.mobile_app_sm_g960f
         data:
-          title: '{{state_attr(''update.home_assistant_core_update'', ''friendly_name'')
-            }} 🎉'
-          message: 'Latest version: {{state_attr(''update.home_assistant_core_update'',
-            ''latest_version'') }}'
+          title: '{{ trigger.entity_id.attributes.friendly_name }} 🎉'
+          message: 'Latest version: {{ trigger.entity_id.attributes.latest_version
+            }}'
           data:
             group: Utility
-            clickAction: '{{state_attr(''update.home_assistant_core_update'', ''release_url'')
-              }}'
+            tag: new-update
+            clickAction: '{{ trigger.entity_id.attributes.release_url }}'
             sticky: 'true'
             actions:
             - action: URI
               title: Changelog
-              uri: '{{state_attr(''update.home_assistant_core_update'', ''release_url'')
-                }}'
+              uri: '{{ trigger.entity_id.attributes.release_url }}'
             - action: install-update
               title: Update
               destructive: true
@@ -1140,9 +1150,18 @@
       - condition: trigger
         id: UPDATE
       sequence:
+      - variables:
+          entity_id: "update.{{ trigger.event.data.tag\n  if trigger.event.data.tag\
+            \ is string and trigger.event.data.tag != ''\n  else trigger.event.data.action_data.tag\
+            \ }}"
       - service: persistent_notification.create
         data:
-          message: This does nothing usefull yet.
+          message: This does nothing usefull yet. Entity is {{ entity_id }}
+      - service: notify.mobile_app_sm_g960f
+        data:
+          message: clear_notification
+          data:
+            tag: new-update
     default: []
   mode: single
 - id: '1637348841688'
@@ -1318,7 +1337,7 @@
   - platform: time
     at: '19:00'
   condition:
-    condition: or
+  - condition: or
     conditions:
     - condition: template
       value_template: "{% set min_battery_level = 10 -%} {% set ns = namespace(found=false)\
@@ -1339,39 +1358,8 @@
         actions:
         - action: URI
           title: More info
-          uri: /lovelace/network
+          uri: /lovelace/hardware
       title: Battery low ⚠️
-  mode: single
-- id: '1643568224230'
-  alias: Utility - Notify for low battery
-  description: ''
-  trigger:
-  - platform: time
-    at: '19:00'
-  condition:
-    condition: or
-    conditions:
-    - condition: template
-      value_template: "{% set min_battery_level = 10 -%} {% set ns = namespace(found=false)\
-        \ -%} {% for entity_id in states.group.battery_levels.attributes.entity_id\
-        \ -%}\n  {% set parts = entity_id.split('.') -%}\n  {% if (states(entity_id)\
-        \ | replace(\"%\",\"\") | int) < min_battery_level -%}\n    {% set ns.found\
-        \ = true -%}\n  {% endif -%}\n{% endfor -%} {{ ns.found }}\n"
-  action:
-  - service: notify.mobile_app_sm_g960f
-    data:
-      message: "{% set min_battery_level = 10 %} {% for entity_id in states.group.battery_levels.attributes.entity_id\
-        \ %}\n  {% set parts = entity_id.split('.') %}\n    {% if (states(entity_id)\
-        \ | replace(\"%\",\"\") | int) < min_battery_level %}\n      {{ states[parts[0]][parts[1]].name\
-        \ }} battery level is {{ states(entity_id) }}.{{ '\\n' }}\n  {% endif %}\n\
-        {% endfor %}\n"
-      data:
-        group: Utility
-        actions:
-        - action: URI
-          title: More info
-          uri: /lovelace/network
-      title: Battery low
   mode: single
 - id: '1644948589594'
   alias: Lights - Well flicker
@@ -1571,3 +1559,18 @@
         data: {}
     default: []
   mode: single
+- id: '1651686310301'
+  alias: Test - Update notifications
+  description: ''
+  use_blueprint:
+    path: mdegat01/update_notifications.yaml
+    input:
+      reminder_hours: '3'
+      update_entities:
+      - update.home_assistant_core_update
+      - update.home_assistant_operating_system_update
+      - update.home_assistant_supervisor_update
+      - update.pi_hole_core_update_available
+      - update.pi_hole_web_update_available
+      - update.pi_hole_ftl_update_available
+      mobile_app_device: da960a0ac489ecb28f8a5e2b19b1c0ac
