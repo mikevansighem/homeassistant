@@ -92,6 +92,7 @@ include:
     - binary_sensor.noenoe
     - binary_sensor.garage_door_status
     - binary_sensor.air_sensor_status
+    - binary_sensor.plant_monitor_status
 
     # Motion
     - binary_sensor.livingroom_motion
