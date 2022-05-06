@@ -1145,7 +1145,7 @@
               title: Changelog
               uri: '{{ state_attr(trigger.entity_id, ''release_url'') }}'
             - action: install-update
-              title: install-update
+              title: Update
               destructive: true
               authenticationRequired: true
     - conditions:
