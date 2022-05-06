@@ -76,6 +76,7 @@ include:
     - binary_sensor.hue_garden_bridge
     - binary_sensor.hue_utility_bridge
     - binary_sensor.kpn_tv
+    - binary_sensor.livingroom_powerline_endpoint
     - binary_sensor.attict_range_extender
     - binary_sensor.scullery_range_extender
     - binary_sensor.living_room_home_mini
