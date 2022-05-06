@@ -1094,7 +1094,7 @@
     default: []
   mode: single
 - id: '1636480621793'
-  alias: Utility - Notify for update
+  alias: Utility - Notify for updates
   description: 'Send a notification when a new update is available.
 
     If update button is pressed, update and clear the notification.'
@@ -1121,9 +1121,6 @@
     id: UPDATE
   condition: []
   action:
-  - service: persistent_notification.create
-    data:
-      message: UPDATE {{ state_attr(trigger.entity_id, 'friendly_name') }}
   - choose:
     - conditions:
       - condition: and
@@ -1148,7 +1145,7 @@
               title: Changelog
               uri: '{{ state_attr(trigger.entity_id, ''release_url'') }}'
             - action: install-update
-              title: Update
+              title: install-update
               destructive: true
               authenticationRequired: true
     - conditions:
@@ -1658,6 +1655,13 @@
           title: Water me 💦
           message: The {{state_attr('plant.epipremnum_aureum', 'friendly_name') }}
             needs watering.
+          data:
+            group: Plants
+            clickAction: /lovelace/plants
+            actions:
+            - action: URI
+              title: More info
+              uri: /lovelace/plants
     - conditions:
       - condition: trigger
         id: violaceae
@@ -1666,6 +1670,13 @@
         data:
           title: Water me 💦
           message: The {{state_attr('plant.violaceae', 'friendly_name') }} needs watering.
+          data:
+            group: Plants
+            clickAction: /lovelace/plants
+            actions:
+            - action: URI
+              title: More info
+              uri: /lovelace/plants
     - conditions:
       - condition: trigger
         id: zamioculcas
@@ -1675,32 +1686,12 @@
           title: Water me 💦
           message: The {{state_attr('plant.zamioculcas', 'friendly_name') }} needs
             watering.
-    default: []
-  mode: single
-- id: '1651857333880'
-  alias: Plants - Watering notifications
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ ''moisture'' in state_attr(''plant.epipremnum_aureum'', ''problem'')
-      }}'
-    id: epipremnum_aureum
-  - platform: template
-    value_template: '{{ ''moisture'' in state_attr(''plant.violaceae'', ''problem'')
-      }}'
-    id: violaceae
-  - platform: template
-    value_template: '{{ ''moisture'' in state_attr(''plant.zamioculcas'', ''problem'')
-      }}'
-    id: zamioculcas
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: ''
-      sequence:
-      - service: script.notify_who_is_home
-        data: {}
+          data:
+            group: Plants
+            clickAction: /lovelace/plants
+            actions:
+            - action: URI
+              title: More info
+              uri: /lovelace/plants
     default: []
   mode: single
