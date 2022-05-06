@@ -1107,8 +1107,10 @@
     - update.pi_hole_core_update_available
     - update.pi_hole_ftl_update_available
     - update.pi_hole_web_update_available
-    to: 'on'
+    - update.fritz_box_7590_fritz_os
+    - update.fritz_powerline_1260e_fritz_os
     id: NEW_VERSION
+    to: 'on'
   - platform: event
     event_type: mobile_app_notification_action
     context:
@@ -1119,6 +1121,9 @@
     id: UPDATE
   condition: []
   action:
+  - service: persistent_notification.create
+    data:
+      message: UPDATE {{ state_attr(trigger.entity_id, 'friendly_name') }}
   - choose:
     - conditions:
       - condition: and
@@ -1126,22 +1131,22 @@
         - condition: trigger
           id: NEW_VERSION
         - condition: template
-          value_template: '{{'' trigger.entity_id.attributes.auto_update'' == false}}'
+          value_template: '{{state_attr(trigger.entity_id,  ''auto_update'') == false}}'
       sequence:
       - service: notify.mobile_app_sm_g960f
         data:
-          title: '{{ trigger.entity_id.attributes.friendly_name }} 🎉'
-          message: 'Latest version: {{ trigger.entity_id.attributes.latest_version
+          title: '{{ state_attr(trigger.entity_id, ''friendly_name'') }} 🎉'
+          message: 'Latest version: {{ state_attr(trigger.entity_id, ''latest_version'')
             }}'
           data:
             group: Utility
             tag: new-update
-            clickAction: '{{ trigger.entity_id.attributes.release_url }}'
+            clickAction: '{{ state_attr(trigger.entity_id, ''release_url'') }}'
             sticky: 'true'
             actions:
             - action: URI
               title: Changelog
-              uri: '{{ trigger.entity_id.attributes.release_url }}'
+              uri: '{{ state_attr(trigger.entity_id, ''release_url'') }}'
             - action: install-update
               title: Update
               destructive: true
@@ -1575,3 +1580,18 @@
       - update.pi_hole_web_update_available
       - update.pi_hole_ftl_update_available
       mobile_app_device: da960a0ac489ecb28f8a5e2b19b1c0ac
+- id: '1651853081537'
+  alias: Utility - Cleanup FRITZ!Box
+  description: Trigger cleanup actions on FRITZ!Box devices.
+  trigger:
+  - platform: time
+    at: 02:00:00
+  condition: []
+  action:
+  - service: button.press
+    data: {}
+    target:
+      entity_id:
+      - button.fritz_box_7590_cleanup
+      - button.fritz_powerline_1260e_cleanup
+  mode: single
