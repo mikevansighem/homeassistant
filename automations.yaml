@@ -1595,3 +1595,38 @@
       - button.fritz_box_7590_cleanup
       - button.fritz_powerline_1260e_cleanup
   mode: single
+- id: '1651855182269'
+  alias: Chime - Off when quiet
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.quiet
+    to: 'on'
+    id: QUIET_TIME
+  - platform: state
+    entity_id:
+    - input_boolean.quiet
+    to: 'off'
+    id: NOISE_TIME
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: QUIET_TIME
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.doorbell_chime_active
+    - conditions:
+      - condition: trigger
+        id: NOISE_TIME
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.doorbell_chime_active
+    default: []
+  mode: single
