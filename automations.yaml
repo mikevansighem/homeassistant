@@ -1156,9 +1156,10 @@
           entity_id: "update.{{ trigger.event.data.tag\n  if trigger.event.data.tag\
             \ is string and trigger.event.data.tag != ''\n  else trigger.event.data.action_data.tag\
             \ }}"
-      - service: persistent_notification.create
-        data:
-          message: This does nothing usefull yet. Entity is {{ entity_id }}
+      - service: update.install
+        data: {}
+        target:
+          entity_id: '{{ entity_id }}'
       - service: notify.mobile_app_sm_g960f
         data:
           message: clear_notification
@@ -1562,21 +1563,6 @@
         data: {}
     default: []
   mode: single
-- id: '1651686310301'
-  alias: Test - Update notifications
-  description: ''
-  use_blueprint:
-    path: mdegat01/update_notifications.yaml
-    input:
-      reminder_hours: '3'
-      update_entities:
-      - update.home_assistant_core_update
-      - update.home_assistant_operating_system_update
-      - update.home_assistant_supervisor_update
-      - update.pi_hole_core_update_available
-      - update.pi_hole_web_update_available
-      - update.pi_hole_ftl_update_available
-      mobile_app_device: da960a0ac489ecb28f8a5e2b19b1c0ac
 - id: '1651853081537'
   alias: Utility - Cleanup FRITZ!Box
   description: Trigger cleanup actions on FRITZ!Box devices.
@@ -1643,7 +1629,10 @@
     value_template: '{{ ''moisture'' in state_attr(''plant.zamioculcas'', ''problem'')
       }}'
     id: zamioculcas
-  condition: []
+  condition:
+  - condition: template
+    value_template: '{{((as_timestamp(now()) - as_timestamp(states(''sensor.hass_uptime'')))
+      / 60) > 2 }}'
   action:
   - choose:
     - conditions:
