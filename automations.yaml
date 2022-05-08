@@ -1613,74 +1613,15 @@
           entity_id: switch.doorbell_chime_active
     default: []
   mode: single
-- id: '1651857331935'
-  alias: Plants - Watering notifications
+- id: '1652002937947'
+  alias: Plants - Low moisture notification
   description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ ''moisture'' in state_attr(''plant.epipremnum_aureum'', ''problem'')
-      }}'
-    id: epipremnum_aureum
-  - platform: template
-    value_template: '{{ ''moisture'' in state_attr(''plant.violaceae'', ''problem'')
-      }}'
-    id: violaceae
-  - platform: template
-    value_template: '{{ ''moisture'' in state_attr(''plant.zamioculcas'', ''problem'')
-      }}'
-    id: zamioculcas
-  condition:
-  - condition: template
-    value_template: '{{((as_timestamp(now()) - as_timestamp(states(''sensor.hass_uptime'')))
-      / 60) > 2 }}'
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: epipremnum_aureum
-      sequence:
+  use_blueprint:
+    path: plant_moisture_notification.yaml
+    input:
+      time: '17:00:00'
+      actions:
       - service: notify.mobile_app_sm_g960f
         data:
+          message: The {{sensors}} need watering.
           title: Water me 💦
-          message: The {{state_attr('plant.epipremnum_aureum', 'friendly_name') }}
-            needs watering.
-          data:
-            group: Plants
-            clickAction: /lovelace/plants
-            actions:
-            - action: URI
-              title: More info
-              uri: /lovelace/plants
-    - conditions:
-      - condition: trigger
-        id: violaceae
-      sequence:
-      - service: notify.mobile_app_sm_g960f
-        data:
-          title: Water me 💦
-          message: The {{state_attr('plant.violaceae', 'friendly_name') }} needs watering.
-          data:
-            group: Plants
-            clickAction: /lovelace/plants
-            actions:
-            - action: URI
-              title: More info
-              uri: /lovelace/plants
-    - conditions:
-      - condition: trigger
-        id: zamioculcas
-      sequence:
-      - service: notify.mobile_app_sm_g960f
-        data:
-          title: Water me 💦
-          message: The {{state_attr('plant.zamioculcas', 'friendly_name') }} needs
-            watering.
-          data:
-            group: Plants
-            clickAction: /lovelace/plants
-            actions:
-            - action: URI
-              title: More info
-              uri: /lovelace/plants
-    default: []
-  mode: single

@@ -10,6 +10,9 @@
 !/DOCS/images/*
 !/esphome/*
 
+# Include blueprints
+!/blueprints/*
+
 # Include Fritzing files
 !*.fzz
 
