@@ -1156,6 +1156,9 @@
           entity_id: "update.{{ trigger.event.data.tag\n  if trigger.event.data.tag\
             \ is string and trigger.event.data.tag != ''\n  else trigger.event.data.action_data.tag\
             \ }}"
+      - service: persistent_notification.create
+        data:
+          message: '{{ entity_id }}'
       - service: update.install
         data: {}
         target:
@@ -1521,26 +1524,28 @@
   alias: Utility - Watchmen notification
   description: ''
   trigger:
-  - platform: template
+  - platform: state
+    entity_id:
+    - sensor.missing_entities
     id: MISSING_ENTITIES
-    value_template: '{{not is_state(''sensor.watchman_missing_entities'', ''0'') and
-      not is_state(''sensor.watchman_missing_entities'', ''unkown'')}}'
-  - platform: template
-    value_template: '{{not is_state(''sensor.watchman_missing_services'', ''0'') and
-      not is_state(''sensor.watchman_missing_services'', ''unkown'')}}'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - platform: state
+    entity_id:
+    - sensor.missing_services
     id: MISSING_SERVICES
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
   - platform: time
     at: 04:00:00
     id: RUN
   condition: []
   action:
   - choose:
-    - conditions:
-      - condition: trigger
-        id: TIMED_UPDATE
-      sequence:
-      - service: watchman.report
-        data: {}
     - conditions:
       - condition: trigger
         id: MISSING_ENTITIES
@@ -1554,7 +1559,7 @@
       sequence:
       - service: persistent_notification.create
         data:
-          message: Found {{states('sensor.watchman_missing_services')}} missing entity(ies).
+          message: Found {{states('sensor.watchman_missing_services')}} missing service(s).
     - conditions:
       - condition: trigger
         id: RUN

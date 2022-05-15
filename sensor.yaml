@@ -214,6 +214,20 @@
       icon_template: >-
         mdi:lightning-bolt
 
+    missing_entities:
+      friendly_name: "Missing entities"
+      value_template: >-
+        {{not is_state('sensor.watchman_missing_entities', '0') and not is_state('sensor.watchman_missing_entities', 'unkown')}}
+      icon_template: >-
+        mdi:alert-rhombus-outline
+
+    missing_services:
+      friendly_name: "Missing services"
+      value_template: >-
+        {{not is_state('sensor.watchman_missing_services', '0') and not is_state('sensor.watchman_missing_services', 'unkown')}}
+      icon_template: >-
+        mdi:alert-rhombus-outline
+
     # Alarm panel battery sensor
     alarm_panel_battery:
       friendly_name: "Alarm panel battery"
