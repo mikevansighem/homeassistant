@@ -1068,83 +1068,6 @@
           - light.decorations
     default: []
   mode: single
-- id: '1636480621793'
-  alias: Utility - Notify for updates
-  description: 'Send a notification when a new update is available.
-
-    If update button is pressed, update and clear the notification.'
-  trigger:
-  - platform: state
-    entity_id:
-    - update.home_assistant_core_update
-    - update.home_assistant_operating_system_update
-    - update.home_assistant_supervisor_update
-    - update.pi_hole_core_update_available
-    - update.pi_hole_ftl_update_available
-    - update.pi_hole_web_update_available
-    - update.fritz_box_7590_fritz_os
-    - update.fritz_powerline_1260e_fritz_os
-    id: NEW_VERSION
-    to: 'on'
-  - platform: event
-    event_type: mobile_app_notification_action
-    context:
-      user_id:
-      - 18da5e1069434cf3a379885f9c801772
-    event_data:
-      action: install-update
-    id: UPDATE
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id: NEW_VERSION
-        - condition: template
-          value_template: '{{state_attr(trigger.entity_id,  ''auto_update'') == false}}'
-      sequence:
-      - service: notify.mobile_app_sm_g960f
-        data:
-          title: '{{ state_attr(trigger.entity_id, ''friendly_name'') }} 🎉'
-          message: 'Latest version: {{ state_attr(trigger.entity_id, ''latest_version'')
-            }}'
-          data:
-            group: Utility
-            tag: new-update
-            clickAction: '{{ state_attr(trigger.entity_id, ''release_url'') }}'
-            sticky: 'true'
-            actions:
-            - action: URI
-              title: Changelog
-              uri: '{{ state_attr(trigger.entity_id, ''release_url'') }}'
-            - action: install-update
-              title: Update
-              destructive: true
-              authenticationRequired: true
-    - conditions:
-      - condition: trigger
-        id: UPDATE
-      sequence:
-      - variables:
-          entity_id: "update.{{ trigger.event.data.tag\n  if trigger.event.data.tag\
-            \ is string and trigger.event.data.tag != ''\n  else trigger.event.data.action_data.tag\
-            \ }}"
-      - service: persistent_notification.create
-        data:
-          message: '{{ entity_id }}'
-      - service: update.install
-        data: {}
-        target:
-          entity_id: '{{ entity_id }}'
-      - service: notify.mobile_app_sm_g960f
-        data:
-          message: clear_notification
-          data:
-            tag: new-update
-    default: []
-  mode: single
 - id: '1637348841688'
   alias: Utility - Pull and deploy
   description: ''
@@ -1605,3 +1528,28 @@
         data:
           message: The {{sensors}} need watering.
           title: Water me 💦
+- id: '1653651804886'
+  alias: Utility - Notify for updates
+  description: ''
+  use_blueprint:
+    path: mdegat01/update_notifications.yaml
+    input:
+      reminder_hours: None
+      mobile_app_device: da960a0ac489ecb28f8a5e2b19b1c0ac
+      run_config_check: true
+      only_after: 00:08:00
+      only_before: 00:19:30
+      update_entities:
+      - update.fritz_box_7590_fritz_os
+      - update.fritz_powerline_1260e_fritz_os
+      - update.home_assistant_core_update
+      - update.home_assistant_operating_system_update
+      - update.home_assistant_supervisor_update
+      - update.pi_hole_core_update_available
+      - update.pi_hole_ftl_update_available
+      - update.pi_hole_web_update_available
+      - update.hacs_update
+      - update.nest_protect_update
+      - update.opensprinkler_integration_for_home_assistant_update
+      - update.spotcast_update
+      - update.watchman_update
