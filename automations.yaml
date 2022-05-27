@@ -851,7 +851,6 @@
     - binary_sensor.kpn_tv
     - binary_sensor.attict_range_extender
     - binary_sensor.scullery_range_extender
-    - binary_sensor.living_room_home_mini
     - binary_sensor.bedroom_home_mini
     - binary_sensor.dining_room_home_mini
     - binary_sensor.opentherm_controller
@@ -864,6 +863,7 @@
     - binary_sensor.noenoe
     - binary_sensor.garage_door_status
     - binary_sensor.air_sensor_status
+    - binary_sensor.livingroom_home_mini
     for:
       hours: 0
       minutes: 5
@@ -994,31 +994,6 @@
         entity_id: light.reindeer_light
         domain: light
     default: []
-  mode: single
-- id: '1635875380581'
-  alias: Utility - Notify when boiler offline
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.boiler_temperature
-    to: '0'
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  condition: []
-  action:
-  - service: notify.mobile_app_sm_g960f
-    data:
-      message: The boiler is offline more than 5 minutes.
-      title: Boiler offline ❌
-      data:
-        actions:
-        - action: URI
-          title: More info
-          uri: /lovelace/climate
-        group: Utility
   mode: single
 - id: '1636210209751'
   alias: Lights - Outdoor decorations
