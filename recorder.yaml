@@ -8,10 +8,12 @@ commit_interval: 5 # seconds
 include:
   domains:
     - alarm_control_panel
+    - binary_sensor
     - light
     - climate
     - person
     - plant
+    - vacuum
 
   entities:
     # General
@@ -69,37 +71,6 @@ include:
     - sensor.disk_use_percent
     - sensor.processor_temperature
 
-    # Binary sensors
-    - binary_sensor.doorbell_pressed
-    - binary_sensor.fritz_box
-    - binary_sensor.pi_hole
-    - binary_sensor.hue_garden_bridge
-    - binary_sensor.hue_utility_bridge
-    - binary_sensor.kpn_tv
-    - binary_sensor.livingroom_powerline_endpoint
-    - binary_sensor.attict_range_extender
-    - binary_sensor.scullery_range_extender
-    - binary_sensor.living_room_home_mini
-    - binary_sensor.bedroom_home_mini
-    - binary_sensor.dining_room_home_mini
-    - binary_sensor.opentherm_controller
-    - binary_sensor.doorbell_status
-    - binary_sensor.slimmelezer_status
-    - binary_sensor.attict_chromecast_audio
-    - binary_sensor.sprinkler_controller
-    - binary_sensor.fan_controller_status
-    - binary_sensor.reindeer_status
-    - binary_sensor.noenoe
-    - binary_sensor.garage_door_status
-    - binary_sensor.air_sensor_status
-    - binary_sensor.plant_monitor_status
-
-    # Motion
-    - binary_sensor.livingroom_motion
-    - binary_sensor.downstairs_hallway_motion
-    - binary_sensor.stair_closet_motion
-    - binary_sensor.upstairs_hallway_motion
-
     # Device tracker
     - device_tracker.sm_g960f
     - device_tracker.sm_a202f
@@ -127,4 +98,3 @@ include:
     - input_boolean.quiet
     - switch.floor_heating_pump_on_off
     - sensor.outdoor_lights
-    - vacuum.noenoe

@@ -66,7 +66,7 @@ binary_sensor.scullery_range_extender:
   icon: mdi:wifi
 binary_sensor.opentherm_controller:
   icon: mdi:wifi
-binary_sensor.living_room_home_mini:
+binary_sensor.livingroom_home_mini:
   icon: mdi:wifi
 binary_sensor.attict_chromecast_audio:
   icon: mdi:wifi
