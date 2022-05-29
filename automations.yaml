@@ -1165,6 +1165,7 @@
       minutes: 30
       seconds: 0
     id: MODERATE_DOWN
+    to: Moderate
   condition: []
   action:
   - choose:

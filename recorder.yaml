@@ -30,6 +30,7 @@ include:
     - sensor.average_humidity
     - sensor.buienradar_ground_temperature
     - sensor.buienradar_humidity
+    - sensor.buienradar_rain_last_24h
 
     # Network
     - sensor.speedtest_download

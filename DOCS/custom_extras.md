@@ -9,8 +9,7 @@
 
 ## Frontend
 
-- [Outline](https://github.com/frenck/home-assistant-theme-outline): Outline theme
-- [Lovelace Swipe Navigation](https://github.com/maykar/lovelace-swipe-navigation): Swipe through Lovelace views on mobile.
+- [Outline](https://github.com/frenck/home-assistant-theme-outline): Outline theme.
 - [Spotify Lovelace Card](https://github.com/custom-cards/spotify-card): Spotify playlist card.
 - [Button-card](https://github.com/custom-cards/button-card): Lovelace button-card for home assistant.
 - [Card-mod](https://github.com/custom-cards/button-card): Add CSS styles to (almost) any lovelace card.
