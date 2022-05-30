@@ -95,7 +95,7 @@ adaptive_lighting:
     detect_non_ha_changes: true
     lights:
       - light.living_room
-  
+
   - name: "Kitchen"
     prefer_rgb_color: false
     transition: 30
