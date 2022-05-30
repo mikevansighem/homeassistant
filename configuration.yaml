@@ -85,13 +85,13 @@ switch:
     sunset_colortemp: 2940
     stop_colortemp: 2080
     mode: mired
-    disable_brightness_adjust: True
+    disable_brightness_adjust: true
     lights:
       - light.living_room
       - light.stairs_closet
       - light.closet
       - light.attic
-      
+
 ###############################################################################
 # ZIGBEE
 ###############################################################################
