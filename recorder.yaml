@@ -14,6 +14,7 @@ include:
     - person
     - plant
     - vacuum
+#    - switch
 
   entities:
     # General

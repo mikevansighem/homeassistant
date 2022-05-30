@@ -1053,6 +1053,7 @@
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.first_down
+        data: {}
     - conditions:
       - condition: state
         entity_id: input_boolean.first_down
@@ -1061,11 +1062,15 @@
       - service: input_boolean.turn_on
         target:
           entity_id: input_boolean.first_down
+        data: {}
       - service: light.turn_on
         target:
           entity_id:
           - light.living_room
           - light.decorations
+        data:
+          kelvin: '{{state_attr(''switch.adaptive_lighting_livingroom'', ''color_temp_kelvin'')}}'
+          brightness_pct: '{{state_attr(''switch.adaptive_lighting_livingroom'', ''brightness_pct'')}}'
     default: []
   mode: single
 - id: '1637348841688'
@@ -1554,3 +1559,21 @@
       - update.opensprinkler_integration_for_home_assistant_update
       - update.spotcast_update
       - update.watchman_update
+- id: '1653931977841'
+  alias: Lights - Turn off manual control
+  trigger:
+    platform: event
+    event_type: adaptive_lighting.manual_control
+  action:
+  - delay: 01:00:00
+  - condition: template
+    value_template: '{{ light in state_attr(switch, ''manual_control'') }}'
+  - service: adaptive_lighting.set_manual_control
+    data:
+      entity_id: '{{ switch }}'
+      lights: '{{ light }}'
+      manual_control: false
+  mode: parallel
+  variables:
+    light: '{{ trigger.event.data.entity_id }}'
+    switch: '{{ trigger.event.data.switch }}'

@@ -75,22 +75,38 @@ logger:
       - ".*Disarming all IAS ACE zones"
 
 ###############################################################################
-# SWITCH
+# ADAPTIVE LIGHTING
 ###############################################################################
 
-switch:
-  - platform: flux
-    name: "Adaptive light colour"
-    start_colortemp: 2850 # Converted from mired by 1,000,000 / Mired = Kelvin
-    sunset_colortemp: 2940
-    stop_colortemp: 2080
-    mode: mired
-    disable_brightness_adjust: true
-    lights:
-      - light.living_room
-      - light.stairs_closet
-      - light.closet
-      - light.attic
+adaptive_lighting:
+
+- name: "Livingroom"
+  prefer_rgb_color: false
+  transition: 30
+  initial_transition: 30
+  interval: 90
+  min_brightness: 45
+  max_brightness: 70
+  min_color_temp: 1900
+  max_color_temp: 2800
+  sleep_brightness: 1
+  sleep_color_temp: 1000
+  take_over_control: true
+  detect_non_ha_changes: true
+  lights: 
+    - light.living_room
+
+- name: "Kitchen"
+  prefer_rgb_color: false
+  transition: 30
+  initial_transition: 30
+  interval: 90
+  min_brightness: 0
+  max_brightness: 100
+  take_over_control: true
+  detect_non_ha_changes: true
+  lights: 
+    - light.kitchen
 
 ###############################################################################
 # ZIGBEE
