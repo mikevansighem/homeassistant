@@ -23,6 +23,7 @@ input_datetime: !include input_datetime.yaml
 input_boolean: !include input_boolean.yaml
 input_text: !include input_text.yaml
 plant: !include plant.yaml
+adaptive_lighting: !include adaptive_lighting.yaml
 
 # Enable themes
 frontend:
@@ -73,40 +74,6 @@ logger:
       - ".*received command get_panel_status"
       - ".*Arming all IAS ACE zones"
       - ".*Disarming all IAS ACE zones"
-
-###############################################################################
-# ADAPTIVE LIGHTING
-###############################################################################
-
-adaptive_lighting:
-
-  - name: "Livingroom"
-    prefer_rgb_color: false
-    transition: 30
-    initial_transition: 30
-    interval: 90
-    min_brightness: 45
-    max_brightness: 70
-    min_color_temp: 1900
-    max_color_temp: 2800
-    sleep_brightness: 1
-    sleep_color_temp: 1000
-    take_over_control: true
-    detect_non_ha_changes: true
-    lights:
-      - light.living_room
-
-  - name: "Kitchen"
-    prefer_rgb_color: false
-    transition: 30
-    initial_transition: 30
-    interval: 90
-    min_brightness: 0
-    max_brightness: 100
-    take_over_control: true
-    detect_non_ha_changes: true
-    lights:
-      - light.kitchen
 
 ###############################################################################
 # ZIGBEE
