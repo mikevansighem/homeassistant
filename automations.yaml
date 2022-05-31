@@ -1084,13 +1084,16 @@
   condition: []
   action:
   - service: shell_command.git_pull
+    data: {}
   - service: notify.mobile_app_sm_g960f
     data:
       title: Updated configuration ↗
       message: 'A configuration update was deployed: "{{states(''sensor.last_commit'')}}".'
       data:
-        group: Utility
+        group: utility_stream
+        color: grey
   - service: homeassistant.restart
+    data: {}
   mode: single
 - id: '1641105359759'
   alias: Audio - All off when away
