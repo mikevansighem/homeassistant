@@ -11,7 +11,7 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 binary_sensor: !include binary_sensor.yaml
-climate: !include climate.yaml
+mqtt: !include mqtt.yaml
 alarm_control_panel: !include alarm_control_panel.yaml
 utility_meter: !include utility_meter.yaml
 sensor: !include sensor.yaml
@@ -46,10 +46,6 @@ tts:
 ###############################################################################
 # SPOTIFY
 ###############################################################################
-
-spotify:
-  client_id: !secret spotify_client_id
-  client_secret: !secret spotify_client_secret
 
 # Integration for playing Spotify on Chromecast/Google home.
 spotcast:

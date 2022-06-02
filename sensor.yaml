@@ -112,64 +112,6 @@
       arg: eth0
 
 ###############################################################################
-# MQTT THERMOSTAT
-###############################################################################
-
-# Thermostat sensors DIYLESS
-- platform: mqtt
-  name: "Current thermostat temperature"
-  device_class: temperature
-  state_topic: "opentherm-thermostat/current-temperature/get"
-  value_template: "{{ value }}"
-  unit_of_measurement: '°C'
-  icon: mdi:thermometer
-
-- platform: mqtt
-  name: "Target thermostat temperature"
-  device_class: temperature
-  state_topic: "opentherm-thermostat/setpoint-temperature/get"
-  value_template: "{{ value }}"
-  unit_of_measurement: '°C'
-  icon: mdi:thermometer
-
-- platform: mqtt
-  name: "Boiler temperature"
-  device_class: temperature
-  state_topic: "opentherm-thermostat/boiler-temperature/get"
-  value_template: "{{ value }}"
-  unit_of_measurement: '°C'
-  icon: mdi:thermometer
-
-- platform: mqtt
-  name: "Boiler target temperature"
-  device_class: temperature
-  state_topic: "opentherm-thermostat/boiler-target-temperature/get"
-  value_template: "{{ value }}"
-  unit_of_measurement: '°C'
-  icon: mdi:thermometer
-
-- platform: mqtt
-  name: "Boiler mode"
-  device_class: temperature
-  state_topic: "opentherm-thermostat/mode/get"
-  value_template: "{{ value }}"
-  icon: mdi:water-boiler
-
-- platform: mqtt
-  name: "Water target temperature"
-  device_class: temperature
-  state_topic: "opentherm-thermostat/dhw-temperature/get"
-  value_template: "{{ value }}"
-  unit_of_measurement: '°C'
-  icon: mdi:thermometer
-
-- platform: mqtt
-  name: "Water service"
-  state_topic: "opentherm-thermostat/dhw-state/get"
-  value_template: "{{ value }}"
-  icon: mdi:water-boiler
-
-###############################################################################
 # TEMPLATE SENSORS
 ###############################################################################
 
