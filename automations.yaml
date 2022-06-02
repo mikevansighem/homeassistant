@@ -877,7 +877,7 @@
       message: '{{ state_attr(trigger.to_state.entity_id, ''friendly_name'') }} is
         offline more than 5 minutes.'
       data:
-        group: utility_stream
+        group: Utility
         color: grey
         actions:
         - action: URI
@@ -898,7 +898,7 @@
       title: Restarted 🌟
       message: Home Assistant has restarted.
       data:
-        group: utility_stream
+        group: Utility
         color: grey
   mode: single
 - id: '1633712008868'
@@ -916,7 +916,7 @@
       message: Er staat iemand aan de voordeur.
       title: Ding dong 🔔
       timeout: 120
-      group: home_stream
+      group: Chime
   - service: script.speak
     data:
       message: Er staat iemand aan de voordeur.
@@ -1270,7 +1270,7 @@
         \ }} battery level is {{ states(entity_id) }}.{{ '\\n' }}\n  {% endif %}\n\
         {% endfor %}\n"
       data:
-        group: utility_stream
+        group: Utility
         color: grey
         actions:
         - action: URI
@@ -1373,7 +1373,7 @@
       message: NoeNoe wil geleegd worden.
       title: NoeNoe vol ♻️
       data:
-        group: home_stream
+        group: Vacuum
   - service: script.speak
     data:
       message: Noenoe wil geleegd worden.
@@ -1430,7 +1430,7 @@
       title: Configuation failed
       message: A configuration deployment has failed.
       data:
-        group: utility_stream
+        group: Utility
         color: grey
         uri: https://github.com/mikevansighem/homeassistant/actions
   mode: single
@@ -1545,7 +1545,8 @@
           message: The {{sensors}} need watering.
           title: Water me 💦
           data:
-            group: home_stream
+            group: Plants
+            color: Green
 - id: '1653651804886'
   alias: Utility - Notify for updates
   description: ''
@@ -1571,6 +1572,7 @@
       - update.opensprinkler_integration_for_home_assistant_update
       - update.spotcast_update
       - update.watchman_update
+      notification_channel: Utility
 - id: '1653931977841'
   alias: Lights - Turn off manual control
   trigger:

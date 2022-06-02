@@ -20,7 +20,7 @@ climate:
     max_temp: 28
     value_template: "{{ value }}"
     temp_step: 0.5
-  
+
   # Hot water
   - icon: mdi:water-pump
     modes:
