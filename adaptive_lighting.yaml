@@ -7,10 +7,10 @@
   transition: 30
   initial_transition: 30
   interval: 90
-  min_brightness: 45
+  min_brightness: 40
   max_brightness: 70
-  min_color_temp: 1900
-  max_color_temp: 2800
+  min_color_temp: 1800
+  max_color_temp: 2600
   sleep_brightness: 1
   sleep_color_temp: 1000
   take_over_control: true
@@ -46,37 +46,7 @@
   lights:
     - light.attic
 
-- name: "Kitchen"
-  prefer_rgb_color: false
-  transition: 30
-  initial_transition: 30
-  interval: 90
-  take_over_control: true
-  detect_non_ha_changes: true
-  lights:
-    - light.kitchen
-
-- name: "Toilet"
-  prefer_rgb_color: false
-  transition: 30
-  initial_transition: 30
-  interval: 90
-  take_over_control: true
-  detect_non_ha_changes: true
-  lights:
-    - light.toilet
-
-- name: "Attic hallway"
-  prefer_rgb_color: false
-  transition: 30
-  initial_transition: 30
-  interval: 90
-  take_over_control: true
-  detect_non_ha_changes: true
-  lights:
-    - light.attic_hallway
-
-- name: "Upstairs hallway"
+- name: "Dimmable"
   prefer_rgb_color: false
   transition: 30
   initial_transition: 30
@@ -85,14 +55,7 @@
   detect_non_ha_changes: true
   lights:
     - light.upstairs_hallway
-
-- name: "Downstairs hallway"
-  prefer_rgb_color: false
-  transition: 30
-  initial_transition: 30
-  interval: 90
-  take_over_control: true
-  detect_non_ha_changes: true
-  lights:
     - light.downstairs_hallway
-
+    - light.toilet
+    - light.attic_hallway
+    - light.kitchen
