@@ -864,6 +864,7 @@
     - binary_sensor.garage_door_status
     - binary_sensor.air_sensor_status
     - binary_sensor.livingroom_home_mini
+    - binary_sensor.plant_monitor_status
     for:
       hours: 0
       minutes: 5
