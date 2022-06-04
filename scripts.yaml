@@ -375,12 +375,19 @@ fan_down:
 commit_and_clear:
   alias: Commit and clear
   sequence:
-  - service: shell_command.git_commit
-    data: {}
-  - service: input_text.set_value
-    data:
-      value: Your commit message
-    target:
+  - if:
+    - condition: state
       entity_id: input_text.commit_message
+      state: Your commit message
+    then:
+    - stop: ''
+    else:
+    - service: shell_command.git_commit
+      data: {}
+    - service: input_text.set_value
+      data:
+        value: Your commit message
+      target:
+        entity_id: input_text.commit_message
   mode: single
   icon: mdi:shape-rectangle-plus
