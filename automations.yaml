@@ -1091,7 +1091,7 @@
       title: Updated configuration ↗
       message: 'A configuration update was deployed: "{{states(''sensor.last_commit'')}}".'
       data:
-        group: utility_stream
+        group: Utility
         color: grey
   - service: homeassistant.restart
     data: {}
