@@ -80,8 +80,8 @@
   name: "downstairs temperature"
   round_digits: 1
   entity_ids:
-    - sensor.downstairs_hallway_temperature
-    - sensor.livingroom_temperature
+    - sensor.downstairs_hallway_motion_temperature
+    - sensor.livingroom_motion_temperature
     - sensor.stair_closet_temperature
     - sensor.air_sensor_temperature
     - sensor.epipremnum_aureum_temperature

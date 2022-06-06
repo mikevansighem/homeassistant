@@ -1322,18 +1322,23 @@
       - condition: trigger
         id: 'ON'
       sequence:
-      - type: turn_on
-        device_id: e39945bdea53a2cf8d8d9f5ad9aeab9e
-        entity_id: light.grow_light
-        domain: light
+      - service: scene.turn_on
+        target:
+          entity_id: scene.grow
+        metadata: {}
     - conditions:
       - condition: trigger
         id: 'OFF'
       sequence:
-      - type: turn_off
-        device_id: e39945bdea53a2cf8d8d9f5ad9aeab9e
-        entity_id: light.grow_light
-        domain: light
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id:
+          - light.grow_light
+          - light.wall_lamp_1
+          - light.wall_lamp_2
+          - light.wall_lamp_3
+          - light.wall_lamp_4
     default: []
   mode: single
 - id: '1647193940696'
@@ -1557,8 +1562,8 @@
       reminder_hours: None
       mobile_app_device: da960a0ac489ecb28f8a5e2b19b1c0ac
       run_config_check: true
-      only_after: 00:08:00
-      only_before: 00:19:30
+      only_after: 00:00:00
+      only_before: 00:00:00
       update_entities:
       - update.fritz_box_7590_fritz_os
       - update.fritz_powerline_1260e_fritz_os

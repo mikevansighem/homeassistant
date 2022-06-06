@@ -1,0 +1,115 @@
+- id: '1654501104267'
+  name: Grow
+  entities:
+    light.grow_light:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:leaf-circle-outline
+      friendly_name: Grow light
+      supported_features: 0
+      state: 'on'
+    light.wall_lamp_1:
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 298.879
+      - 83.922
+      rgb_color:
+      - 251
+      - 41
+      - 255
+      xy_color:
+      - 0.379
+      - 0.157
+      mode: normal
+      dynamics: none
+      friendly_name: Wall lamp 1
+      supported_features: 40
+      state: 'on'
+    light.wall_lamp_2:
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 298.879
+      - 83.922
+      rgb_color:
+      - 251
+      - 41
+      - 255
+      xy_color:
+      - 0.379
+      - 0.157
+      mode: normal
+      dynamics: none
+      friendly_name: Wall lamp 2
+      supported_features: 40
+      state: 'on'
+    light.wall_lamp_3:
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 298.879
+      - 83.922
+      rgb_color:
+      - 251
+      - 41
+      - 255
+      xy_color:
+      - 0.379
+      - 0.157
+      mode: normal
+      dynamics: none
+      friendly_name: Wall lamp 3
+      supported_features: 40
+      state: 'on'
+    light.wall_lamp_4:
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 298.879
+      - 83.922
+      rgb_color:
+      - 251
+      - 41
+      - 255
+      xy_color:
+      - 0.379
+      - 0.157
+      mode: normal
+      dynamics: none
+      friendly_name: Wall lamp 4
+      supported_features: 40
+      state: 'on'
+  icon: mdi:leaf-circle-outline
+  metadata:
+    light.wall_lamp_3:
+      entity_only: true
+    light.wall_lamp_2:
+      entity_only: true
+    light.wall_lamp_1:
+      entity_only: true
+    light.wall_lamp_4:
+      entity_only: true
+    light.grow_light:
+      entity_only: true

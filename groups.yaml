@@ -4,7 +4,7 @@ battery_levels:
     - sensor.alarm_panel_battery
     - sensor.attict_dimmer_battery_level
     - sensor.attict_hallway_dimmer_battery_level
-    - sensor.downstairs_hallway_battery
-    - sensor.livingroom_battery
+    - sensor.downstairs_hallway_motion_battery
+    - sensor.livingroom_motion_battery
     - sensor.stair_closet_battery
-    - sensor.upstairs_hallway_battery
+    - sensor.upstairs_hallway_motion_battery
