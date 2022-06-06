@@ -1071,9 +1071,6 @@
           entity_id:
           - light.living_room
           - light.decorations
-        data:
-          kelvin: '{{state_attr(''switch.adaptive_lighting_livingroom'', ''color_temp_kelvin'')}}'
-          brightness_pct: '{{state_attr(''switch.adaptive_lighting_livingroom'', ''brightness_pct'')}}'
     default: []
   mode: single
 - id: '1637348841688'
