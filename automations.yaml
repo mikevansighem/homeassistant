@@ -305,7 +305,7 @@
   description: Turn lights off when no motion is detected
   trigger:
   - platform: state
-    entity_id: binary_sensor.stair_closet_motion
+    entity_id: binary_sensor.stairs_closet_motion
     to: 'off'
     for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
   condition:
