@@ -82,7 +82,7 @@
   entity_ids:
     - sensor.downstairs_hallway_motion_temperature
     - sensor.livingroom_motion_temperature
-    - sensor.stair_closet_temperature
+    - sensor.stairs_closet_motion_temperature
     - sensor.air_sensor_temperature
     - sensor.epipremnum_aureum_temperature
     - sensor.zamioculcas_temperature

@@ -1594,3 +1594,12 @@
   variables:
     light: '{{ trigger.event.data.entity_id }}'
     switch: '{{ trigger.event.data.switch }}'
+- id: '1654623073206'
+  alias: Lights - Stairs closet motion control
+  description: ''
+  use_blueprint:
+    path: dondochaka/turn-light-on-and-off-based-on-detected-motion.yaml
+    input:
+      motion_sensor: binary_sensor.stairs_closet_motion
+      light: light.stairs_closet
+      duration: 0:00:15
