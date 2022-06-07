@@ -47,7 +47,8 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.stair_closet_motion
+    entity_id:
+    - binary_sensor.stairs_closet_motion
     to: 'on'
   - platform: state
     entity_id: binary_sensor.livingroom_motion
@@ -275,7 +276,8 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.stair_closet_motion
+    entity_id:
+    - binary_sensor.stairs_closet_motion
     to: 'on'
   - platform: state
     entity_id: binary_sensor.livingroom_motion
