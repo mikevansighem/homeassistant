@@ -1600,8 +1600,23 @@
   alias: Lights - Stairs closet motion control
   description: ''
   use_blueprint:
-    path: dondochaka/turn-light-on-and-off-based-on-detected-motion.yaml
+    path: turn-light-on-and-off-based-on-detected-motion.yaml
     input:
       motion_sensor: binary_sensor.stairs_closet_motion
       light: light.stairs_closet
       duration: 0:00:15
+- id: '1654793996082'
+  alias: Utility - Keep on
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.washing_machine
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: '{{ trigger.entity_id }}'
+  mode: single

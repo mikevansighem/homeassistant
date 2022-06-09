@@ -95,6 +95,11 @@ include:
     - sensor.violaceae_moisture
     - sensor.violaceae_temperature
 
+    # Power
+    - sensor.washing_machine_electrical_measurement
+    - sensor.washing_machine_power_factor
+    - sensor.washing_machine_metering_summation
+
     # Other
     - input_boolean.holiday
     - input_boolean.quiet
