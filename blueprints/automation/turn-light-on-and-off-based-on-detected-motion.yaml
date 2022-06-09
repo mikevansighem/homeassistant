@@ -21,23 +21,28 @@ blueprint:
       name: Duration
       description: How long the light should stay on for, after motion is detected,
         before turning off (defaults to 30 seconds)
-      default: 0:00:60
+      default: 0:00:30
   source_url: https://community.home-assistant.io/t/turn-light-on-and-off-based-on-detected-motion/255994
+
 trigger:
-- entity_id: !input 'motion_sensor'
-  for: !input 'duration'
-  platform: state
-  to: 'off'
-- entity_id: !input 'motion_sensor'
-  platform: state
-  to: 'on'
+  - entity_id: !input 'motion_sensor'
+    for: !input 'duration'
+    platform: state
+    to: 'off'
+  - entity_id: !input 'motion_sensor'
+    platform: state
+    to: 'on'
+
 condition: []
+
 action:
-- data:
-    entity_id: '{{light}}'
-  service: light.turn_{{mode}}
+  - data:
+      entity_id: '{{light}}'
+    service: light.turn_{{mode}}
+
 variables:
   motion: !input 'motion_sensor'
   light: !input 'light'
   mode: '{{ states(motion) }}'
+
 mode: single
