@@ -1597,7 +1597,7 @@
     light: '{{ trigger.event.data.entity_id }}'
     switch: '{{ trigger.event.data.switch }}'
 - id: '1654623073206'
-  alias: Lights - Stairs closet motion control
+  alias: 'Lights - Motion control - Stairs closet '
   description: ''
   use_blueprint:
     path: turn-light-on-and-off-based-on-detected-motion.yaml
@@ -1613,11 +1613,68 @@
     entity_id:
     - switch.washing_machine
     - switch.dishwasher
+    - switch.dryer
     to: 'off'
+  - platform: homeassistant
+    event: start
   condition: []
   action:
   - service: switch.turn_on
     data: {}
     target:
       entity_id: '{{ trigger.entity_id }}'
+  mode: single
+- id: '1654879087572'
+  alias: New Automation
+  description: ''
+  use_blueprint:
+    path: zha-philips-hue-v2-smart-dimmer-switch-and-remote-rwl022.yaml
+    input:
+      zha_device: 8d6d831bfa4b4b4b59647ab5fb011cb9
+      Power_Press:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.attic_desk
+      Down_Press:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.attic_desk
+- id: '1654879355436'
+  alias: Lights - Attic dimmer
+  description: ''
+  trigger:
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: 8d6d831bfa4b4b4b59647ab5fb011cb9
+      command: 'on'
+    id: 'On'
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: 8d6d831bfa4b4b4b59647ab5fb011cb9
+      command: off_press
+    id: 'Off'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'On'
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.attic
+    - conditions:
+      - condition: trigger
+        id: 'Off'
+      sequence:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.attic
+    default: []
   mode: single

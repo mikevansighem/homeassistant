@@ -20,6 +20,8 @@ binary_sensor.workday_sensor:
   icon: mdi:briefcase
 sensor.downstairs_temperature:
   icon: mdi:thermometer
+light.attic:
+  icon: mdi:home-roof
 
 # Energy
 sensor.daily_gas:

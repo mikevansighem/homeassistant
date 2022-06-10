@@ -2,7 +2,7 @@ battery_levels:
   name: Battery levels
   entities:
     - sensor.alarm_panel_battery
-    - sensor.attict_dimmer_battery_level
+    - sensor.attic_dimmer_battery
     - sensor.attict_hallway_dimmer_battery_level
     - sensor.downstairs_hallway_motion_battery
     - sensor.livingroom_motion_battery
