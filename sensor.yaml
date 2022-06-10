@@ -244,6 +244,15 @@
 
             {% set F_humidity = B_humidity / humidity | float(0) %}
             {% set F_temperature = temperature / B_temperature | float(0) %}
+
+            {% if temperature > 40 %}
+              {% set temperature = B_temperature %}
+            {% endif %}
+
+            {% if humidity > 100 %}
+              {% set humidity = B_humidity %}
+            {% endif %}
+
             {% set level = 100 * F_humidity * F_temperature | round(2) %}
 
             {% if rain > threshold or level < cutoff %}
