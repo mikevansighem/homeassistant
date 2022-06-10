@@ -97,8 +97,9 @@ include:
 
     # Power
     - sensor.washing_machine_electrical_measurement
-    - sensor.washing_machine_power_factor
     - sensor.washing_machine_metering_summation
+    - sensor.dishwasher_electrical_measurement
+    - sensor.dishwasher_metering_summation
 
     # Other
     - input_boolean.holiday
