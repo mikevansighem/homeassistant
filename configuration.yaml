@@ -23,7 +23,6 @@ input_datetime: !include input_datetime.yaml
 input_boolean: !include input_boolean.yaml
 input_text: !include input_text.yaml
 plant: !include plant.yaml
-adaptive_lighting: !include adaptive_lighting.yaml
 
 # Enable themes
 frontend:
