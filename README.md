@@ -26,12 +26,13 @@ devices using the house state sensor.
 | House state        | Home         | Away       | Night           | Holiday    |
 |--------------------|--------------|------------|-----------------|------------|
 | Alarm              | Disarmed (1) | Armed away | Armed night (2) | Armed away |
-| Central heating    | On (3)       | Off        | Off (4)         | Off        |
+| Central heating    | On (3,7)     | Off        | Off (4)         | Off        |
 | Floor heating pump | On (3)       | Off        | Off (4)         | Off        |
 | Hot water          | On (3)       | Off        | Off (4)         | Off        |
 | Holiday lights     | Off          | Off        | Off             | On         |
 | Ventilation fan    | On           | On         | On (5)          | Off        |
 | Grow light         | Off          | On (6)     | Off             | On (6)     |
+| Notifications      | On           | Off        | Off             | Off        |
 
 Footnotes:
 
@@ -41,6 +42,7 @@ Footnotes:
 4. Switched off early using helper to preserve energy.
 5. Speed limited to low.
 6. If sun is above the horizon. This to give the plants a rest during the night.
+7. Turned off if doors are left open to prevent unnecessary heating.
 
 ## :bell: Alarm
 
