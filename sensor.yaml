@@ -199,7 +199,6 @@
 
     # Quiet time schedule
     quiet_time_schedule:
-      icon: mdi:volume-off
       friendly_name: "Quiet time schedule"
       value_template: >-
         {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}
