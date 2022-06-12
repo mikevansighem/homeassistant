@@ -381,7 +381,10 @@
   max: 3
 - id: '1629825198745'
   alias: 'Climate - Heating service '
-  description: ''
+  description: 'Turn on and off the heating based on the climate period and the house
+    state.
+
+    Prevent heating when doors remain open.'
   trigger:
   - platform: state
     entity_id: sensor.climate_period
@@ -403,6 +406,24 @@
     entity_id: sensor.house_state
     to: away
     id: 'OFF'
+  - platform: state
+    entity_id:
+    - binary_sensor.kitchen_door
+    to: 'on'
+    id: 'OFF'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - platform: state
+    entity_id:
+    - binary_sensor.kitchen_door
+    to: 'off'
+    id: 'ON'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
   condition: []
   action:
   - choose:
@@ -641,7 +662,7 @@
   max: 10
 - id: '1630829332532'
   alias: Climate - Publish downstairs temperature to MQTT
-  description: ''
+  description: Push the current downstairs temperature to MQTT for the boiler to read.
   trigger:
   - platform: state
     entity_id: sensor.downstairs_temperature
@@ -1724,29 +1745,4 @@
   - service: notify.mobile_app_sm_g960f
     data:
       message: Washing machine done
-  mode: single
-- id: '1654922479400'
-  alias: Appliance - Washing machine
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.washing_machine_electrical_measurement
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    above: '10'
-  condition: []
-  action:
-  - wait_for_trigger:
-    - platform: numeric_state
-      entity_id: sensor.washing_machine_electrical_measurement
-      for:
-        hours: 0
-        minutes: 5
-        seconds: 0
-      below: '5'
-  - service: notify.mobile_app_sm_g960f
-    data:
-      message: Dishwasher done
   mode: single
