@@ -94,6 +94,14 @@ night_alarm_early_stop:
   has_time: true
   has_date: false
 
+# Quiet time
+
+quiet_offset:
+  name: Quiet time offset
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
 # Lights
 
 light_motion_timeout_short:

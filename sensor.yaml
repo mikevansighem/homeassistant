@@ -197,6 +197,32 @@
           {% endif %}
         {% endif %}
 
+    # Quiet time schedule
+    quiet_time_schedule:
+      icon: mdi:volume-off
+      friendly_name: "Quiet time schedule"
+      value_template: >-
+        {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}
+        {% set night_start_work = state_attr('input_datetime.start_night_workday', 'hour') * 60 + state_attr('input_datetime.start_night_workday', 'minute')%}
+        {% set night_end_free = state_attr('input_datetime.end_night_free_day', 'hour') * 60 + state_attr('input_datetime.end_night_free_day', 'minute')%}
+        {% set night_end_work = state_attr('input_datetime.end_night_workday', 'hour') * 60 + state_attr('input_datetime.end_night_workday', 'minute')%}
+        {% set offset = state_attr('input_datetime.quiet_offset', 'hour') * 60 + state_attr('input_datetime.quiet_offset', 'minute')%}
+        {% set now = (states('sensor.time')[:2] | int)*60 + (states('sensor.time')[-2:] | int)%}
+
+        {% if is_state('binary_sensor.workday_sensor', 'off') %}
+          {% if (night_end_free + offset) < now < (night_start_free - offset) %}
+            false
+          {%else%}
+            true
+          {%endif%}
+        {%else%}
+          {% if (night_end_work + offset) < now < (night_start_work - offset) %}
+            false
+          {%else%}
+            true
+          {%endif%}
+        {%endif%}
+
     # outdoor light schedule
     outdoor_lights:
       friendly_name: "Outdoor lights"

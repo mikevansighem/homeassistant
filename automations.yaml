@@ -950,16 +950,20 @@
   mode: single
 - id: '1635571062556'
   alias: Utility - Update quiet helper
-  description: Set quiet when when house state is night.
+  description: 'Set quiet when house state is night.
+
+    Needed to allow manual override of the schedule.'
   trigger:
   - platform: state
-    entity_id: sensor.house_state
-    to: night
+    entity_id:
+    - sensor.quiet_time_schedule
+    to: 'true'
     id: QUIET
   - platform: state
-    entity_id: sensor.house_state
-    from: night
+    entity_id:
+    - sensor.quiet_time_schedule
     id: SOUND
+    to: 'false'
   condition: []
   action:
   - choose:
@@ -970,6 +974,7 @@
       - service: input_boolean.turn_on
         target:
           entity_id: input_boolean.quiet
+        data: {}
     - conditions:
       - condition: trigger
         id: SOUND
@@ -977,6 +982,7 @@
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.quiet
+        data: {}
     default: []
   mode: single
 - id: '1635792969335'
