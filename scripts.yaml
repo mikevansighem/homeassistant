@@ -253,28 +253,64 @@ spriklers_run_front_for_input_time:
   mode: single
   icon: mdi:sprinkler-variant
 notify_who_is_home:
-  alias: Notify who is home
-  mode: single
+  alias: New notify script
+  mode: parallel
   icon: mdi:message
   fields:
-    title:
-      description: The title of the notification
+    Title:
+      description: The title of the notification.
       example: State change
-      required: 'yes'
-    message:
-      description: The message content
+      required: true
+      selector:
+        text:
+    Message:
+      description: The message content.
       example: The light is on!
-      required: 'yes'
-    timeout:
-      description: Time after which the message disappears
+      required: true
+      selector:
+        text:
+    Timeout:
+      description: Time after which the message disappears.
       example: 120
-      required: 'no'
+      required: false
       default: 0
-    group:
-      description: Combine notifications in a group visually
+      selector:
+        number:
+          min: 0
+          max: 3600
+          step: 1
+          unit_of_measurement: seconds
+          mode: box
+    Group:
+      description: Combine notifications in a group visually.
       example: Utility
-      required: 'no'
-      default: default
+      required: false
+      default: General
+      selector:
+        select:
+          options:
+          - General
+          - Plants
+          - Utility
+          - Alarm
+    Admin_only:
+      description: Only send to the administrator.
+      example: true
+      required: false
+      default: false
+      selector:
+        boolean:
+    Home_only:
+      description: Only send to people who are home.
+      example: 'Yes'
+      required: false
+      default: 'No'
+      selector:
+        select:
+          options:
+          - 'No'
+          - Yes, retain till home
+          - Yes, discard if not home
   sequence:
   - condition: state
     entity_id: input_boolean.quiet
@@ -292,11 +328,12 @@ notify_who_is_home:
       sequence:
       - service: notify.notify
         data:
-          title: '{{ title }}'
-          message: '{{ message }}'
+          title: '{{ Title }}'
+          message: '{{ Message }}'
           data:
-            timeout: '{{ timeout|int(0) }}'
-            group: '{{ group }}'
+            timeout: '{{ Timeout|int(0) }}'
+            group: '{{ Group }}'
+            channel: '{{ Group }}'
     - conditions:
       - condition: state
         entity_id: person.tmp
@@ -304,11 +341,12 @@ notify_who_is_home:
       sequence:
       - service: notify.mobile_app_sm_g960f
         data:
-          title: '{{ title }}'
-          message: '{{ message }}'
+          title: '{{ Title }}'
+          message: '{{ Message }}'
           data:
-            timeout: '{{ timeout|int(0) }}'
-            group: '{{ group }}'
+            timeout: '{{ Timeout|int(0) }}'
+            group: '{{ Group }}'
+            channel: '{{ Group }}'
     - conditions:
       - condition: state
         entity_id: person.anneloes_jagt
@@ -316,11 +354,12 @@ notify_who_is_home:
       sequence:
       - service: notify.mobile_app_sm_a202f
         data:
-          title: '{{ title }}'
-          message: '{{ message }}'
+          title: '{{ Title }}'
+          message: '{{ Message }}'
           data:
-            timeout: '{{ timeout|int(0) }}'
-            group: '{{ group }}'
+            timeout: '{{ Timeout|int(0) }}'
+            group: '{{ Group }}'
+            channel: '{{ Group }}'
     default: []
 speak:
   alias: Speak
