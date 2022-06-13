@@ -1637,7 +1637,7 @@
     entity_id: sensor.dishwasher_electrical_measurement
     for:
       hours: 0
-      minutes: 10
+      minutes: 5
       seconds: 0
     above: '10'
   condition: []
@@ -1647,7 +1647,7 @@
       entity_id: sensor.dishwasher_electrical_measurement
       for:
         hours: 0
-        minutes: 5
+        minutes: 1
         seconds: 0
       below: '5'
   - service: notify.mobile_app_sm_g960f
@@ -1662,9 +1662,9 @@
     entity_id: sensor.dryer_electrical_measurement
     for:
       hours: 0
-      minutes: 10
+      minutes: 5
       seconds: 0
-    above: '10'
+    above: '300'
   condition: []
   action:
   - wait_for_trigger:
@@ -1672,9 +1672,9 @@
       entity_id: sensor.dryer_electrical_measurement
       for:
         hours: 0
-        minutes: 5
+        minutes: 1
         seconds: 0
-      below: '5'
+      below: '8'
   - service: notify.mobile_app_sm_g960f
     data:
       message: Dryer done
@@ -1687,7 +1687,7 @@
     entity_id: sensor.washing_machine_electrical_measurement
     for:
       hours: 0
-      minutes: 10
+      minutes: 5
       seconds: 0
     above: '10'
   condition: []
@@ -1697,7 +1697,7 @@
       entity_id: sensor.washing_machine_electrical_measurement
       for:
         hours: 0
-        minutes: 5
+        minutes: 1
         seconds: 0
       below: '5'
   - service: notify.mobile_app_sm_g960f
