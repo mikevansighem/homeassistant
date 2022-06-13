@@ -1457,54 +1457,6 @@
         color: grey
         uri: https://github.com/mikevansighem/homeassistant/actions
   mode: single
-- id: '1650388936451'
-  alias: Utility - Watchmen notification
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.missing_entities
-    id: MISSING_ENTITIES
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-  - platform: state
-    entity_id:
-    - sensor.missing_services
-    id: MISSING_SERVICES
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-  - platform: time
-    at: 04:00:00
-    id: RUN
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: MISSING_ENTITIES
-      sequence:
-      - service: persistent_notification.create
-        data:
-          message: Found {{states('sensor.watchman_missing_entities')}} missing entity(ies).
-    - conditions:
-      - condition: trigger
-        id: MISSING_SERVICES
-      sequence:
-      - service: persistent_notification.create
-        data:
-          message: Found {{states('sensor.watchman_missing_services')}} missing service(s).
-    - conditions:
-      - condition: trigger
-        id: RUN
-      sequence:
-      - service: watchman.report
-        data: {}
-    default: []
-  mode: single
 - id: '1651853081537'
   alias: Utility - Cleanup FRITZ!Box
   description: Trigger cleanup actions on FRITZ!Box devices.

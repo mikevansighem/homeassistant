@@ -156,20 +156,6 @@
       icon_template: >-
         mdi:lightning-bolt
 
-    missing_entities:
-      friendly_name: "Missing entities"
-      value_template: >-
-        {{not is_state('sensor.watchman_missing_entities', '0') and not is_state('sensor.watchman_missing_entities', 'unkown')}}
-      icon_template: >-
-        mdi:alert-rhombus-outline
-
-    missing_services:
-      friendly_name: "Missing services"
-      value_template: >-
-        {{not is_state('sensor.watchman_missing_services', '0') and not is_state('sensor.watchman_missing_services', 'unkown')}}
-      icon_template: >-
-        mdi:alert-rhombus-outline
-
     # Alarm panel battery sensor
     alarm_panel_battery:
       friendly_name: "Alarm panel"
@@ -200,6 +186,7 @@
     # Quiet time schedule
     quiet_time_schedule:
       friendly_name: "Quiet time schedule"
+      icon_template: mdi:volume-off
       value_template: >-
         {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}
         {% set night_start_work = state_attr('input_datetime.start_night_workday', 'hour') * 60 + state_attr('input_datetime.start_night_workday', 'minute')%}
