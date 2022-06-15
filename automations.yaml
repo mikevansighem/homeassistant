@@ -1649,7 +1649,7 @@
         hours: 0
         minutes: 1
         seconds: 0
-      below: '5'
+      below: '3'
   - service: notify.mobile_app_sm_g960f
     data:
       message: Dishwasher done

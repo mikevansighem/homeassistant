@@ -253,64 +253,28 @@ spriklers_run_front_for_input_time:
   mode: single
   icon: mdi:sprinkler-variant
 notify_who_is_home:
-  alias: New notify script
-  mode: parallel
+  alias: Notify who is home
+  mode: single
   icon: mdi:message
   fields:
-    Title:
-      description: The title of the notification.
+    title:
+      description: The title of the notification
       example: State change
-      required: true
-      selector:
-        text:
-    Message:
-      description: The message content.
+      required: 'yes'
+    message:
+      description: The message content
       example: The light is on!
-      required: true
-      selector:
-        text:
-    Timeout:
-      description: Time after which the message disappears.
+      required: 'yes'
+    timeout:
+      description: Time after which the message disappears
       example: 120
-      required: false
+      required: 'no'
       default: 0
-      selector:
-        number:
-          min: 0
-          max: 3600
-          step: 1
-          unit_of_measurement: seconds
-          mode: box
-    Group:
-      description: Combine notifications in a group visually.
+    group:
+      description: Combine notifications in a group visually
       example: Utility
-      required: false
-      default: General
-      selector:
-        select:
-          options:
-          - General
-          - Plants
-          - Utility
-          - Alarm
-    Admin_only:
-      description: Only send to the administrator.
-      example: true
-      required: false
-      default: false
-      selector:
-        boolean:
-    Home_only:
-      description: Only send to people who are home.
-      example: 'Yes'
-      required: false
-      default: 'No'
-      selector:
-        select:
-          options:
-          - 'No'
-          - Yes, retain till home
-          - Yes, discard if not home
+      required: 'no'
+      default: default
   sequence:
   - condition: state
     entity_id: input_boolean.quiet
@@ -328,12 +292,11 @@ notify_who_is_home:
       sequence:
       - service: notify.notify
         data:
-          title: '{{ Title }}'
-          message: '{{ Message }}'
+          title: '{{ title }}'
+          message: '{{ message }}'
           data:
-            timeout: '{{ Timeout|int(0) }}'
-            group: '{{ Group }}'
-            channel: '{{ Group }}'
+            timeout: '{{ timeout|int(0) }}'
+            group: '{{ group }}'
     - conditions:
       - condition: state
         entity_id: person.tmp
@@ -341,12 +304,11 @@ notify_who_is_home:
       sequence:
       - service: notify.mobile_app_sm_g960f
         data:
-          title: '{{ Title }}'
-          message: '{{ Message }}'
+          title: '{{ title }}'
+          message: '{{ message }}'
           data:
-            timeout: '{{ Timeout|int(0) }}'
-            group: '{{ Group }}'
-            channel: '{{ Group }}'
+            timeout: '{{ timeout|int(0) }}'
+            group: '{{ group }}'
     - conditions:
       - condition: state
         entity_id: person.anneloes_jagt
@@ -354,12 +316,11 @@ notify_who_is_home:
       sequence:
       - service: notify.mobile_app_sm_a202f
         data:
-          title: '{{ Title }}'
-          message: '{{ Message }}'
+          title: '{{ title }}'
+          message: '{{ message }}'
           data:
-            timeout: '{{ Timeout|int(0) }}'
-            group: '{{ Group }}'
-            channel: '{{ Group }}'
+            timeout: '{{ timeout|int(0) }}'
+            group: '{{ group }}'
     default: []
 speak:
   alias: Speak
@@ -430,3 +391,293 @@ commit_and_clear:
         entity_id: input_text.commit_message
   mode: single
   icon: mdi:shape-rectangle-plus
+'1655204175112':
+  alias: New notify script
+  mode: parallel
+  max: 25
+  icon: mdi:message
+  fields:
+    Title:
+      description: The title of the notification.
+      example: Cool title
+      required: true
+      selector:
+        text:
+    Message:
+      description: The message content.
+      example: The light is on!
+      required: true
+      selector:
+        text:
+    Voice:
+      description: Send voice notification.
+      example: true
+      required: true
+      default: false
+      selector:
+        boolean:
+    Admin_only:
+      description: Only send to the administrator.
+      example: true
+      required: true
+      default: false
+      selector:
+        boolean:
+    Timing:
+      description: Only send to people who are home.
+      example: When no quiet time
+      required: true
+      default: When no quiet time
+      selector:
+        select:
+          options:
+          - When no quiet time
+          - Only when home and no quiet time
+          - Retain till home and no quiet time
+    Group:
+      description: Combine notifications in a group visually.
+      example: Utility
+      required: true
+      default: General
+      selector:
+        select:
+          options:
+          - General
+          - Plants
+          - Utility
+          - Alarm
+    Timeout:
+      description: Time after which the message disappears. Zero is no timeout.
+      example: 10
+      required: true
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 3600
+          step: 1
+          unit_of_measurement: minutes
+          mode: box
+  variables:
+    color: "{% if Group == 'Plants' %}\n  {{'green'}}\n{% elif Group == 'Utility'\
+      \ %}\n  {{'grey'}}\n{% elif Group == 'Alarm' %}\n  {{'red'}}\n{% else %}\n \
+      \ {{'deepskyblue'}}\n{% endif %}"
+    timeout_seconds: "{% if Timeout|int(0) != 0 %}\n  {{Timeout * 60}}\n{% else %}\n\
+      \  {{ 0|int }}\n{% endif %}"
+  sequence:
+  - if:
+    - condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ Timing == ''Only when home and no quiet time'' }}'
+        - condition: state
+          entity_id: input_boolean.quiet
+          state: 'off'
+        - condition: state
+          entity_id: person.tmp
+          state: home
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ Timing == ''Retain till home and no quiet time'' }}'
+        - condition: state
+          entity_id: input_boolean.quiet
+          state: 'off'
+        - condition: state
+          entity_id: person.tmp
+          state: home
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ Timing == ''When no quiet time'' }}'
+        - condition: state
+          entity_id: input_boolean.quiet
+          state: 'off'
+    then:
+    - service: notify.mobile_app_sm_g960f
+      data:
+        title: '{{ Title }}'
+        message: '{{ Message }}'
+        data:
+          timeout: '{{ timeout_seconds }}'
+          group: '{{ Group }}'
+          channel: '{{ Group }}'
+          color: '{{ color }}'
+  - if:
+    - condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ Timing == ''Only when home and no quiet time'' }}'
+        - condition: state
+          entity_id: input_boolean.quiet
+          state: 'off'
+        - condition: template
+          value_template: '{{ Admin_only == false }}'
+        - condition: state
+          entity_id: person.anneloes_jagt
+          state: home
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ Timing == ''Retain till home and no quiet time'' }}'
+        - condition: state
+          entity_id: input_boolean.quiet
+          state: 'off'
+        - condition: template
+          value_template: '{{ Admin_only == false }}'
+        - condition: state
+          entity_id: person.anneloes_jagt
+          state: home
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ Timing == ''When no quiet time'' }}'
+        - condition: state
+          entity_id: input_boolean.quiet
+          state: 'off'
+        - condition: template
+          value_template: '{{ Admin_only == false }}'
+    then:
+    - service: notify.mobile_app_sm_a202f
+      data:
+        title: '{{ Title }}'
+        message: '{{ Message }}'
+        data:
+          timeout: '{{ timeout_seconds }}'
+          group: '{{ Group }}'
+          channel: '{{ Group }}'
+          color: '{{ color }}'
+  - if:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.quiet
+        state: 'off'
+      - condition: template
+        value_template: '{{ Voice == true }}'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: person.tmp
+          state: home
+        - condition: and
+          conditions:
+          - condition: template
+            value_template: '{{ Admin_only == false }}'
+          - condition: state
+            entity_id: person.anneloes_jagt
+            state: home
+    then:
+    - service: tts.cloud_say
+      data:
+        entity_id: media_player.whole_home
+        message: '{{Message}}'
+        language: nl-NL
+  - if:
+    - condition: and
+      conditions:
+      - condition: template
+        value_template: '{{ Timing == ''Retain till home and no quiet time'' }}'
+      - condition: template
+        value_template: '{{ Admin_only == true }}'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.quiet
+          state: 'on'
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: person.tmp
+            state: home
+    then:
+    - if:
+      - condition: template
+        value_template: '{{ Timeout|int(0) != 0}}'
+      then:
+      - wait_template: '{{is_state(''person.tmp'', ''home'') and is_state(''input_boolean.quiet'',
+          ''off'')}}'
+        continue_on_timeout: false
+        timeout:
+          minutes: '{{ Timeout }}'
+      else:
+      - wait_template: '{{is_state(''person.tmp'', ''home'') and is_state(''input_boolean.quiet'',
+          ''off'')}}'
+    - service: notify.mobile_app_sm_g960f
+      data:
+        title: '{{ Title }}'
+        message: '{{ Message }}'
+        data:
+          timeout: '{{ timeout_seconds }}'
+          group: '{{ Group }}'
+          channel: '{{ Group }}'
+          color: '{{ color }}'
+  - if:
+    - condition: and
+      conditions:
+      - condition: template
+        value_template: '{{ Timing == ''Retain till home and no quiet time'' }}'
+      - condition: template
+        value_template: '{{ Admin_only == false }}'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.quiet
+          state: 'on'
+        - condition: and
+          conditions:
+          - condition: not
+            conditions:
+            - condition: state
+              entity_id: person.tmp
+              state: home
+          - condition: not
+            conditions:
+            - condition: state
+              entity_id: person.anneloes_jagt
+              state: home
+    then:
+    - if:
+      - condition: template
+        value_template: '{{ Timeout|int(0) != 0}}'
+      then:
+      - wait_template: '{{(is_state(''person.tmp'', ''home'') or is_state(''person.anneloes_jagt'',
+          ''home'')) and is_state(''input_boolean.quiet'', ''off'')}}'
+        continue_on_timeout: false
+        timeout:
+          minutes: '{{ Timeout }}'
+      else:
+      - wait_template: '{{(is_state(''person.tmp'', ''home'') or is_state(''person.anneloes_jagt'',
+          ''home'')) and is_state(''input_boolean.quiet'', ''off'')}}'
+    - if:
+      - condition: state
+        entity_id: person.anneloes_jagt
+        state: home
+      then:
+      - service: notify.mobile_app_sm_a202f
+        data:
+          title: '{{ Title }}'
+          message: '{{ Message }}'
+          data:
+            timeout: '{{ timeout_seconds }}'
+            group: '{{ Group }}'
+            channel: '{{ Group }}'
+            color: '{{ color }}'
+    - if:
+      - condition: state
+        entity_id: person.tmp
+        state: home
+      then:
+      - service: notify.mobile_app_sm_g960f
+        data:
+          title: '{{ Title }}'
+          message: '{{ Message }}'
+          data:
+            timeout: '{{ timeout_seconds }}'
+            group: '{{ Group }}'
+            channel: '{{ Group }}'
+            color: '{{ color }}'
