@@ -8,3 +8,4 @@ battery_levels:
     - sensor.livingroom_motion_battery
     - sensor.stairs_closet_motion_battery
     - sensor.upstairs_hallway_motion_battery
+    - sensor.kitchen_door_battery

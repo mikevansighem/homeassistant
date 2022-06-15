@@ -409,6 +409,13 @@ commit_and_clear:
       required: true
       selector:
         text:
+    Url:
+      description: The url that will open when clicked.
+      example: lovelace/home
+      required: true
+      default: lovelace/home
+      selector:
+        text:
     Voice:
       description: Send voice notification.
       example: true
@@ -505,6 +512,7 @@ commit_and_clear:
           group: '{{ Group }}'
           channel: '{{ Group }}'
           color: '{{ color }}'
+          clickAction: '{{ Url }}'
   - if:
     - condition: or
       conditions:
@@ -551,6 +559,7 @@ commit_and_clear:
           group: '{{ Group }}'
           channel: '{{ Group }}'
           color: '{{ color }}'
+          clickAction: '{{ Url }}'
   - if:
     - condition: and
       conditions:
@@ -616,6 +625,7 @@ commit_and_clear:
           group: '{{ Group }}'
           channel: '{{ Group }}'
           color: '{{ color }}'
+          clickAction: '{{ Url }}'
   - if:
     - condition: and
       conditions:
@@ -667,6 +677,7 @@ commit_and_clear:
             group: '{{ Group }}'
             channel: '{{ Group }}'
             color: '{{ color }}'
+            clickAction: '{{ Url }}'
     - if:
       - condition: state
         entity_id: person.tmp
@@ -681,3 +692,4 @@ commit_and_clear:
             group: '{{ Group }}'
             channel: '{{ Group }}'
             color: '{{ color }}'
+            clickAction: '{{ Url }}'

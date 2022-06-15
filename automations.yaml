@@ -887,18 +887,17 @@
     from: 'on'
   condition: []
   action:
-  - service: notify.mobile_app_sm_g960f
+  - service: script.1655204175112
     data:
-      message: '{{ state_attr(trigger.to_state.entity_id, ''friendly_name'') }} is
+      Url: lovelace/network
+      Title: Device offline ❌
+      Timing: Retain till home and no quiet time
+      Timeout: 1440
+      Voice: false
+      Group: Utility
+      Admin_only: true
+      Message: '{{ state_attr(trigger.to_state.entity_id, ''friendly_name'') }} is
         offline more than 5 minutes.'
-      data:
-        group: Utility
-        color: grey
-        actions:
-        - action: URI
-          title: More info
-          uri: /lovelace/network
-      title: Device offline ❌
   mode: single
 - id: '1632764660880'
   alias: Utility - Notify on restart
@@ -908,13 +907,16 @@
     event: start
   condition: []
   action:
-  - service: notify.mobile_app_sm_g960f
+  - service: script.1655204175112
     data:
-      title: Restarted 🌟
-      message: Home Assistant has restarted.
-      data:
-        group: Utility
-        color: grey
+      Title: Restarted 🌟
+      Message: Home Assistant has restarted.
+      Url: lovelace/home
+      Voice: false
+      Admin_only: true
+      Timing: When no quiet time
+      Group: Utility
+      Timeout: 60
   mode: single
 - id: '1633712008868'
   alias: Chime - Notify
@@ -1103,13 +1105,16 @@
   action:
   - service: shell_command.git_pull
     data: {}
-  - service: notify.mobile_app_sm_g960f
+  - service: script.1655204175112
     data:
-      title: Updated configuration ↗
-      message: 'A configuration update was deployed: "{{states(''sensor.last_commit'')}}".'
-      data:
-        group: Utility
-        color: grey
+      Title: Updated configuration ↗
+      Message: 'A configuration update was deployed: "{{states(''sensor.last_commit'')}}".'
+      Url: lovelace/home
+      Voice: false
+      Admin_only: true
+      Timing: When no quiet time
+      Group: Utility
+      Timeout: 60
   - service: homeassistant.restart
     data: {}
   mode: single
@@ -1280,21 +1285,20 @@
         \ | replace(\"%\",\"\") | int) < min_battery_level -%}\n    {% set ns.found\
         \ = true -%}\n  {% endif -%}\n{% endfor -%} {{ ns.found }}\n"
   action:
-  - service: notify.mobile_app_sm_g960f
+  - service: script.1655204175112
     data:
-      message: "{% set min_battery_level = 10 %} {% for entity_id in states.group.battery_levels.attributes.entity_id\
+      Title: Battery low ⚠️
+      Message: "{% set min_battery_level = 10 %} {% for entity_id in states.group.battery_levels.attributes.entity_id\
         \ %}\n  {% set parts = entity_id.split('.') %}\n    {% if (states(entity_id)\
         \ | replace(\"%\",\"\") | int) < min_battery_level %}\n      {{ states[parts[0]][parts[1]].name\
         \ }} battery level is {{ states(entity_id) }}.{{ '\\n' }}\n  {% endif %}\n\
         {% endfor %}\n"
-      data:
-        group: Utility
-        color: grey
-        actions:
-        - action: URI
-          title: More info
-          uri: /lovelace/hardware
-      title: Battery low ⚠️
+      Url: lovelace/hardware
+      Voice: false
+      Admin_only: true
+      Timing: Retain till home and no quiet time
+      Group: Utility
+      Timeout: 0
   mode: single
 - id: '1644948589594'
   alias: Lights - Well flicker
@@ -1391,15 +1395,16 @@
     to: 'on'
   condition: []
   action:
-  - service: notify.notify
+  - service: script.1655204175112
     data:
-      message: NoeNoe wil geleegd worden.
-      title: NoeNoe vol ♻️
-      data:
-        group: Vacuum
-  - service: script.speak
-    data:
-      message: Noenoe wil geleegd worden.
+      Title: NoeNoe vol ♻️
+      Message: Noenoe wil geleegd worden.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Retain till home and no quiet time
+      Group: General
+      Timeout: 0
   mode: single
 - id: '1647452482457'
   alias: Vacuum - Reset vacumed helper
@@ -1448,14 +1453,16 @@
     webhook_id: fail
   condition: []
   action:
-  - service: notify.mobile_app_sm_g960f
+  - service: script.1655204175112
     data:
-      title: Configuation failed
-      message: A configuration deployment has failed.
-      data:
-        group: Utility
-        color: grey
-        uri: https://github.com/mikevansighem/homeassistant/actions
+      Title: Configuation failed
+      Message: A configuration deployment has failed.
+      Url: https://github.com/mikevansighem/homeassistant/actions
+      Voice: false
+      Admin_only: true
+      Timing: When no quiet time
+      Group: Utility
+      Timeout: 1440
   mode: single
 - id: '1651853081537'
   alias: Utility - Cleanup FRITZ!Box
@@ -1513,15 +1520,18 @@
   use_blueprint:
     path: plant_moisture_notification.yaml
     input:
-      time: '17:00:00'
+      time: '16:00:00'
       actions:
-      - service: notify.mobile_app_sm_g960f
+      - service: script.1655204175112
         data:
-          message: The {{sensors}} need watering.
-          title: Water me 💦
-          data:
-            group: Plants
-            color: Green
+          Title: Water me 💦
+          Url: lovelace/plants
+          Timing: Retain till home and no quiet time
+          Group: Plants
+          Timeout: 1440
+          Message: The {{sensors}} need watering.
+          Voice: false
+          Admin_only: false
 - id: '1653651804886'
   alias: Utility - Notify for updates
   description: ''
