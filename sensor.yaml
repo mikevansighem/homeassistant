@@ -254,9 +254,6 @@
             {% set B_temperature = states('input_number.base_temperature') | float(0) %}
             {% set cutoff = states('input_number.watering_cutoff') | int(0) %}
 
-            {% set F_humidity = B_humidity / humidity | float(0) %}
-            {% set F_temperature = temperature / B_temperature | float(0) %}
-
             {% if temperature > 40 %}
               {% set temperature = B_temperature %}
             {% endif %}
@@ -264,6 +261,9 @@
             {% if humidity > 100 %}
               {% set humidity = B_humidity %}
             {% endif %}
+
+            {% set F_humidity = B_humidity / humidity | float(0) %}
+            {% set F_temperature = temperature / B_temperature | float(0) %}
 
             {% set level = 100 * F_humidity * F_temperature | round(2) %}
 
