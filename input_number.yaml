@@ -94,10 +94,19 @@ base_temperature:
 
 # Cutoff sprinkler entirely
 watering_cutoff:
-  name: Watering cutoff
+  name: Lower watering cutoff
   icon: mdi:sprinkler-variant
   min: 0
   max: 100
+  step: 1
+  unit_of_measurement: "%"
+  mode: box
+
+watering_cutoff_top:
+  name: Upper watering cutoff
+  icon: mdi:sprinkler-variant
+  min: 100
+  max: 1000
   step: 1
   unit_of_measurement: "%"
   mode: box

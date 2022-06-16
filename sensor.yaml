@@ -252,12 +252,13 @@
             {% set threshold = states('input_number.rain_threshold') | float(0) %}
             {% set B_humidity = states('input_number.base_humidity') | float(0) %}
             {% set B_temperature = states('input_number.base_temperature') | float(0) %}
-            {% set cutoff = states('input_number.watering_cutoff') | int(0) %}
+            {% set lower_cutoff = states('input_number.watering_cutoff') | int(0) %}
+            {% set upper_cutoff = states('input_number.watering_cutoff_top') | int(0) %}
 
             {% if temperature > 40 %}
               {% set temperature = B_temperature %}
             {% endif %}
-
+            
             {% if humidity > 100 %}
               {% set humidity = B_humidity %}
             {% endif %}
@@ -267,8 +268,10 @@
 
             {% set level = 100 * F_humidity * F_temperature | round(2) %}
 
-            {% if rain > threshold or level < cutoff %}
+            {% if rain > threshold or level < lower_cutoff %}
                 {{ 0 | int(0) }}
+            {% elif level > upper_cutoff %}
+                {{ upper_cutoff | int(0) }}
             {% else %}
                 {{ level | int(0) }}
             {% endif %}
