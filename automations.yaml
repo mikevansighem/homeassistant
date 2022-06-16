@@ -914,7 +914,7 @@
       Url: lovelace/home
       Voice: false
       Admin_only: true
-      Timing: When no quiet time
+      Timing: Always
       Group: Utility
       Timeout: 60
   mode: single
@@ -928,15 +928,16 @@
     to: 'on'
   condition: []
   action:
-  - service: script.notify_who_is_home
+  - service: script.1655204175112
     data:
-      message: Er staat iemand aan de voordeur.
-      title: Ding dong 🔔
-      timeout: 120
-      group: Chime
-  - service: script.speak
-    data:
-      message: Er staat iemand aan de voordeur.
+      Title: Ding dong 🔔
+      Message: Er staat iemand aan de voordeur.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Only when home and no quiet time
+      Group: General
+      Timeout: 3
   mode: single
 - id: '1635185749340'
   alias: Utility - Set theme
@@ -1421,7 +1422,7 @@
       entity_id: input_boolean.vacumed
   mode: single
 - id: '1647545719116'
-  alias: Vacuum - Stop if stuck
+  alias: Vacuum - Stop and notify if stuck
   description: 'Stop the vacuum if it has been stuck for some time and notify. '
   trigger:
   - platform: state
@@ -1433,17 +1434,20 @@
       seconds: 0
   condition: []
   action:
-  - type: turn_off
-    device_id: 21772c2aaa1ef8b8657a520b4486f31f
-    entity_id: switch.irobot_1ecca3a2fc0241908a42273509b043d3_internet_access
-    domain: switch
-  - service: notify.notify
+  - service: script.1655204175112
     data:
-      message: NoeNoe heeft hulp nodig.
-      title: NoeNoe in de nesten ❌
-  - service: script.speak
-    data:
-      message: Noenoe heeft zich in de nesten gewerkt.
+      Title: NoeNoe in de nesten ❌
+      Message: NoeNoe heeft hulp nodig.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Always
+      Group: General
+      Timeout: 0
+  - service: vacuum.stop
+    data: {}
+    target:
+      device_id: 21772c2aaa1ef8b8657a520b4486f31f
   mode: single
 - id: '1650130407618'
   alias: Utility - Notify on failed configuration
@@ -1460,7 +1464,7 @@
       Url: https://github.com/mikevansighem/homeassistant/actions
       Voice: false
       Admin_only: true
-      Timing: When no quiet time
+      Timing: Always
       Group: Utility
       Timeout: 1440
   mode: single
@@ -1660,9 +1664,16 @@
         minutes: 1
         seconds: 0
       below: '3'
-  - service: notify.mobile_app_sm_g960f
+  - service: script.1655204175112
     data:
-      message: Dishwasher done
+      Message: De vaatwasser is klaar.
+      Title: Vaarwasser klaar ✨
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Retain till home and no quiet time
+      Group: General
+      Timeout: 1440
   mode: single
 - id: '1654922393248'
   alias: Appliance - Dryer
@@ -1685,9 +1696,16 @@
         minutes: 1
         seconds: 0
       below: '8'
-  - service: notify.mobile_app_sm_g960f
+  - service: script.1655204175112
     data:
-      message: Dryer done
+      Message: De droger is klaar.
+      Title: Droger klaar ✨
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Retain till home and no quiet time
+      Group: General
+      Timeout: 1440
   mode: single
 - id: '1654922474089'
   alias: Appliance - Washing machine
@@ -1710,7 +1728,14 @@
         minutes: 1
         seconds: 0
       below: '5'
-  - service: notify.mobile_app_sm_g960f
+  - service: script.1655204175112
     data:
-      message: Washing machine done
+      Message: De wasmachine is klaar.
+      Title: Wasmachine klaar ✨
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Retain till home and no quiet time
+      Group: General
+      Timeout: 1440
   mode: single
