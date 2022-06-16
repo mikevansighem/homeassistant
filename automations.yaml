@@ -435,6 +435,15 @@
         - condition: state
           entity_id: sensor.climate_period
           state: night
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.kitchen_door
+            state: 'on'
+            for:
+              hours: 0
+              minutes: 5
+              seconds: 0
       - condition: not
         conditions:
         - condition: state
