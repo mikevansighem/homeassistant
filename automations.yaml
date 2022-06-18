@@ -225,6 +225,7 @@
       - service: alarm_control_panel.alarm_arm_away
         target:
           entity_id: alarm_control_panel.home_alarm
+        data: {}
     - conditions:
       - condition: trigger
         id: HOLIDAY
@@ -232,6 +233,7 @@
       - service: alarm_control_panel.alarm_arm_away
         target:
           entity_id: alarm_control_panel.home_alarm
+        data: {}
     - conditions:
       - condition: trigger
         id: NIGHT_ON
@@ -239,6 +241,7 @@
       - service: alarm_control_panel.alarm_arm_night
         target:
           entity_id: alarm_control_panel.home_alarm
+        data: {}
     - conditions:
       - condition: trigger
         id: NIGHT_OFF
@@ -247,6 +250,9 @@
         - condition: state
           entity_id: input_boolean.holiday
           state: 'on'
+        - condition: state
+          entity_id: sensor.house_state
+          state: away
       sequence:
       - service: alarm_control_panel.alarm_disarm
         target:
@@ -435,15 +441,13 @@
         - condition: state
           entity_id: sensor.climate_period
           state: night
-        - condition: not
-          conditions:
-          - condition: state
-            entity_id: binary_sensor.kitchen_door
-            state: 'on'
-            for:
-              hours: 0
-              minutes: 5
-              seconds: 0
+        - condition: state
+          entity_id: binary_sensor.kitchen_door
+          state: 'on'
+          for:
+            hours: 0
+            minutes: 5
+            seconds: 0
       - condition: not
         conditions:
         - condition: state
