@@ -258,7 +258,7 @@
             {% if temperature > 40 %}
               {% set temperature = B_temperature %}
             {% endif %}
-            
+
             {% if humidity > 100 %}
               {% set humidity = B_humidity %}
             {% endif %}
