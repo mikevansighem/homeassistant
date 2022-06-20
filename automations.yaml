@@ -1752,3 +1752,28 @@
       Group: General
       Timeout: 1440
   mode: single
+- id: '1655696046985'
+  alias: Utility - Reset volume
+  description: Set the volume of the Google home minis once a day.
+  trigger:
+  - platform: time
+    at: 08:30:00
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: triggered
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: arming
+    - condition: state
+      entity_id: alarm_control_panel.home_alarm
+      state: pending
+  action:
+  - service: media_player.volume_set
+    data:
+      volume_level: '{{states(''input_number.aux_volume'') | float}}'
+    target:
+      entity_id: media_player.whole_home
+  mode: single

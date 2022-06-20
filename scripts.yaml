@@ -590,6 +590,11 @@ commit_and_clear:
             entity_id: person.anneloes_jagt
             state: home
     then:
+    - service: media_player.volume_set
+      data:
+        volume_level: '{{states(''input_number.aux_volume'') | float}}'
+      target:
+        entity_id: media_player.whole_home
     - service: tts.cloud_say
       data:
         entity_id: media_player.whole_home
