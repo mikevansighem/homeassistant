@@ -1283,37 +1283,6 @@
           fan_speed: 1
     default: []
   mode: single
-- id: '1643568222724'
-  alias: Utility - Notify for low battery
-  description: ''
-  trigger:
-  - platform: time
-    at: '19:00'
-  condition:
-  - condition: or
-    conditions:
-    - condition: template
-      value_template: "{% set min_battery_level = 10 -%} {% set ns = namespace(found=false)\
-        \ -%} {% for entity_id in states.group.battery_levels.attributes.entity_id\
-        \ -%}\n  {% set parts = entity_id.split('.') -%}\n  {% if (states(entity_id)\
-        \ | replace(\"%\",\"\") | int) < min_battery_level -%}\n    {% set ns.found\
-        \ = true -%}\n  {% endif -%}\n{% endfor -%} {{ ns.found }}\n"
-  action:
-  - service: script.1655204175112
-    data:
-      Title: Battery low ⚠️
-      Message: "{% set min_battery_level = 10 %} {% for entity_id in states.group.battery_levels.attributes.entity_id\
-        \ %}\n  {% set parts = entity_id.split('.') %}\n    {% if (states(entity_id)\
-        \ | replace(\"%\",\"\") | int) < min_battery_level %}\n      {{ states[parts[0]][parts[1]].name\
-        \ }} battery level is {{ states(entity_id) }}.{{ '\\n' }}\n  {% endif %}\n\
-        {% endfor %}\n"
-      Url: lovelace/hardware
-      Voice: false
-      Admin_only: true
-      Timing: Retain till home and no quiet time
-      Group: Utility
-      Timeout: 0
-  mode: single
 - id: '1644948589594'
   alias: Lights - Well flicker
   description: ''
@@ -1777,3 +1746,26 @@
     target:
       entity_id: media_player.whole_home
   mode: single
+- id: '1655697510852'
+  alias: Utility - Low battery notification
+  description: ''
+  use_blueprint:
+    path: low_battery.yaml
+    input:
+      threshold: 15
+      time: '14:00:00'
+      exclude:
+        entity_id:
+        - sensor.sm_a202f_battery_level
+        - sensor.sm_g960f_battery_level
+      actions:
+      - service: script.1655204175112
+        data:
+          Title: Low battery ⚠️
+          Message: Battery low for {{sensors}}
+          Url: lovelace/hardware
+          Voice: false
+          Admin_only: true
+          Timing: Always
+          Group: Utility
+          Timeout: 0
