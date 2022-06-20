@@ -1753,7 +1753,7 @@
     path: low_battery.yaml
     input:
       threshold: 15
-      time: '14:00:00'
+      time: '12:00:00'
       exclude:
         entity_id:
         - sensor.sm_a202f_battery_level
@@ -1762,10 +1762,10 @@
       - service: script.1655204175112
         data:
           Title: Low battery ⚠️
-          Message: Battery low for {{sensors}}
+          Message: Device(s) {{sensors}}.
           Url: lovelace/hardware
           Voice: false
           Admin_only: true
-          Timing: Always
+          Timing: Retain till home and no quiet time
           Group: Utility
           Timeout: 0
