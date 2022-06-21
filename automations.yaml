@@ -911,7 +911,8 @@
       Admin_only: true
       Message: '{{ state_attr(trigger.to_state.entity_id, ''friendly_name'') }} is
         offline more than 5 minutes.'
-  mode: single
+  mode: parallel
+  max: 5
 - id: '1632764660880'
   alias: Utility - Notify on restart
   description: ''
