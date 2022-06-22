@@ -65,6 +65,11 @@
       domain: vacuum
       entity_id: vacuum.noenoe
       type: is_cleaning
+    - condition: device
+      device_id: bbfcd968b38b244336509a78e99c525c
+      domain: vacuum
+      entity_id: vacuum.soapie
+      type: is_cleaning
   action:
   - service: alarm_control_panel.alarm_trigger
     target:
@@ -292,6 +297,11 @@
       device_id: 21772c2aaa1ef8b8657a520b4486f31f
       domain: vacuum
       entity_id: vacuum.noenoe
+      type: is_cleaning
+    - condition: device
+      device_id: bbfcd968b38b244336509a78e99c525c
+      domain: vacuum
+      entity_id: vacuum.soapie
       type: is_cleaning
   action:
   - service: alarm_control_panel.alarm_trigger
