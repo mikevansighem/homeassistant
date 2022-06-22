@@ -1347,7 +1347,7 @@
     default: []
   mode: single
 - id: '1647193940696'
-  alias: Vacuum - Start when away
+  alias: Vacuum - Start vacuming when away
   description: Clean when away and battery full.
   trigger:
   - platform: state
@@ -1405,7 +1405,7 @@
       entity_id: input_boolean.vacumed
   mode: single
 - id: '1647545719116'
-  alias: Vacuum - Stop and notify if stuck
+  alias: Vacuum - Stop and notify if Noenoe is stuck
   description: 'Stop the vacuum if it has been stuck for some time and notify. '
   trigger:
   - platform: state
@@ -1545,24 +1545,6 @@
       - update.spotcast_update
       - update.watchman_update
       notification_channel: Utility
-- id: '1653931977841'
-  alias: Lights - Turn off manual control
-  trigger:
-    platform: event
-    event_type: adaptive_lighting.manual_control
-  action:
-  - delay: 01:00:00
-  - condition: template
-    value_template: '{{ light in state_attr(switch, ''manual_control'') }}'
-  - service: adaptive_lighting.set_manual_control
-    data:
-      entity_id: '{{ switch }}'
-      lights: '{{ light }}'
-      manual_control: false
-  mode: parallel
-  variables:
-    light: '{{ trigger.event.data.entity_id }}'
-    switch: '{{ trigger.event.data.switch }}'
 - id: '1654623073206'
   alias: 'Lights - Motion control - Stairs closet '
   description: ''
@@ -1770,3 +1752,105 @@
           Timing: Retain till home and no quiet time
           Group: Utility
           Timeout: 0
+- id: '1655902460729'
+  alias: Vacuum - Stop and notify if Soapie is stuck
+  description: 'Stop the vacuum if it has been stuck for some time and notify. '
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.soapie
+    to: error
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  condition: []
+  action:
+  - service: script.1655204175112
+    data:
+      Title: NoeNoe in de nesten ❌
+      Message: NoeNoe heeft hulp nodig.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Always
+      Group: General
+      Timeout: 0
+  - service: vacuum.stop
+    data: {}
+    target:
+      device_id: 21772c2aaa1ef8b8657a520b4486f31f
+  mode: single
+- id: '1655902811258'
+  alias: Vacuum - Reset mopped helper
+  description: Reset the mopped helper every week.
+  trigger:
+  - platform: state
+    entity_id: sensor.house_state
+    to: night
+  condition:
+  - condition: state
+    entity_id: input_boolean.mopped
+    for:
+      hours: 168
+      minutes: 0
+      seconds: 0
+    state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.mopped
+  mode: single
+- id: '1655902887175'
+  alias: Vacuum - Start mopping when vacuumed and away
+  description: Clean when away and battery full after vacuuming.
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.noenoe
+    from: cleaning
+    to: docked
+  condition:
+  - condition: state
+    entity_id: sensor.soapie_battery_level
+    state: '100'
+  - condition: state
+    entity_id: input_boolean.mopped
+    state: 'off'
+  - condition: state
+    entity_id: sensor.house_state
+    state: away
+  action:
+  - device_id: bbfcd968b38b244336509a78e99c525c
+    domain: vacuum
+    entity_id: vacuum.soapie
+    type: clean
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.mopped
+  mode: single
+- id: '1655903484119'
+  alias: Vacuum - Notify when tank empty
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: vacuum.soapie
+    attribute: tank_level
+    below: '30'
+  condition: []
+  action:
+  - service: script.1655204175112
+    data:
+      Title: Soapie leeg 💧
+      Message: Soapie heeft dorst.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Retain till home and no quiet time
+      Group: General
+      Timeout: 0
+  mode: single

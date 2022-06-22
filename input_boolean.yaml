@@ -17,3 +17,7 @@ first_down:
 vacumed:
   name: vacumed
   icon: mdi:vacuum
+
+mopped:
+  name: mopped
+  icon: mdi:vacuum
