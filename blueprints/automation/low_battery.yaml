@@ -54,9 +54,9 @@ variables:
     {% endfor %}
     {{result.sensors|join(', ')}}
 trigger:
-- platform: time
-  at: !input 'time'
+  - platform: time
+    at: !input 'time'
 action:
-- choose: []
-  default: !input 'actions'
+  - choose: []
+    default: !input 'actions'
 mode: single
