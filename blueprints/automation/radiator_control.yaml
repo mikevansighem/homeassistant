@@ -1,0 +1,105 @@
+blueprint:
+  name: Radiator control
+  description: Turn on and off the heating based on the climate period and the house state. Prevent heating when a window remains open.
+  domain: automation
+  input:
+    radiator:
+      name: Radiator
+      description: radiator control valve.
+      default: {entity_id: []}
+      selector:
+        target:
+          entity:
+            domain: climate
+    window:
+      name: Window
+      description: Window in the same room as the radiator.
+      default: {entity_id: []}
+      selector:
+        target:
+          entity:
+            domain: binary_sensor
+            device_class: window
+trigger:
+  - platform: state
+    entity_id: sensor.climate_period
+    id: 'ON'
+    from: night
+  - platform: state
+    entity_id: sensor.house_state
+    to: home
+    id: 'ON'
+  - platform: state
+    entity_id: sensor.house_state
+    id: 'OFF'
+    from: Home
+  - platform: state
+    entity_id: sensor.climate_period
+    to: night
+    id: 'OFF'
+  - platform: state
+    entity_id: sensor.house_state
+    to: away
+    id: 'OFF'
+  - platform: state
+    entity_id:
+      - !input 'window'
+    to: 'on'
+    id: 'OFF'
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  - platform: state
+    entity_id:
+      - !input 'window'
+    to: 'off'
+    id: 'ON'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: 'ON'
+          - condition: not
+            conditions:
+              - condition: state
+                entity_id: sensor.house_state
+                state: holiday
+              - condition: state
+                entity_id: sensor.house_state
+                state: away
+              - condition: state
+                entity_id: sensor.climate_period
+                state: night
+              - condition: state
+                entity_id: !input 'window'
+                state: 'on'
+                for:
+                  hours: 0
+                  minutes: 5
+                  seconds: 0
+        sequence:
+          - service: climate.set_hvac_mode
+            data:
+              hvac_mode: heat
+            target:
+              entity_id:
+                - !input 'radiator'
+      - conditions:
+          - condition: trigger
+            id: 'OFF'
+        sequence:
+          - service: climate.set_hvac_mode
+            data:
+              hvac_mode: 'off'
+            target:
+              entity_id:
+                - !input 'radiator'
+    default: []
+mode: queued
+max: 3

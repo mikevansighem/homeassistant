@@ -1452,7 +1452,7 @@
   action:
   - service: script.1655204175112
     data:
-      Title: Configuation failed
+      Title: Configuation failed ❌
       Message: A configuration deployment has failed.
       Url: https://github.com/mikevansighem/homeassistant/actions
       Voice: false
@@ -1864,3 +1864,15 @@
       Group: General
       Timeout: 0
   mode: single
+- id: '1656007291257'
+  alias: Climate - Bathroom
+  description: ''
+  use_blueprint:
+    path: radiator_control.yaml
+    input:
+      radiator:
+        entity_id:
+        - climate.bathroom_radiator_thermostat
+      window:
+        entity_id:
+        - binary_sensor.bathroom_window
