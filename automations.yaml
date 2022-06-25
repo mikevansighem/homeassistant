@@ -1642,7 +1642,7 @@
   - service: script.1655204175112
     data:
       Message: De vaatwasser is klaar.
-      Title: Vaarwasser klaar 🎇
+      Title: Vaarwasser klaar
       Url: lovelace/home
       Voice: true
       Admin_only: false
@@ -1674,7 +1674,7 @@
   - service: script.1655204175112
     data:
       Message: De droger is klaar.
-      Title: Droger klaar 🎇
+      Title: Droger klaar
       Url: lovelace/home
       Voice: true
       Admin_only: false
@@ -1706,7 +1706,7 @@
   - service: script.1655204175112
     data:
       Message: De wasmachine is klaar.
-      Title: Wasmachine klaar 🎇
+      Title: Wasmachine klaar
       Url: lovelace/home
       Voice: true
       Admin_only: false
