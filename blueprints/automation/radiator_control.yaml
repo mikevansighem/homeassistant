@@ -18,9 +18,11 @@ blueprint:
           domain: binary_sensor
           device_class: window
           multiple: false
+
 variables:
   radiator: !input 'radiator'
   window: !input 'window'
+
 trigger:
   - platform: state
     entity_id: sensor.climate_period
@@ -58,7 +60,9 @@ trigger:
       hours: 0
       minutes: 1
       seconds: 0
+
 condition: []
+
 action:
   - choose:
       - conditions:
@@ -98,5 +102,6 @@ action:
             target:
               entity_id: '{{radiator}}'
     default: []
+
 mode: queued
 max: 3
