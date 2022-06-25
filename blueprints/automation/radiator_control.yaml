@@ -6,20 +6,21 @@ blueprint:
     radiator:
       name: Radiator
       description: radiator control valve.
-      default: {entity_id: []}
       selector:
-        target:
-          entity:
-            domain: climate
+        entity:
+          domain: climate
+          multiple: false
     window:
       name: Window
       description: Window in the same room as the radiator.
-      default: {entity_id: []}
       selector:
-        target:
-          entity:
-            domain: binary_sensor
-            device_class: window
+        entity:
+          domain: binary_sensor
+          device_class: window
+          multiple: false
+variables:
+  radiator: !input 'radiator'
+  window: !input 'window'
 trigger:
   - platform: state
     entity_id: sensor.climate_period
@@ -42,8 +43,7 @@ trigger:
     to: away
     id: 'OFF'
   - platform: state
-    entity_id:
-      - !input 'window'
+    entity_id: '{{window}}'
     to: 'on'
     id: 'OFF'
     for:
@@ -51,8 +51,7 @@ trigger:
       minutes: 3
       seconds: 0
   - platform: state
-    entity_id:
-      - !input 'window'
+    entity_id: '{{window}}'
     to: 'off'
     id: 'ON'
     for:
@@ -77,7 +76,7 @@ action:
                 entity_id: sensor.climate_period
                 state: night
               - condition: state
-                entity_id: !input 'window'
+                entity_id: '{{window}}'
                 state: 'on'
                 for:
                   hours: 0
@@ -88,8 +87,7 @@ action:
             data:
               hvac_mode: heat
             target:
-              entity_id:
-                - !input 'radiator'
+              entity_id: '{{radiator}}'
       - conditions:
           - condition: trigger
             id: 'OFF'
@@ -98,8 +96,7 @@ action:
             data:
               hvac_mode: 'off'
             target:
-              entity_id:
-                - !input 'radiator'
+              entity_id: '{{radiator}}'
     default: []
 mode: queued
 max: 3

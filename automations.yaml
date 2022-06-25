@@ -1642,7 +1642,7 @@
   - service: script.1655204175112
     data:
       Message: De vaatwasser is klaar.
-      Title: Vaarwasser klaar ✨
+      Title: Vaarwasser klaar 🎇
       Url: lovelace/home
       Voice: true
       Admin_only: false
@@ -1674,7 +1674,7 @@
   - service: script.1655204175112
     data:
       Message: De droger is klaar.
-      Title: Droger klaar ✨
+      Title: Droger klaar 🎇
       Url: lovelace/home
       Voice: true
       Admin_only: false
@@ -1706,7 +1706,7 @@
   - service: script.1655204175112
     data:
       Message: De wasmachine is klaar.
-      Title: Wasmachine klaar ✨
+      Title: Wasmachine klaar 🎇
       Url: lovelace/home
       Voice: true
       Admin_only: false
@@ -1864,15 +1864,86 @@
       Group: General
       Timeout: 0
   mode: single
-- id: '1656007291257'
+- id: '1656043461895'
   alias: Climate - Bathroom
-  description: ''
-  use_blueprint:
-    path: radiator_control.yaml
-    input:
-      radiator:
-        entity_id:
-        - climate.bathroom_radiator_thermostat
-      window:
-        entity_id:
-        - binary_sensor.bathroom_window
+  description: Turn on and off the heating based on the climate period and the house
+    state. Prevent heating when a window remains open.
+  trigger:
+  - platform: state
+    entity_id: sensor.climate_period
+    id: 'ON'
+    from: night
+  - platform: state
+    entity_id: sensor.house_state
+    to: home
+    id: 'ON'
+  - platform: state
+    entity_id: sensor.house_state
+    id: 'OFF'
+    from: Home
+  - platform: state
+    entity_id: sensor.climate_period
+    to: night
+    id: 'OFF'
+  - platform: state
+    entity_id: sensor.house_state
+    to: away
+    id: 'OFF'
+  - platform: state
+    entity_id: binary_sensor.bathroom_window
+    to: 'on'
+    id: 'OFF'
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  - platform: state
+    entity_id: binary_sensor.bathroom_window
+    to: 'off'
+    id: 'ON'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: holiday
+        - condition: state
+          entity_id: sensor.house_state
+          state: away
+        - condition: state
+          entity_id: sensor.climate_period
+          state: night
+        - condition: state
+          entity_id: binary_sensor.bathroom_window
+          state: 'on'
+          for:
+            hours: 0
+            minutes: 5
+            seconds: 0
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.bathroom_radiator_thermostat
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.bathroom_radiator_thermostat
+    default: []
+  mode: queued
+  max: 3
