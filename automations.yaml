@@ -1648,7 +1648,7 @@
       Admin_only: false
       Timing: Retain till home and no quiet time
       Group: General
-      Timeout: 1440
+      Timeout: 180
   mode: single
 - id: '1654922393248'
   alias: Appliance - Dryer
@@ -1680,7 +1680,7 @@
       Admin_only: false
       Timing: Retain till home and no quiet time
       Group: General
-      Timeout: 1440
+      Timeout: 180
   mode: single
 - id: '1654922474089'
   alias: Appliance - Washing machine
@@ -1712,7 +1712,7 @@
       Admin_only: false
       Timing: Retain till home and no quiet time
       Group: General
-      Timeout: 1440
+      Timeout: 180
   mode: single
 - id: '1655696046985'
   alias: Utility - Reset volume
