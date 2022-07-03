@@ -15,6 +15,7 @@ include:
     - plant
     - vacuum
     - switch
+    - input_boolean
 
   entities:
     # General
@@ -104,7 +105,5 @@ include:
     - sensor.dryer_metering_summation
 
     # Other
-    - input_boolean.holiday
-    - input_boolean.quiet
     - switch.floor_heating_pump_on_off
     - sensor.outdoor_lights

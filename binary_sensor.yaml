@@ -83,3 +83,8 @@
   host: 192.168.2.48
   name: "Livingroom FRITZ!Powerline"
   scan_interval: 30
+
+- platform: ping
+  host: 192.168.2.54
+  name: "Nursery camera"
+  scan_interval: 30
