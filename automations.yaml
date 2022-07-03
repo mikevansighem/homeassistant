@@ -1116,8 +1116,12 @@
       - service: light.turn_on
         target:
           entity_id:
-          - light.living_room
           - light.decorations
+        data: {}
+      - service: scene.turn_on
+        target:
+          entity_id: scene.living_room_livingroom
+        metadata: {}
     default: []
   mode: single
 - id: '1637348841688'
