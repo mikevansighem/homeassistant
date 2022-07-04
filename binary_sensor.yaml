@@ -2,6 +2,17 @@
 # BINARY SENSORS
 ###############################################################################
 
+# NOISE SENSOR
+
+- platform: ffmpeg_noise
+  name: "Baby noise"
+  input: !secret nursery_camera_rtsp
+  # extra_arguments: -nostats, -filter:a highpass=f=300,lowpass=f=2500, -codec:a libmp3lame -ar 16000
+  # initial_state: true
+  # duration: 2
+  # reset: 60
+  # peak: -32
+
 # WORKDAY CALENDAR
 
 - platform: workday
