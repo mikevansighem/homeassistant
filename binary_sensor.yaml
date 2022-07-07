@@ -7,7 +7,7 @@
 - platform: ffmpeg_noise
   name: "Baby noise"
   input: !secret nursery_camera_rtsp
-  extra_arguments: -nostats #, -filter:a highpass=f=300, lowpass=f=2500
+  extra_arguments: -nostats # , -filter:a highpass=f=300, lowpass=f=2500
   initial_state: true
   duration: 2
   reset: 60
