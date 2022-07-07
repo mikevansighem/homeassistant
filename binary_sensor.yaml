@@ -7,11 +7,11 @@
 - platform: ffmpeg_noise
   name: "Baby noise"
   input: !secret nursery_camera_rtsp
-  # extra_arguments: -nostats, -filter:a highpass=f=300,lowpass=f=2500, -codec:a libmp3lame -ar 16000
-  # initial_state: true
-  # duration: 2
-  # reset: 60
-  # peak: -32
+  extra_arguments: -nostats #, -filter:a highpass=f=300, lowpass=f=2500
+  initial_state: true
+  duration: 2
+  reset: 60
+  peak: -32
 
 # WORKDAY CALENDAR
 
@@ -38,11 +38,6 @@
 - platform: ping
   host: 192.168.2.30
   name: "Hue utility bridge"
-  scan_interval: 30
-
-- platform: ping
-  host: 192.168.2.36
-  name: "KPN TV"
   scan_interval: 30
 
 - platform: ping
@@ -91,11 +86,16 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.48
-  name: "Livingroom FRITZ!Powerline"
+  host: 192.168.2.51
+  name: "Soapie"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.54
-  name: "Nursery camera"
+  name: "Kids camera"
+  scan_interval: 30
+
+- platform: ping
+  host: 192.168.2.48
+  name: "Livingroom FRITZ!Powerline"
   scan_interval: 30
