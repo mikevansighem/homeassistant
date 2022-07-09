@@ -201,15 +201,15 @@
     to: night
     for: '{{ states( ''input_datetime.night_alarm_delay'' ) }}'
   - platform: template
-    value_template: "{% set end_work = states('input_datetime.end_night_workday')\
-      \ %} \n{% set end_free = states('input_datetime.end_night_free_day') %} \n\n\
-      {% set early_hour = state_attr('input_datetime.night_alarm_early_stop', 'hour')\
-      \ %} \n{% set early_min = state_attr('input_datetime.night_alarm_early_stop',\
-      \ 'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min\
-      \ ) %}\n\n{% set work_on = (strptime(end_work, '%H:%M:%S') - early).strftime('%H:%M')\
-      \ %}\n{% set free_on = (strptime(end_free, '%H:%M:%S') - early).strftime('%H:%M')\
-      \ %}\n\n{% if now().strftime('%H:%M') == work_on or now().strftime('%H:%M')\
-      \ == free_on %}\n  true\n{% else %}\n  false\n{% endif %}\n"
+    value_template: "{% set end_work = states('input_datetime.end_night_workday')
+      %} \n{% set end_free = states('input_datetime.end_night_free_day') %} \n\n{%
+      set early_hour = state_attr('input_datetime.night_alarm_early_stop', 'hour')
+      %} \n{% set early_min = state_attr('input_datetime.night_alarm_early_stop',
+      'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
+      ) %}\n\n{% set work_on = (strptime(end_work, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n{% set free_on = (strptime(end_free, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n\n{% if now().strftime('%H:%M') == work_on or now().strftime('%H:%M') ==
+      free_on %}\n  true\n{% else %}\n  false\n{% endif %}\n"
     id: NIGHT_OFF
   condition: []
   action:
@@ -885,7 +885,6 @@
     - binary_sensor.pi_hole
     - binary_sensor.hue_garden_bridge
     - binary_sensor.hue_utility_bridge
-    - binary_sensor.kpn_tv
     - binary_sensor.attict_range_extender
     - binary_sensor.scullery_range_extender
     - binary_sensor.bedroom_home_mini
@@ -898,7 +897,6 @@
     - binary_sensor.fan_controller_status
     - binary_sensor.reindeer_status
     - binary_sensor.noenoe
-    - binary_sensor.garage_door_status
     - binary_sensor.air_sensor_status
     - binary_sensor.livingroom_home_mini
     - binary_sensor.plant_monitor_status
@@ -933,7 +931,7 @@
   action:
   - service: script.1655204175112
     data:
-      Title: Restarted 🌟
+      Title: "Restarted \U0001F31F"
       Message: Home Assistant has restarted.
       Url: lovelace/home
       Voice: false
@@ -954,7 +952,7 @@
   action:
   - service: script.1655204175112
     data:
-      Title: Ding dong 🔔
+      Title: "Ding dong \U0001F514"
       Message: Er staat iemand aan de voordeur.
       Url: lovelace/home
       Voice: true
@@ -1525,7 +1523,7 @@
       actions:
       - service: script.1655204175112
         data:
-          Title: Water me 💦
+          Title: "Water me \U0001F4A6"
           Url: lovelace/plants
           Timing: Retain till home and no quiet time
           Group: Plants
@@ -1860,7 +1858,7 @@
   action:
   - service: script.1655204175112
     data:
-      Title: Soapie leeg 💧
+      Title: "Soapie leeg \U0001F4A7"
       Message: Soapie heeft dorst.
       Url: lovelace/home
       Voice: true
