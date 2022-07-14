@@ -1805,7 +1805,7 @@
   - condition: state
     entity_id: input_boolean.mopped
     for:
-      hours: 96
+      hours: 90
       minutes: 0
       seconds: 0
     state: 'on'
@@ -1823,7 +1823,7 @@
   - platform: state
     entity_id:
     - vacuum.noenoe
-    from: cleaning
+    from: returning to dock
     to: docked
   condition:
   - condition: state
@@ -1868,7 +1868,7 @@
       Timeout: 0
   mode: single
 - id: '1656043461895'
-  alias: Climate - Bathroom
+  alias: Climate - Bathroom radiator
   description: Turn on and off the heating based on the climate period and the house
     state. Prevent heating when a window remains open.
   trigger:
@@ -1947,6 +1947,179 @@
           hvac_mode: 'off'
         target:
           entity_id: climate.bathroom_radiator_thermostat
+    default: []
+  mode: queued
+  max: 3
+- id: '1657816151342'
+  alias: Climate - Closet radiator
+  description: Turn on and off the heating based on the climate period and the house
+    state. Prevent heating when a window remains open.
+  trigger:
+  - platform: state
+    entity_id: sensor.climate_period
+    id: 'ON'
+    from: night
+  - platform: state
+    entity_id: sensor.house_state
+    to: home
+    id: 'ON'
+  - platform: state
+    entity_id: sensor.house_state
+    id: 'OFF'
+    from: Home
+  - platform: state
+    entity_id: sensor.climate_period
+    to: night
+    id: 'OFF'
+  - platform: state
+    entity_id: sensor.house_state
+    to: away
+    id: 'OFF'
+  - platform: state
+    entity_id:
+    - binary_sensor.closet_window
+    to: 'on'
+    id: 'OFF'
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  - platform: state
+    entity_id:
+    - binary_sensor.closet_window
+    to: 'off'
+    id: 'ON'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: holiday
+        - condition: state
+          entity_id: sensor.house_state
+          state: away
+        - condition: state
+          entity_id: sensor.climate_period
+          state: night
+        - condition: state
+          entity_id: binary_sensor.closet_window
+          state: 'on'
+          for:
+            hours: 0
+            minutes: 5
+            seconds: 0
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id:
+          - climate.closet_radiator_thermostat
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.closet_radiator_thermostat
+    default: []
+  mode: queued
+  max: 3
+- id: '1657816368511'
+  alias: Climate - Kids room radiator
+  description: Turn on and off the heating based on the climate period and the house
+    state. Prevent heating when a window remains open.
+  trigger:
+  - platform: state
+    entity_id: sensor.climate_period
+    id: 'ON'
+    from: night
+  - platform: state
+    entity_id: sensor.house_state
+    to: home
+    id: 'ON'
+  - platform: state
+    entity_id: sensor.house_state
+    id: 'OFF'
+    from: Home
+  - platform: state
+    entity_id: sensor.climate_period
+    to: night
+    id: 'OFF'
+  - platform: state
+    entity_id: sensor.house_state
+    to: away
+    id: 'OFF'
+  - platform: state
+    entity_id:
+    - binary_sensor.nursery_window
+    to: 'on'
+    id: 'OFF'
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  - platform: state
+    entity_id:
+    - binary_sensor.nursery_window
+    to: 'off'
+    id: 'ON'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.house_state
+          state: holiday
+        - condition: state
+          entity_id: sensor.house_state
+          state: away
+        - condition: state
+          entity_id: sensor.climate_period
+          state: night
+        - condition: state
+          entity_id: binary_sensor.nursery_window
+          state: 'on'
+          for:
+            hours: 0
+            minutes: 5
+            seconds: 0
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id:
+          - climate.kids_room_radiator_thermostat
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id:
+          - climate.kids_room_radiator_thermostat
     default: []
   mode: queued
   max: 3
