@@ -1067,6 +1067,7 @@
           entity_id:
           - light.front_garden
           - light.well
+        data: {}
     - conditions:
       - condition: trigger
         id: 'OFF'
@@ -1076,8 +1077,9 @@
           entity_id:
           - light.front_garden
           - light.well
+        data: {}
     default: []
-  mode: single
+  mode: restart
 - id: '1636297508172'
   alias: Lights - Turn on lights when first down
   description: Turn the downstairs lights on when the first person is downstairs.
@@ -1307,9 +1309,14 @@
   action:
   - repeat:
       while:
-      - condition: state
-        entity_id: sensor.outdoor_lights
-        state: 'on'
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: sensor.outdoor_lights
+          state: 'on'
+        - condition: state
+          entity_id: light.well
+          state: 'on'
       sequence:
       - service: light.turn_on
         data_template:
