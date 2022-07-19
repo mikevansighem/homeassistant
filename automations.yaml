@@ -53,6 +53,7 @@
     - binary_sensor.livingroom_motion
     - binary_sensor.upstairs_hallway_motion
     - binary_sensor.kitchen_door
+    - binary_sensor.attic_motion
     to: 'on'
   condition:
   - condition: state
@@ -287,6 +288,7 @@
     - binary_sensor.downstairs_hallway_motion
     - binary_sensor.livingroom_motion
     - binary_sensor.kitchen_door
+    - binary_sensor.attic_motion
   condition:
   - condition: state
     entity_id: alarm_control_panel.home_alarm
