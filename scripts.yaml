@@ -252,76 +252,6 @@ spriklers_run_front_for_input_time:
       run_seconds: '{{states("input_number.front_sprinkler_time") | int * 60}}'
   mode: single
   icon: mdi:sprinkler-variant
-notify_who_is_home:
-  alias: Notify who is home
-  mode: single
-  icon: mdi:message
-  fields:
-    title:
-      description: The title of the notification
-      example: State change
-      required: 'yes'
-    message:
-      description: The message content
-      example: The light is on!
-      required: 'yes'
-    timeout:
-      description: Time after which the message disappears
-      example: 120
-      required: 'no'
-      default: 0
-    group:
-      description: Combine notifications in a group visually
-      example: Utility
-      required: 'no'
-      default: default
-  sequence:
-  - condition: state
-    entity_id: input_boolean.quiet
-    state: 'off'
-  - choose:
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: state
-          entity_id: person.tmp
-          state: home
-        - condition: state
-          entity_id: person.anneloes_jagt
-          state: home
-      sequence:
-      - service: notify.notify
-        data:
-          title: '{{ title }}'
-          message: '{{ message }}'
-          data:
-            timeout: '{{ timeout|int(0) }}'
-            group: '{{ group }}'
-    - conditions:
-      - condition: state
-        entity_id: person.tmp
-        state: home
-      sequence:
-      - service: notify.mobile_app_sm_g960f
-        data:
-          title: '{{ title }}'
-          message: '{{ message }}'
-          data:
-            timeout: '{{ timeout|int(0) }}'
-            group: '{{ group }}'
-    - conditions:
-      - condition: state
-        entity_id: person.anneloes_jagt
-        state: home
-      sequence:
-      - service: notify.mobile_app_sm_a202f
-        data:
-          title: '{{ title }}'
-          message: '{{ message }}'
-          data:
-            timeout: '{{ timeout|int(0) }}'
-            group: '{{ group }}'
-    default: []
 speak:
   alias: Speak
   mode: single
@@ -392,7 +322,7 @@ commit_and_clear:
   mode: single
   icon: mdi:shape-rectangle-plus
 '1655204175112':
-  alias: New notify script
+  alias: Notify script
   mode: parallel
   max: 25
   icon: mdi:message
@@ -467,11 +397,11 @@ commit_and_clear:
           unit_of_measurement: minutes
           mode: box
   variables:
-    color: "{% if Group == 'Plants' %}\n  {{'green'}}\n{% elif Group == 'Utility'\
-      \ %}\n  {{'grey'}}\n{% elif Group == 'Alarm' %}\n  {{'red'}}\n{% else %}\n \
-      \ {{'deepskyblue'}}\n{% endif %}"
-    timeout_seconds: "{% if Timeout|int(0) != 0 %}\n  {{Timeout * 60}}\n{% else %}\n\
-      \  {{ 0|int }}\n{% endif %}"
+    color: "{% if Group == 'Plants' %}\n  {{'green'}}\n{% elif Group == 'Utility'
+      %}\n  {{'grey'}}\n{% elif Group == 'Alarm' %}\n  {{'red'}}\n{% else %}\n  {{'deepskyblue'}}\n{%
+      endif %}"
+    timeout_seconds: "{% if Timeout|int(0) != 0 %}\n  {{Timeout * 60}}\n{% else %}\n
+      \ {{ 0|int }}\n{% endif %}"
   sequence:
   - if:
     - condition: or
