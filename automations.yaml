@@ -2131,3 +2131,39 @@
     default: []
   mode: queued
   max: 3
+- id: '1658667498103'
+  alias: Test - Offline
+  description: ''
+  trigger:
+  - platform: event
+    event_type: state_changed
+  condition:
+  - condition: template
+    value_template: "{{ trigger.event.data.new_state is not none and\n   trigger.event.data.new_state.domain
+      == 'binary_sensor' and\n   trigger.event.data.new_state.attributes.device_class
+      | default('') == 'connectivity' and\n   trigger.event.data.new_state.state ==
+      'off' }}"
+  action:
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - if:
+    - condition: template
+      value_template: '{{is_state(trigger.event.data.entity_id, off)}}'
+    then:
+    - service: script.1655204175112
+      data:
+        Url: lovelace/network
+        Title: Device offline ❌
+        Timing: Retain till home and no quiet time
+        Timeout: 1440
+        Voice: false
+        Group: Utility
+        Admin_only: true
+        Message: '{{ state_attr(trigger.event.data.entity_id, ''friendly_name'') }}
+          is offline more than 5 minutes.'
+    else:
+    - stop: ''
+  mode: single
