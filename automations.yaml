@@ -1832,7 +1832,6 @@
   - platform: state
     entity_id:
     - vacuum.noenoe
-    from: returning to dock
     to: docked
   condition:
   - condition: state
