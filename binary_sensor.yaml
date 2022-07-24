@@ -5,7 +5,7 @@
 # NOISE SENSOR
 
 - platform: ffmpeg_noise
-  name: "Baby noise"
+  name: "Zoë noise"
   input: !secret nursery_camera_rtsp
   extra_arguments: -nostats # , -filter:a highpass=f=300, lowpass=f=2500
   initial_state: true
