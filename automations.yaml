@@ -876,53 +876,6 @@
           entity_id: switch.floor_heating_pump_on_off
     default: []
   mode: restart
-- id: '1632334823224'
-  alias: Utility - Notify when offline
-  description: Send a notification if any network device is offline for more than
-    5 minutes.
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.fritz_box
-    - binary_sensor.pi_hole
-    - binary_sensor.hue_garden_bridge
-    - binary_sensor.hue_utility_bridge
-    - binary_sensor.attict_range_extender
-    - binary_sensor.scullery_range_extender
-    - binary_sensor.bedroom_home_mini
-    - binary_sensor.dining_room_home_mini
-    - binary_sensor.opentherm_controller
-    - binary_sensor.doorbell_status
-    - binary_sensor.slimmelezer_status
-    - binary_sensor.attict_chromecast_audio
-    - binary_sensor.sprinkler_controller
-    - binary_sensor.fan_controller_status
-    - binary_sensor.reindeer_status
-    - binary_sensor.noenoe
-    - binary_sensor.air_sensor_status
-    - binary_sensor.livingroom_home_mini
-    - binary_sensor.plant_monitor_status
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-    to: 'off'
-    from: 'on'
-  condition: []
-  action:
-  - service: script.1655204175112
-    data:
-      Url: lovelace/network
-      Title: Device offline ❌
-      Timing: Retain till home and no quiet time
-      Timeout: 1440
-      Voice: false
-      Group: Utility
-      Admin_only: true
-      Message: '{{ state_attr(trigger.to_state.entity_id, ''friendly_name'') }} is
-        offline more than 5 minutes.'
-  mode: parallel
-  max: 5
 - id: '1632764660880'
   alias: Utility - Notify on restart
   description: ''
@@ -1750,29 +1703,6 @@
     target:
       entity_id: media_player.whole_home
   mode: single
-- id: '1655697510852'
-  alias: Utility - Low battery notification
-  description: ''
-  use_blueprint:
-    path: low_battery.yaml
-    input:
-      threshold: 15
-      time: '12:00:00'
-      exclude:
-        entity_id:
-        - sensor.sm_a202f_battery_level
-        - sensor.sm_g960f_battery_level
-      actions:
-      - service: script.1655204175112
-        data:
-          Title: Low battery ⚠️
-          Message: Device(s) {{sensors}}.
-          Url: lovelace/hardware
-          Voice: false
-          Admin_only: true
-          Timing: Retain till home and no quiet time
-          Group: Utility
-          Timeout: 0
 - id: '1655902460729'
   alias: Vacuum - Stop and notify if Soapie is stuck
   description: 'Stop the vacuum if it has been stuck for some time and notify. '
@@ -2132,8 +2062,9 @@
   mode: queued
   max: 3
 - id: '1658667498103'
-  alias: Test - Offline
-  description: ''
+  alias: Utility - Notify when offline
+  description: Send a notification if any network device is offline for more than
+    5 minutes.
   trigger:
   - platform: event
     event_type: state_changed
@@ -2166,4 +2097,39 @@
           is offline more than 5 minutes.'
     else:
     - stop: ''
-  mode: single
+  mode: parallel
+- id: '1658668750328'
+  alias: Utility - Low battery notification
+  description: Send a notification if any network device is offline for more than
+    5 minutes.
+  trigger:
+  - platform: event
+    event_type: state_changed
+  condition:
+  - condition: template
+    value_template: "{{ trigger.event.data.new_state is not none and\n   trigger.event.data.new_state.attributes.device_class
+      | default('') == 'battery' and\n   trigger.event.data.new_state.state < 25 }}"
+  action:
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - if:
+    - condition: template
+      value_template: '{{is_state(trigger.event.data.entity_id, off)}}'
+    then:
+    - service: script.1655204175112
+      data:
+        Url: lovelace/hardware
+        Title: Low battery ⚠️
+        Timing: Retain till home and no quiet time
+        Timeout: 1440
+        Voice: false
+        Group: Utility
+        Admin_only: true
+        Message: Replace battery of {{ state_attr(trigger.event.data.entity_id, 'friendly_name')
+          }}.
+    else:
+    - stop: ''
+  mode: parallel
