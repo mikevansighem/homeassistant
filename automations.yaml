@@ -2133,3 +2133,20 @@
     else:
     - stop: ''
   mode: parallel
+- id: '1659155364307'
+  alias: Baby - Reset noise monitor
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.zoe_noise
+    to: unavailable
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - service: ffmpeg.restart
+    data: {}
+  mode: single
