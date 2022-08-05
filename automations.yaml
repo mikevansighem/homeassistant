@@ -1309,6 +1309,10 @@
       - condition: trigger
         id: 'OFF'
       sequence:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.tv_lights_relax
+        metadata: {}
       - service: light.turn_off
         data: {}
         target:
