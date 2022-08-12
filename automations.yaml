@@ -2246,3 +2246,43 @@
     default: []
   mode: queued
   max: 3
+- id: '1660298269200'
+  alias: Cover - Frontdoor
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.house_state
+    to: night
+    id: CLOSE
+  - platform: state
+    entity_id:
+    - sensor.house_state
+    id: OPEN
+    to: home
+  - platform: state
+    entity_id:
+    - sensor.house_state
+    id: OPEN
+    to: holiday
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: CLOSE
+      sequence:
+      - service: cover.close_cover
+        data: {}
+        target:
+          entity_id: cover.lumi_lumi_curtain_acn002_cover
+    - conditions:
+      - condition: trigger
+        id: OPEN
+      sequence:
+      - service: cover.open_cover
+        data: {}
+        target:
+          entity_id: cover.lumi_lumi_curtain_acn002_cover
+    default: []
+  mode: single
