@@ -19,7 +19,7 @@ zamioculcas:
     conductivity: sensor.zamioculcas_conductivity
     brightness: sensor.zamioculcas_illuminance
 
-epipremnum_aureum:
+devils_vine:
   max_brightness: 12000
   min_brightness: 500
   max_moisture: 60
@@ -29,22 +29,22 @@ epipremnum_aureum:
   max_conductivity: 2000
   min_conductivity: 350
   sensors:
-    moisture: sensor.epipremnum_aureum_moisture
-    temperature: sensor.epipremnum_aureum_temperature
-    conductivity: sensor.epipremnum_aureum_conductivity
-    brightness: sensor.epipremnum_aureum_illuminance
+    moisture: sensor.devils_vine_moisture
+    temperature: sensor.devils_vine_temperature
+    conductivity: sensor.devils_vine_conductivity
+    brightness: sensor.devils_vine_illuminance
 
-violaceae:
-  max_brightness: 50000
-  min_brightness: 4000
+fern:
+  max_brightness: 4000
+  min_brightness: 300
   max_moisture: 60
   min_moisture: 15
   max_temperature: 32
-  min_temperature: 5
-  max_conductivity: 2000
+  min_temperature: 10
+  max_conductivity: 1500
   min_conductivity: 350
   sensors:
-    moisture: sensor.violaceae_moisture
-    temperature: sensor.violaceae_temperature
-    conductivity: sensor.violaceae_conductivity
-    brightness: sensor.violaceae_illuminance
+    moisture: sensor.fern_moisture
+    temperature: sensor.fern_temperature
+    conductivity: sensor.fern_conductivity
+    brightness: sensor.fern_illuminance

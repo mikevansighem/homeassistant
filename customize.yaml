@@ -6,12 +6,12 @@
 plant.zamioculcas:
   friendly_name: Zamioculcas
   entity_picture: http://homeassistant.local:8123/local/plants/zamioculcas_zamiifolia.jpg
-plant.epipremnum_aureum:
+plant.devils_vine:
   friendly_name: Devil's vine
   entity_picture: http://homeassistant.local:8123/local/plants/epipremnum_aureum.jpg
-plant.violaceae:
-  friendly_name: Violets
-  entity_picture: http://homeassistant.local:8123/local/plants/viola_cornuta.jpg
+plant.fern:
+  friendly_name: Fern
+  entity_picture: http://homeassistant.local:8123/local/plants/fern.jpg
 
 # Other
 sensor.somebody_home:
