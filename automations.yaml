@@ -100,29 +100,34 @@
   condition: []
   action:
   - service: scene.create
+    continue_on_error: true
     data:
       scene_id: before_alarm_sound
       entities: media_player.whole_home
-  - service: script.alarm_sound_alarm
-    data: {}
-  - service: notify.notify
-    data:
-      message: The alarm has been triggered at {{ states('sensor.time') }}.
-      title: Alarm
+  - parallel:
+    - service: notify.notify
+      continue_on_error: true
       data:
-        group: Alarms
-        tag: Alarm pending
-        color: red
-        ledColor: red
-        priority: high
-        ttl: 0
-        channel: alarm_stream
-        actions:
-        - action: URI
-          title: Disarm
-          uri: /lovelace/alarm
-  - service: script.flash_licht
-    data: {}
+        message: The alarm has been triggered at {{ states('sensor.time') }}.
+        title: Alarm
+        data:
+          group: Alarms
+          tag: Alarm pending
+          color: red
+          ledColor: red
+          priority: high
+          ttl: 0
+          channel: alarm_stream
+          actions:
+          - action: URI
+            title: Disarm
+            uri: /lovelace/alarm
+    - service: script.alarm_sound_alarm
+      continue_on_error: true
+      data: {}
+    - service: script.flash_licht
+      continue_on_error: true
+      data: {}
   mode: single
 - id: '1629106372874'
   alias: Alarm - Pending
