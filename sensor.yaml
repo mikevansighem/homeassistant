@@ -293,6 +293,14 @@
           {% set level = states('sensor.watering_level') | float(0) / 100 %}
           {{base_time * level}}
 
+    # Calculate watering time for lawn sprinkler
+    lawn_watering_time:
+      friendly_name: "Lawn watering time"
+      value_template: >-
+          {% set base_time = states('input_number.lawn_sprinkler_base_time') | int(0) * 60 %}
+          {% set level = states('sensor.watering_level') | float(0) / 100 %}
+          {{base_time * level}}
+
     somebody_home:
       friendly_name: "Somebody home"
       value_template: >-

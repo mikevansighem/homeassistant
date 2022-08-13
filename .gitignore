@@ -21,6 +21,7 @@ ip_bans.yaml
 secrets.yaml
 known_devices.yaml
 watchman_report.txt
+frigate.yml
 
 # Ignore some file types
 *.db*

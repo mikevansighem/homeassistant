@@ -41,6 +41,15 @@
     data:
       entity_id: binary_sensor.sprinkler_2_station_running
       run_seconds: '{{states("sensor.front_watering_time") | int }}'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: '{{states("sensor.front_watering_time") | int + 15}}'
+      milliseconds: 0
+  - service: opensprinkler.run
+    data:
+      entity_id: binary_sensor.sprinkler_3_station_running
+      run_seconds: '{{states("sensor.lawn_watering_time") | int }}'
   mode: single
 - id: '1628878957372'
   alias: Alarm - Trigger while armed away
@@ -2275,7 +2284,7 @@
       - service: cover.close_cover
         data: {}
         target:
-          entity_id: cover.lumi_lumi_curtain_acn002_cover
+          entity_id: cover.front_door_cover
     - conditions:
       - condition: trigger
         id: OPEN
@@ -2283,6 +2292,6 @@
       - service: cover.open_cover
         data: {}
         target:
-          entity_id: cover.lumi_lumi_curtain_acn002_cover
+          entity_id: cover.front_door_cover
     default: []
   mode: single

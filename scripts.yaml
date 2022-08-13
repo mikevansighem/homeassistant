@@ -232,6 +232,9 @@ sprinkler_stop:
   - service: opensprinkler.stop
     data:
       entity_id: binary_sensor.sprinkler_2_station_running
+  - service: opensprinkler.stop
+    data:
+      entity_id: binary_sensor.sprinkler_3_station_running
   mode: single
   icon: mdi:sprinkler-variant
 '1630344371413':
@@ -637,3 +640,12 @@ commit_and_clear:
             channel: '{{ Group }}'
             color: '{{ color }}'
             clickAction: '{{ Url }}'
+sprinklers_run_grass_for_input_time:
+  alias: Sprinklers - Run lawn for input time
+  sequence:
+  - service: opensprinkler.run
+    data:
+      entity_id: binary_sensor.sprinkler_3_station_running
+      run_seconds: '{{states("input_number.lawn_sprinkler_time") | int * 60}}'
+  mode: single
+  icon: mdi:sprinkler-variant
