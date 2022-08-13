@@ -2295,3 +2295,25 @@
           entity_id: cover.front_door_cover
     default: []
   mode: single
+- id: '1660389010787'
+  alias: Utility - Low battery notification
+  description: ''
+  use_blueprint:
+    path: low_battery.yaml
+    input:
+      time: '16:00:00'
+      exclude:
+        entity_id:
+        - sensor.soapie_battery_level
+        - sensor.sm_g960f_battery_level
+        - sensor.noenoe_battery_level
+        - sensor.sm_a202f_battery_level
+      actions:
+      - service: persistent_notification.dismiss
+        data:
+          notification_id: low_battery
+      - service: persistent_notification.create
+        data:
+          message: Replace or charge battery of {{ sensors }}. [More info.](lovelace/hardware)
+          title: Low battery
+          notification_id: low_battery
