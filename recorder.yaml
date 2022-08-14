@@ -17,6 +17,10 @@ include:
     - switch
     - input_boolean
     - cover
+    - camera
+
+  entity_globs:
+    - sensor.*battery*
 
   entities:
     # General

@@ -2121,41 +2121,6 @@
     else:
     - stop: ''
   mode: parallel
-- id: '1658668750328'
-  alias: Utility - Low battery notification
-  description: Send a notification if any network device is offline for more than
-    5 minutes.
-  trigger:
-  - platform: event
-    event_type: state_changed
-  condition:
-  - condition: template
-    value_template: "{{ trigger.event.data.new_state is not none and\n   trigger.event.data.new_state.attributes.device_class
-      | default('') == 'battery' and\n   trigger.event.data.new_state.state < 25 }}"
-  action:
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - if:
-    - condition: template
-      value_template: '{{is_state(trigger.event.data.entity_id, off)}}'
-    then:
-    - service: script.1655204175112
-      data:
-        Url: lovelace/hardware
-        Title: Low battery ⚠️
-        Timing: Retain till home and no quiet time
-        Timeout: 1440
-        Voice: false
-        Group: Utility
-        Admin_only: true
-        Message: Replace battery of {{ state_attr(trigger.event.data.entity_id, 'friendly_name')
-          }}.
-    else:
-    - stop: ''
-  mode: parallel
 - id: '1659155364307'
   alias: Baby - Reset noise monitor
   description: ''
@@ -2306,7 +2271,7 @@
   use_blueprint:
     path: low_battery.yaml
     input:
-      time: '16:00:00'
+      time: 01:00:00
       exclude:
         entity_id:
         - sensor.soapie_battery_level
@@ -2322,3 +2287,35 @@
           message: Replace or charge battery of {{ sensors }}. [More info.](lovelace/hardware)
           title: Low battery
           notification_id: low_battery
+- id: '1660449882472'
+  alias: Surveillance - Cry notification
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.zoe_noise
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: light.zoe_ceeling
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - condition: state
+    entity_id: camera.kids_camera
+    state: idle
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 30
+  action:
+  - service: notify.mobile_app_sm_g960f
+    data:
+      message: Zoë maakt geluid.
+      title: Zoë maakt geluid
+  mode: single
