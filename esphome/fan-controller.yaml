@@ -225,6 +225,31 @@ sensor:
       }
     update_interval: 500ms
 
+  # Sensor for the power usage
+  - platform: template
+    name: "${upper_devicename} power"
+    icon: mdi:flash
+    id: my_power
+    unit_of_measurement: kW
+    accuracy_decimals: 2
+    state_class: measurement
+    lambda: |-
+      if (id(my_fan).state) {
+        if (id(my_fan).speed == 1) {
+          return 0.03;
+        } else {
+          return 0.11;
+        }
+      } else {
+        return 0;
+      }
+    update_interval: 500ms
+    device_class: "power"
+
+  - platform: total_daily_energy
+    name: "${upper_devicename} total daily energy"
+    power_id: my_power
+
 text_sensor:
 
   # Sensor to show current speed in the UI
@@ -243,3 +268,7 @@ text_sensor:
       }
     update_interval: 500ms
 
+# Enable time component to reset energy at midnight
+time:
+  - platform: sntp
+    id: my_time
