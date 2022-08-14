@@ -16,6 +16,7 @@ include:
     - vacuum
     - switch
     - input_boolean
+    - cover
 
   entities:
     # General
@@ -79,22 +80,18 @@ include:
     - device_tracker.sm_a202f
 
     # Plants
-    - sensor.epipremnum_aureum_conductivity
-    - sensor.epipremnum_aureum_illuminance
-    - sensor.epipremnum_aureum_moisture
-    - sensor.epipremnum_aureum_temperature
+    - sensor.devils_vine_conductivity
+    - sensor.devils_vine_illuminance
+    - sensor.devils_vine_moisture
+    - sensor.devils_vine_temperature
     - sensor.zamioculcas_conductivity
     - sensor.zamioculcas_illuminance
     - sensor.zamioculcas_moisture
     - sensor.zamioculcas_temperature
-    - sensor.zamioculcas_conductivity
-    - sensor.zamioculcas_illuminance
-    - sensor.zamioculcas_moisture
-    - sensor.zamioculcas_temperature
-    - sensor.violaceae_conductivity
-    - sensor.violaceae_illuminance
-    - sensor.violaceae_moisture
-    - sensor.violaceae_temperature
+    - sensor.fern_conductivity
+    - sensor.fern_illuminance
+    - sensor.fern_moisture
+    - sensor.fern_temperature
 
     # Power
     - sensor.washing_machine_electrical_measurement
@@ -105,5 +102,4 @@ include:
     - sensor.dryer_metering_summation
 
     # Other
-    - switch.floor_heating_pump_on_off
     - sensor.outdoor_lights
