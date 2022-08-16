@@ -7,9 +7,9 @@
 - platform: ffmpeg_noise
   name: "Zoë noise"
   input: !secret nursery_camera_rtsp
-  extra_arguments: -nostats # , -filter:a highpass=f=300, lowpass=f=2500
+  extra_arguments: -filter:a highpass=f=300,lowpass=f=2500,volume=volume=2 -nostats
   initial_state: true
-  duration: 10
+  duration: 2
   reset: 60
   peak: -32
 
