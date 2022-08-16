@@ -2199,7 +2199,7 @@
           entity_id: sensor.climate_period
           state: night
         - condition: state
-          entity_id: binary_sensor.nursery_window
+          entity_id: binary_sensor.bathroom_window
           state: 'on'
           for:
             hours: 0
@@ -2210,8 +2210,7 @@
         data:
           hvac_mode: heat
         target:
-          entity_id:
-          - climate.bedroom_radiator_thermostat
+          entity_id: climate.bedroom_radiator_thermostat
     - conditions:
       - condition: trigger
         id: 'OFF'
@@ -2220,8 +2219,7 @@
         data:
           hvac_mode: 'off'
         target:
-          entity_id:
-          - climate.bedroom_radiator_thermostat
+          entity_id: climate.bedroom_radiator_thermostat
     default: []
   mode: queued
   max: 3
