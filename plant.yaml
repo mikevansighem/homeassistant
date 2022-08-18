@@ -6,7 +6,7 @@
 
 zamioculcas:
   max_brightness: 20000
-  min_brightness: 600
+  # min_brightness: 600
   max_moisture: 60
   min_moisture: 15
   max_temperature: 32
@@ -21,7 +21,7 @@ zamioculcas:
 
 devils_vine:
   max_brightness: 12000
-  min_brightness: 500
+  # min_brightness: 500
   max_moisture: 60
   min_moisture: 15
   max_temperature: 32
@@ -36,7 +36,7 @@ devils_vine:
 
 fern:
   max_brightness: 4000
-  min_brightness: 300
+  # min_brightness: 300
   max_moisture: 60
   min_moisture: 15
   max_temperature: 32
