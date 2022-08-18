@@ -2,12 +2,6 @@
 # INPUT DATETIME
 ###############################################################################
 
-watering_time:
-  name: Watering time
-  icon: mdi:clock
-  has_time: true
-  has_date: false
-
 # Heating
 
 heating_pre_heat:

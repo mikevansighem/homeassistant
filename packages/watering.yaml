@@ -1,0 +1,210 @@
+###############################################################################
+# WATERING
+###############################################################################
+
+# Control the automatic watering of the garden.
+watering:
+
+  #############################################################################
+  # INPUT DATETIME
+  #############################################################################
+
+  input_datetime:
+
+    watering_time:
+      name: Watering time
+      icon: mdi:clock
+      has_time: true
+      has_date: false
+
+  #############################################################################
+  # INPUT NUMBER
+  #############################################################################
+
+  input_number:
+
+    # Sprinkler base time
+    back_sprinkler_base_time:
+      name: Back sprinkler base time
+      icon: mdi:clock
+      min: 0.1
+      max: 10
+      step: 1
+      unit_of_measurement: "min"
+      mode: box
+
+    # Sprinkler base time
+    front_sprinkler_base_time:
+      name: Front sprinkler base time
+      icon: mdi:clock
+      min: 0.1
+      max: 10
+      step: 1
+      unit_of_measurement: "min"
+      mode: box
+
+    # Sprinkler base time
+    lawn_sprinkler_base_time:
+      name: Lawn sprinkler base time
+      icon: mdi:clock
+      min: 0.1
+      max: 10
+      step: 1
+      unit_of_measurement: "min"
+      mode: box
+
+    # Sprinkler manual run time
+    back_sprinkler_time:
+      name: Back sprinkler time
+      icon: mdi:clock
+      initial: 2.5
+      min: 0.1
+      max: 10
+      step: 0.1
+      unit_of_measurement: "min"
+      mode: box
+
+    # Sprinkler manual run time
+    front_sprinkler_time:
+      name: Front sprinkler time
+      icon: mdi:clock
+      initial: 2
+      min: 0.1
+      max: 10
+      step: 0.1
+      unit_of_measurement: "min"
+      mode: box
+
+    # Sprinkler manual run time
+    lawn_sprinkler_time:
+      name: Lawn sprinkler time
+      icon: mdi:clock
+      initial: 2
+      min: 0.1
+      max: 10
+      step: 0.1
+      unit_of_measurement: "min"
+      mode: box
+
+    # If rain is above this number no watering
+    rain_threshold:
+      name: Rain threshold
+      icon: mdi:weather-pouring
+      min: 0
+      max: 20
+      step: 1
+      unit_of_measurement: "mm"
+      mode: box
+
+    # Avarage humidity
+    base_humidity:
+      name: Base humidity
+      icon: mdi:water-percent
+      min: 0
+      max: 100
+      step: 1
+      unit_of_measurement: "%"
+      mode: box
+
+    # Avarage temperature
+    base_temperature:
+      name: Base temperature
+      icon: mdi:thermometer
+      min: 0
+      max: 100
+      step: 1
+      unit_of_measurement: "°C"
+      mode: box
+
+    # Cutoff sprinkler entirely
+    watering_cutoff:
+      name: Lower watering cutoff
+      icon: mdi:sprinkler-variant
+      min: 0
+      max: 100
+      step: 1
+      unit_of_measurement: "%"
+      mode: box
+
+    watering_cutoff_top:
+      name: Upper watering cutoff
+      icon: mdi:sprinkler-variant
+      min: 100
+      max: 1000
+      step: 1
+      unit_of_measurement: "%"
+      mode: box
+
+  #############################################################################
+  # SENSOR
+  #############################################################################
+
+  sensor:
+
+    - platform: template
+      sensors:
+
+        # Calculate watering level
+        watering_level:
+          friendly_name: "Watering level"
+          unit_of_measurement: "%"
+          value_template: >-
+              {% set rain = states('sensor.buienradar_rain_last_24h') | float(0) %}
+              {% set humidity = states('sensor.average_humidity') | float(0) %}
+              {% set temperature = states('sensor.average_ground_temperature') | float(0) %}
+
+              {% if temperature == 0 or humidity == 0 %}
+                0
+              {% else %}
+
+                {% set threshold = states('input_number.rain_threshold') | float(0) %}
+                {% set B_humidity = states('input_number.base_humidity') | float(0) %}
+                {% set B_temperature = states('input_number.base_temperature') | float(0) %}
+                {% set lower_cutoff = states('input_number.watering_cutoff') | int(0) %}
+                {% set upper_cutoff = states('input_number.watering_cutoff_top') | int(0) %}
+
+                {% if temperature > 40 %}
+                  {% set temperature = B_temperature %}
+                {% endif %}
+
+                {% if humidity > 100 %}
+                  {% set humidity = B_humidity %}
+                {% endif %}
+
+                {% set F_humidity = B_humidity / humidity | float(0) %}
+                {% set F_temperature = temperature / B_temperature | float(0) %}
+
+                {% set level = 100 * F_humidity * F_temperature | round(2) %}
+
+                {% if rain > threshold or level < lower_cutoff %}
+                    {{ 0 | int(0) }}
+                {% elif level > upper_cutoff %}
+                    {{ upper_cutoff | int(0) }}
+                {% else %}
+                    {{ level | int(0) }}
+                {% endif %}
+              {% endif %}
+
+        # Calculate watering time for front sprinkler
+        front_watering_time:
+          friendly_name: "Front watering time"
+          value_template: >-
+              {% set base_time = states('input_number.front_sprinkler_base_time') | int(0) * 60 %}
+              {% set level = states('sensor.watering_level') | float(0) / 100 %}
+              {{base_time * level}}
+
+        # Calculate watering time for back sprinkler
+        back_watering_time:
+          friendly_name: "Back watering time"
+          value_template: >-
+              {% set base_time = states('input_number.back_sprinkler_base_time') | int(0) * 60 %}
+              {% set level = states('sensor.watering_level') | float(0) / 100 %}
+              {{base_time * level}}
+
+        # Calculate watering time for lawn sprinkler
+        lawn_watering_time:
+          friendly_name: "Lawn watering time"
+          value_template: >-
+              {% set base_time = states('input_number.lawn_sprinkler_base_time') | int(0) * 60 %}
+              {% set level = states('sensor.watering_level') | float(0) / 100 %}
+              {{base_time * level}}
