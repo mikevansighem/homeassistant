@@ -66,6 +66,7 @@ include:
     - sensor.monthly_energy_costs_off_peak
     - sensor.daily_gas
     - sensor.fan_controller_total_daily_energy
+    - sensor.floor_heating_pump
 
     # Air quality
     - sensor.air_sensor_co2
