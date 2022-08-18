@@ -5,6 +5,11 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
+# Include customization file and packages
+homeassistant:
+  customize: !include customize.yaml
+  packages: !include_dir_merge_named packages/
+
 # Inclusions
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -28,12 +33,7 @@ plant: !include plant.yaml
 frontend:
   themes: !include_dir_merge_named themes
 
-# Include customization file
-homeassistant:
-  customize: !include customize.yaml
-
 http:
-
   # Limit login attempts
   ip_ban_enabled: true
   login_attempts_threshold: 5
