@@ -2228,7 +2228,7 @@
   mode: queued
   max: 3
 - id: '1660298269200'
-  alias: Cover - Frontdoor
+  alias: Cover - Front door
   description: ''
   trigger:
   - platform: state
@@ -2241,11 +2241,11 @@
     - sensor.house_state
     id: OPEN
     to: home
-  - platform: state
-    entity_id:
-    - sensor.house_state
-    id: OPEN
-    to: holiday
+    for:
+      hours: 0
+      minutes: '{{state_attr(''input_datetime.front_door_cover_late_open'', ''hour'')
+        * 60 + state_attr(''input_datetime.front_door_cover_late_open'', ''minute'')}}'
+      seconds: 0
   condition: []
   action:
   - choose:

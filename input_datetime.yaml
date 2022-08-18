@@ -121,3 +121,9 @@ outdoor_lights_offset:
   icon: mdi:clock
   has_time: true
   has_date: false
+
+front_door_cover_late_open:
+  name: Front door cover late open
+  icon: mdi:clock
+  has_time: true
+  has_date: false
