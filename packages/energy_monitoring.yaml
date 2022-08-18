@@ -44,5 +44,5 @@ energy_monitoring:
     # Keep a total of the enery used per day.
     daily_floor_heating_pump_energy:
       source: sensor.floor_heating_pump_energy
-      name: 'Daily floor heating pump energy'
+      name: 'Floor heating pump'
       cycle: daily
