@@ -63,6 +63,10 @@
     - binary_sensor.upstairs_hallway_motion
     - binary_sensor.kitchen_door
     - binary_sensor.attic_motion
+    - binary_sensor.bathroom_window
+    - binary_sensor.bedroom_window
+    - binary_sensor.nursery_window
+    - binary_sensor.closet_window
     to: 'on'
   condition:
   - condition: state
