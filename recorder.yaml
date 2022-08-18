@@ -21,6 +21,8 @@ include:
 
   entity_globs:
     - sensor.*battery*
+    - sensor.*energy*
+    - sensor.*power*
 
   entities:
     # General
