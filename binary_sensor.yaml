@@ -11,7 +11,7 @@
   initial_state: true
   duration: 2
   reset: 60
-  peak: -32
+  peak: -30 # 0 is very loud and -100 is low.
 
 # WORKDAY CALENDAR
 
