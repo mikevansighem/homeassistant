@@ -5,15 +5,15 @@
 # Monitor the enery usage of device without build in power usage sensors.
 energy_monitoring:
 
-###############################################################################
-# SENSOR
-###############################################################################
+  #############################################################################
+  # SENSOR
+  #############################################################################
 
   sensor:
     - platform: template
       sensors:
-  
-      # Floor heating pump power usage
+
+        # Floor heating pump power usage
         floor_heating_pump_power:
           friendly_name: "Floor heating pump power"
           device_class: 'power'
@@ -35,9 +35,9 @@ energy_monitoring:
       round: 4
       method: 'left'
 
-###############################################################################
-# UTILITY METER
-###############################################################################
+  #############################################################################
+  # UTILITY METER
+  #############################################################################
 
   utility_meter:
 
