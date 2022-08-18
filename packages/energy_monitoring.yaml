@@ -1,0 +1,48 @@
+###############################################################################
+# ENERGY MONITORING
+###############################################################################
+
+# Monitor the enery usage of device without build in power usage sensors.
+energy_monitoring:
+
+###############################################################################
+# SENSOR
+###############################################################################
+
+  sensor:
+    - platform: template
+      sensors:
+  
+      # Floor heating pump power usage
+        floor_heating_pump_power:
+          friendly_name: "Floor heating pump power"
+          device_class: 'power'
+          unit_of_measurement: 'W'
+          value_template: >-
+            {% if states('switch.floor_heating_pump_on_off') == 'on' %}
+              60
+            {% else %}
+              0
+            {% endif %}
+          icon_template: >-
+            mdi:lightning-bolt
+
+      # Convert W to kWh
+    - platform: integration
+      source: sensor.floor_heating_pump_power
+      name: 'Floor heating pump energy'
+      unit_prefix: k
+      round: 4
+      method: 'left'
+
+###############################################################################
+# UTILITY METER
+###############################################################################
+
+  utility_meter:
+
+    # Keep a total of the enery used per day.
+    daily_floor_heating_pump_energy:
+      source: sensor.floor_heating_pump_energy
+      name: 'Daily floor heating pump energy'
+      cycle: daily
