@@ -34,15 +34,4 @@ energy_monitoring:
       unit_prefix: k
       round: 4
       method: 'left'
-
-  #############################################################################
-  # UTILITY METER
-  #############################################################################
-
-  utility_meter:
-
-    # Keep a total of the enery used per day.
-    daily_floor_heating_pump_energy:
-      source: sensor.floor_heating_pump_energy
-      name: 'Floor heating pump'
-      cycle: daily
+      unique_id: floor_heating_pump_energy
