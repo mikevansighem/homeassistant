@@ -2321,3 +2321,45 @@
       message: Zoë maakt geluid.
       title: Zoë maakt geluid
   mode: single
+- id: '1660828842957'
+  alias: Utility - Notify for missing entities
+  description: ''
+  trigger:
+  - platform: time
+    at: 03:33:00
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.watchman_missing_entities
+    above: '0'
+  action:
+  - service: persistent_notification.dismiss
+    data:
+      notification_id: watchmen_missing_entity
+  - service: persistent_notification.create
+    data:
+      message: 'Missing entities found: {{ states(''sensor.watchman_missing_entities'')
+        }}. [More info.](lovelace/development)'
+      title: Missing enity
+      notification_id: watchmen_missing_entity
+  mode: single
+- id: '1660830979144'
+  alias: Utility - Notify for missing services
+  description: ''
+  trigger:
+  - platform: time
+    at: 03:34:00
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.watchman_missing_services
+    above: '0'
+  action:
+  - service: persistent_notification.dismiss
+    data:
+      notification_id: watchmen_missing_service
+  - service: persistent_notification.create
+    data:
+      message: 'Missing services found: {{ states(''sensor.watchman_missing_services'')
+        }}. [More info.](lovelace/development)'
+      title: Missing service
+      notification_id: watchmen_missing_service
+  mode: single
