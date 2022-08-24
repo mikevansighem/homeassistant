@@ -49,10 +49,10 @@ energy_monitoring:
 
     dishwasher_daily_energy:
       source: sensor.dishwasher_metering_summation
-      name: Washing machine daily energy
+      name: Dishwaser daily energy
       cycle: daily
 
     dryer_daily_energy:
       source: sensor.dryer_metering_summation
-      name: Washing machine daily energy
+      name: Dryer daily energy
       cycle: daily
