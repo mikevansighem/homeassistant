@@ -2268,7 +2268,7 @@
     default: []
   mode: single
 - id: '1660389010787'
-  alias: Utility - Low battery notification
+  alias: Utility - Persistant notification for low battery
   description: ''
   use_blueprint:
     path: low_battery.yaml
@@ -2322,7 +2322,7 @@
       title: Zoë maakt geluid
   mode: single
 - id: '1660828842957'
-  alias: Utility - Notify for missing entities
+  alias: Utility - Persistant notification for missing entities
   description: ''
   trigger:
   - platform: time
@@ -2343,7 +2343,7 @@
       notification_id: watchmen_missing_entity
   mode: single
 - id: '1660830979144'
-  alias: Utility - Notify for missing services
+  alias: Utility - Persistant notification for missing services
   description: ''
   trigger:
   - platform: time
@@ -2362,4 +2362,24 @@
         }}. [More info.](lovelace/development)'
       title: Missing service
       notification_id: watchmen_missing_service
+  mode: single
+- id: '1661359567139'
+  alias: Utility - Persistant notification for full disk
+  description: ''
+  trigger:
+  - platform: time
+    at: 03:44:00
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.disk_use_percent
+    above: '75'
+  action:
+  - service: persistent_notification.dismiss
+    data:
+      notification_id: disk_use
+  - service: persistent_notification.create
+    data:
+      message: Disk use at {{ states('sensor.disk_use_percent') }}%. [More info.](lovelace/hardware)
+      title: High disk use
+      notification_id: disk_use
   mode: single
