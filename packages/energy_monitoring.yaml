@@ -41,7 +41,7 @@ energy_monitoring:
   #############################################################################
 
   utility_meter:
- 
+
     washing_machine_daily_energy:
       source: sensor.washing_machine_metering_summation
       name: Washing machine daily energy
