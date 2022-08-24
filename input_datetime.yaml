@@ -121,3 +121,9 @@ front_door_cover_late_open:
   icon: mdi:clock
   has_time: true
   has_date: false
+
+front_door_cover_early_close:
+  name: Front door cover early close
+  icon: mdi:clock
+  has_time: true
+  has_date: false

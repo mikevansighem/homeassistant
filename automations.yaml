@@ -2234,11 +2234,6 @@
   - platform: state
     entity_id:
     - sensor.house_state
-    to: night
-    id: CLOSE
-  - platform: state
-    entity_id:
-    - sensor.house_state
     id: OPEN
     to: home
     for:
@@ -2246,6 +2241,28 @@
       minutes: '{{state_attr(''input_datetime.front_door_cover_late_open'', ''hour'')
         * 60 + state_attr(''input_datetime.front_door_cover_late_open'', ''minute'')}}'
       seconds: 0
+  - platform: template
+    value_template: "{% set end_work = states('input_datetime.end_night_workday')
+      %} \n{% set end_free = states('input_datetime.end_night_free_day') %} \n\n{%
+      set early_hour = state_attr('input_datetime.front_door_cover_early_close', 'hour')
+      %} \n{% set early_min = state_attr('input_datetime.front_door_cover_early_close',
+      'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
+      ) %}\n\n{% set work_on = (strptime(end_work, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n{% set free_on = (strptime(end_free, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n\n{% if now().strftime('%H:%M') == work_on or now().strftime('%H:%M') ==
+      free_on %}\n  true\n{% else %}\n  false\n{% endif %}\n"
+    id: CLOSE
+  - platform: template
+    value_template: "{% set end_work = states('input_datetime.end_night_workday')
+      %} \n{% set end_free = states('input_datetime.end_night_free_day') %} \n\n{%
+      set early_hour = state_attr('input_datetime.front_door_cover_early_close', 'hour')
+      %} \n{% set early_min = state_attr('input_datetime.front_door_cover_early_close',
+      'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
+      ) %}\n\n{% set work_on = (strptime(end_work, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n{% set free_on = (strptime(end_free, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n\n{% if now().strftime('%H:%M') == work_on or now().strftime('%H:%M') ==
+      free_on %}\n  true\n{% else %}\n  false\n{% endif %}\n"
+    id: CLOSE
   condition: []
   action:
   - choose:
