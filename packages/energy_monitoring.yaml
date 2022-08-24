@@ -42,17 +42,17 @@ energy_monitoring:
 
   utility_meter:
  
-      washing_machine_daily_energy:
+    washing_machine_daily_energy:
       source: sensor.washing_machine_metering_summation
       name: Washing machine daily energy
       cycle: daily
 
-      dishwasher_daily_energy:
+    dishwasher_daily_energy:
       source: sensor.dishwasher_metering_summation
       name: Washing machine daily energy
       cycle: daily
 
-      dryer_daily_energy:
+    dryer_daily_energy:
       source: sensor.dryer_metering_summation
       name: Washing machine daily energy
       cycle: daily
