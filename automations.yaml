@@ -2375,3 +2375,19 @@
     input:
       motion_sensor: binary_sensor.kids_camera_motion
       light: light.kids_room
+- id: '1661533185915'
+  alias: Lights - Turn off if there is no motion - Decorations
+  description: ''
+  use_blueprint:
+    path: turn_light_off_when_no_motion_long.yaml
+    input:
+      motion_sensor: binary_sensor.livingroom_motion
+      light: light.decorations
+- id: '1661533190902'
+  alias: Lights - Turn off if there is no motion - Decorations
+  description: ''
+  use_blueprint:
+    path: turn_light_off_when_no_motion_long.yaml
+    input:
+      motion_sensor: binary_sensor.livingroom_motion
+      light: light.decorations
