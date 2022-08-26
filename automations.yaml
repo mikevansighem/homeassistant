@@ -329,24 +329,6 @@
       entity_id: alarm_control_panel.home_alarm
     data: {}
   mode: single
-- id: '1629639165423'
-  alias: Lights - Turn off if there is no motion - Stairs closet
-  description: Turn lights off when no motion is detected
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.stairs_closet_motion
-    to: 'off'
-    for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
-  condition:
-  - condition: state
-    entity_id: light.stairs_closet
-    state: 'on'
-  action:
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id: light.stairs_closet
-  mode: single
 - id: '1629825060315'
   alias: Climate - Hot water service
   description: ''
@@ -506,62 +488,6 @@
     default: []
   mode: queued
   max: 3
-- id: '1630088921261'
-  alias: Lights - Turn off if there is no motion - Upstairs hallway
-  description: Turn lights off when no motion is detected
-  trigger:
-  - platform: state
-    to: 'off'
-    for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
-    entity_id: binary_sensor.upstairs_hallway_motion
-  condition:
-  - condition: state
-    entity_id: light.upstairs_hallway
-    state: 'on'
-  action:
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id: light.upstairs_hallway
-  mode: single
-- id: '1630089027781'
-  alias: Lights - Turn off if there is no motion - Downstairs hallway
-  description: Turn lights off when no motion is detected
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.downstairs_hallway_motion
-    to: 'off'
-    for: '{{states(''input_datetime.light_motion_timeout_short'')}}'
-  condition:
-  - condition: state
-    entity_id: light.downstairs_hallway
-    state: 'on'
-  action:
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id: light.downstairs_hallway
-  mode: single
-- id: '1630089139008'
-  alias: Lights - Turn off if there is no motion - Living room
-  description: Turn lights off when no motion is detected
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.livingroom_motion
-    to: 'off'
-    for: '{{states(''input_datetime.light_motion_timeout_long'')}}'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.livingroom_motion
-    state: 'on'
-  action:
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id:
-      - light.living_room
-      - light.decorations
-  mode: single
 - id: '1630259774998'
   alias: Lights - Holiday replay
   description: ''
@@ -2400,3 +2326,52 @@
       title: High disk use
       notification_id: disk_use
   mode: single
+- id: '1661532418642'
+  alias: Lights - Turn off if there is no motion - Downstairs hallway
+  description: ''
+  use_blueprint:
+    path: turn_light_off_when_no_motion_short.yaml
+    input:
+      motion_sensor: binary_sensor.downstairs_hallway_motion
+      light: light.downstairs_hallway
+      time_out: input_datetime.light_motion_timeout_short
+- id: '1661532503833'
+  alias: Lights - Turn off if there is no motion - Living room
+  description: ''
+  use_blueprint:
+    path: turn_light_off_when_no_motion_long.yaml
+    input:
+      motion_sensor: binary_sensor.livingroom_motion
+      light: light.living_room
+- id: '1661532563136'
+  alias: Lights - Turn off if there is no motion - Upstairs hallway
+  description: ''
+  use_blueprint:
+    path: turn_light_off_when_no_motion_short.yaml
+    input:
+      motion_sensor: binary_sensor.upstairs_hallway_motion
+      light: light.upstairs_hallway
+- id: '1661532565932'
+  alias: Lights - Turn off if there is no motion - Upstairs hallway
+  description: ''
+  use_blueprint:
+    path: turn_light_off_when_no_motion_short.yaml
+    input:
+      motion_sensor: binary_sensor.upstairs_hallway_motion
+      light: light.upstairs_hallway
+- id: '1661532603962'
+  alias: Lights - Turn off if there is no motion - Attic
+  description: ''
+  use_blueprint:
+    path: turn_light_off_when_no_motion_long.yaml
+    input:
+      motion_sensor: binary_sensor.attic_motion
+      light: light.attic
+- id: '1661532657566'
+  alias: Lights - Turn off if there is no motion - Zoë
+  description: ''
+  use_blueprint:
+    path: turn_light_off_when_no_motion_long.yaml
+    input:
+      motion_sensor: binary_sensor.kids_camera_motion
+      light: light.kids_room

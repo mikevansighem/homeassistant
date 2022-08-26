@@ -1,0 +1,42 @@
+blueprint:
+  name: "Turn lights off when no motion - Long"
+  description: "Turn a light off if no motion is detected"
+  domain: automation
+  input:
+    motion_sensor:
+      name: "Motion sensor"
+      description: "A sensor that detects motion"
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+          multiple: false
+    light:
+      name: "Light"
+      description: "The light that is turned off."
+      selector:
+        entity:
+          domain: light
+          multiple: false
+
+variables:
+  motion: !input 'motion_sensor'
+  mode: '{{ states(motion) }}'
+
+trigger:
+  - entity_id: !input 'motion_sensor'
+    for: "{{states('input_datetime.light_motion_timeout_long')}}"
+    platform: state
+    to: 'off'
+
+condition:
+  - condition: state
+    entity_id: !input 'light'
+    state: "on"
+
+action:
+  - data:
+      entity_id: !input 'light'
+    service: light.turn_off
+
+mode: single

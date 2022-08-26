@@ -35,24 +35,3 @@ energy_monitoring:
       round: 4
       method: 'left'
       unique_id: floor_heating_pump_energy
-
-  #############################################################################
-  # UTILITY METER
-  #############################################################################
-
-  utility_meter:
-
-    washing_machine_daily_energy:
-      source: sensor.washing_machine_metering_summation
-      name: Washing machine daily energy
-      cycle: daily
-
-    dishwasher_daily_energy:
-      source: sensor.dishwasher_metering_summation
-      name: Dishwaser daily energy
-      cycle: daily
-
-    dryer_daily_energy:
-      source: sensor.dryer_metering_summation
-      name: Dryer daily energy
-      cycle: daily

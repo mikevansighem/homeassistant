@@ -1,18 +1,18 @@
 blueprint:
-  name: Radiator control
-  description: Turn on and off the heating based on the climate period and the house state. Prevent heating when a window remains open.
+  name: "Radiator control"
+  description: "Turn on and off the heating based on the climate period and the house state. Prevent heating when a window remains open.""
   domain: automation
   input:
     radiator:
       name: Radiator
-      description: radiator control valve.
+      description: "Radiator control valve."
       selector:
         entity:
           domain: climate
           multiple: false
     window:
       name: Window
-      description: Window in the same room as the radiator.
+      description: "Window in the same room as the radiator."
       selector:
         entity:
           domain: binary_sensor
