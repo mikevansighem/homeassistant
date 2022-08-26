@@ -1,6 +1,6 @@
 blueprint:
   name: "Radiator control"
-  description: "Turn on and off the heating based on the climate period and the house state. Prevent heating when a window remains open.""
+  description: "Turn on and off the heating based on the climate period and the house state. Prevent heating when a window remains open."
   domain: automation
   input:
     radiator:
