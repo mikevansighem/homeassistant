@@ -56,11 +56,6 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.197
-  name: "Hue garden bridge"
-  scan_interval: 30
-
-- platform: ping
   host: 192.168.2.196
   name: "Scullery range extender"
   scan_interval: 30
