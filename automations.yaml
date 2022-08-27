@@ -1758,262 +1758,6 @@
       Group: General
       Timeout: 0
   mode: single
-- id: '1656043461895'
-  alias: Climate - Bathroom radiator
-  description: Turn on and off the heating based on the climate period and the house
-    state. Prevent heating when a window remains open.
-  trigger:
-  - platform: state
-    entity_id: sensor.climate_period
-    id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
-    id: 'ON'
-  - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
-    id: 'OFF'
-  - platform: state
-    entity_id: binary_sensor.bathroom_window
-    to: 'on'
-    id: 'OFF'
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-  - platform: state
-    entity_id: binary_sensor.bathroom_window
-    to: 'off'
-    id: 'ON'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: 'ON'
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: holiday
-        - condition: state
-          entity_id: sensor.house_state
-          state: away
-        - condition: state
-          entity_id: sensor.climate_period
-          state: night
-        - condition: state
-          entity_id: binary_sensor.bathroom_window
-          state: 'on'
-          for:
-            hours: 0
-            minutes: 5
-            seconds: 0
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id: climate.bathroom_radiator_thermostat
-    - conditions:
-      - condition: trigger
-        id: 'OFF'
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id: climate.bathroom_radiator_thermostat
-    default: []
-  mode: queued
-  max: 3
-- id: '1657816151342'
-  alias: Climate - Closet radiator
-  description: Turn on and off the heating based on the climate period and the house
-    state. Prevent heating when a window remains open.
-  trigger:
-  - platform: state
-    entity_id: sensor.climate_period
-    id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
-    id: 'ON'
-  - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
-    id: 'OFF'
-  - platform: state
-    entity_id:
-    - binary_sensor.closet_window
-    to: 'on'
-    id: 'OFF'
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-  - platform: state
-    entity_id:
-    - binary_sensor.closet_window
-    to: 'off'
-    id: 'ON'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: 'ON'
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: holiday
-        - condition: state
-          entity_id: sensor.house_state
-          state: away
-        - condition: state
-          entity_id: sensor.climate_period
-          state: night
-        - condition: state
-          entity_id: binary_sensor.closet_window
-          state: 'on'
-          for:
-            hours: 0
-            minutes: 5
-            seconds: 0
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id:
-          - climate.closet_radiator_thermostat
-    - conditions:
-      - condition: trigger
-        id: 'OFF'
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id: climate.closet_radiator_thermostat
-    default: []
-  mode: queued
-  max: 3
-- id: '1657816368511'
-  alias: Climate - Kids room radiator
-  description: Turn on and off the heating based on the climate period and the house
-    state. Prevent heating when a window remains open.
-  trigger:
-  - platform: state
-    entity_id: sensor.climate_period
-    id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
-    id: 'ON'
-  - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
-    id: 'OFF'
-  - platform: state
-    entity_id:
-    - binary_sensor.nursery_window
-    to: 'on'
-    id: 'OFF'
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-  - platform: state
-    entity_id:
-    - binary_sensor.nursery_window
-    to: 'off'
-    id: 'ON'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: 'ON'
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: holiday
-        - condition: state
-          entity_id: sensor.house_state
-          state: away
-        - condition: state
-          entity_id: sensor.climate_period
-          state: night
-        - condition: state
-          entity_id: binary_sensor.nursery_window
-          state: 'on'
-          for:
-            hours: 0
-            minutes: 5
-            seconds: 0
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id:
-          - climate.kids_room_radiator_thermostat
-    - conditions:
-      - condition: trigger
-        id: 'OFF'
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id:
-          - climate.kids_room_radiator_thermostat
-    default: []
-  mode: queued
-  max: 3
 - id: '1658667498103'
   alias: Utility - Notify when offline
   description: Send a notification if any network device is offline for more than
@@ -2068,91 +1812,6 @@
   - service: ffmpeg.restart
     data: {}
   mode: single
-- id: '1659704415290'
-  alias: Climate - Bedroom radiator
-  description: Turn on and off the heating based on the climate period and the house
-    state. Prevent heating when a window remains open.
-  trigger:
-  - platform: state
-    entity_id: sensor.climate_period
-    id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
-    id: 'ON'
-  - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
-    id: 'OFF'
-  - platform: state
-    entity_id:
-    - binary_sensor.bedroom_window
-    to: 'on'
-    id: 'OFF'
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-  - platform: state
-    entity_id:
-    - binary_sensor.bedroom_window
-    to: 'off'
-    id: 'ON'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: 'ON'
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: holiday
-        - condition: state
-          entity_id: sensor.house_state
-          state: away
-        - condition: state
-          entity_id: sensor.climate_period
-          state: night
-        - condition: state
-          entity_id: binary_sensor.bathroom_window
-          state: 'on'
-          for:
-            hours: 0
-            minutes: 5
-            seconds: 0
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id: climate.bedroom_radiator_thermostat
-    - conditions:
-      - condition: trigger
-        id: 'OFF'
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id: climate.bedroom_radiator_thermostat
-    default: []
-  mode: queued
-  max: 3
 - id: '1660298269200'
   alias: Cover - Front door
   description: ''
@@ -2391,3 +2050,35 @@
     input:
       motion_sensor: binary_sensor.livingroom_motion
       light: light.decorations
+- id: '1661573682772'
+  alias: Climate - Bathroom radiator
+  description: ''
+  use_blueprint:
+    path: radiator_control.yaml
+    input:
+      radiator: climate.bathroom_radiator_thermostat
+      window: binary_sensor.bathroom_window
+- id: '1661573786768'
+  alias: Climate - Bedroom radiator
+  description: ''
+  use_blueprint:
+    path: radiator_control.yaml
+    input:
+      radiator: climate.bedroom_radiator_thermostat
+      window: binary_sensor.bedroom_window
+- id: '1661573856733'
+  alias: Climate - Closet radiator
+  description: ''
+  use_blueprint:
+    path: radiator_control.yaml
+    input:
+      radiator: climate.closet_radiator_thermostat
+      window: binary_sensor.closet_window
+- id: '1661573889424'
+  alias: Climate - Kids room radiator
+  description: ''
+  use_blueprint:
+    path: radiator_control.yaml
+    input:
+      radiator: climate.kids_room_radiator_thermostat
+      window: binary_sensor.nursery_window
