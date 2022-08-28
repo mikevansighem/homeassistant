@@ -998,7 +998,15 @@
     entity_id: binary_sensor.downstairs_hallway_motion
     to: 'on'
     id: TRIGGER
-  condition: []
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: cover.front_door_cover
+      state: opening
+    - condition: state
+      entity_id: cover.front_door_cover
+      state: closing
   action:
   - choose:
     - conditions:
