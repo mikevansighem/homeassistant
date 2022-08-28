@@ -84,6 +84,12 @@
       domain: vacuum
       entity_id: vacuum.soapie
       type: is_cleaning
+    - condition: state
+      entity_id: cover.front_door_cover
+      state: opening
+    - condition: state
+      entity_id: cover.front_door_cover
+      state: closing
   action:
   - service: alarm_control_panel.alarm_trigger
     target:
@@ -104,13 +110,11 @@
   condition: []
   action:
   - service: scene.create
-    continue_on_error: true
     data:
       scene_id: before_alarm_sound
       entities: media_player.whole_home
   - parallel:
     - service: notify.notify
-      continue_on_error: true
       data:
         message: The alarm has been triggered at {{ states('sensor.time') }}.
         title: Alarm
@@ -127,10 +131,8 @@
             title: Disarm
             uri: /lovelace/alarm
     - service: script.alarm_sound_alarm
-      continue_on_error: true
       data: {}
     - service: script.flash_licht
-      continue_on_error: true
       data: {}
   mode: single
 - id: '1629106372874'
@@ -323,6 +325,12 @@
       domain: vacuum
       entity_id: vacuum.soapie
       type: is_cleaning
+    - condition: state
+      entity_id: cover.front_door_cover
+      state: opening
+    - condition: state
+      entity_id: cover.front_door_cover
+      state: closing
   action:
   - service: alarm_control_panel.alarm_trigger
     target:
@@ -1796,26 +1804,16 @@
         * 60 + state_attr(''input_datetime.front_door_cover_late_open'', ''minute'')}}'
       seconds: 0
   - platform: template
-    value_template: "{% set end_work = states('input_datetime.end_night_workday')
-      %} \n{% set end_free = states('input_datetime.end_night_free_day') %} \n\n{%
-      set early_hour = state_attr('input_datetime.front_door_cover_early_close', 'hour')
-      %} \n{% set early_min = state_attr('input_datetime.front_door_cover_early_close',
+    value_template: "{% set work_day = states('binary_sensor.workday_sensor') %}\n\n{%
+      set start_work = states('input_datetime.start_night_workday') %} \n{% set start_free
+      = states('input_datetime.start_night_free_day') %} \n\n{% set early_hour = state_attr('input_datetime.front_door_cover_early_close',
+      'hour') %} \n{% set early_min = state_attr('input_datetime.front_door_cover_early_close',
       'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
-      ) %}\n\n{% set work_on = (strptime(end_work, '%H:%M:%S') - early).strftime('%H:%M')
-      %}\n{% set free_on = (strptime(end_free, '%H:%M:%S') - early).strftime('%H:%M')
-      %}\n\n{% if now().strftime('%H:%M') == work_on or now().strftime('%H:%M') ==
-      free_on %}\n  true\n{% else %}\n  false\n{% endif %}\n"
-    id: CLOSE
-  - platform: template
-    value_template: "{% set end_work = states('input_datetime.end_night_workday')
-      %} \n{% set end_free = states('input_datetime.end_night_free_day') %} \n\n{%
-      set early_hour = state_attr('input_datetime.front_door_cover_early_close', 'hour')
-      %} \n{% set early_min = state_attr('input_datetime.front_door_cover_early_close',
-      'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
-      ) %}\n\n{% set work_on = (strptime(end_work, '%H:%M:%S') - early).strftime('%H:%M')
-      %}\n{% set free_on = (strptime(end_free, '%H:%M:%S') - early).strftime('%H:%M')
-      %}\n\n{% if now().strftime('%H:%M') == work_on or now().strftime('%H:%M') ==
-      free_on %}\n  true\n{% else %}\n  false\n{% endif %}\n"
+      ) %}\n\n{% set work_on = (strptime(start_work, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n{% set free_on = (strptime(start_free, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') == work_on ) or (
+      work_day == 'off' and now().strftime('%H:%M') == free_on ) %}\n  true\n{% else
+      %}\n  false\n{% endif %}"
     id: CLOSE
   condition: []
   action:
