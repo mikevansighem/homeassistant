@@ -1476,12 +1476,33 @@
     - switch.dishwasher
     - switch.dryer
     to: 'off'
+    id: RANDOM
+  - platform: homeassistant
+    event: start
+    id: START
   condition: []
   action:
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: '{{ trigger.entity_id }}'
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: RANDOM
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: '{{ trigger.entity_id }}'
+    - conditions:
+      - condition: trigger
+        id: START
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id:
+          - switch.washing_machine
+          - switch.dryer
+          - switch.dishwasher
+    default: []
   mode: single
 - id: '1654879355436'
   alias: Lights - Attic dimmer
