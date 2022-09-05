@@ -51,11 +51,6 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.21
-  name: "Attict chromecast audio"
-  scan_interval: 30
-
-- platform: ping
   host: 192.168.2.196
   name: "Scullery range extender"
   scan_interval: 30
@@ -68,11 +63,6 @@
 - platform: ping
   host: 192.168.2.1
   name: "Fritz!Box"
-  scan_interval: 30
-
-- platform: ping
-  host: 192.168.2.22
-  name: "Attict range extender"
   scan_interval: 30
 
 - platform: ping
