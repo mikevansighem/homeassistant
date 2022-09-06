@@ -127,3 +127,15 @@ front_door_cover_early_close:
   icon: mdi:clock
   has_time: true
   has_date: false
+
+humidifier_late_on:
+  name: Humidifier late on
+  icon: mdi:clock
+  has_time: true
+  has_date: false
+
+humidifier_early_off:
+  name: Humidifier early off
+  icon: mdi:clock
+  has_time: true
+  has_date: false

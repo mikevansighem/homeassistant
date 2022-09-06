@@ -2069,3 +2069,50 @@
     input:
       radiator: climate.kids_room_radiator_thermostat
       window: binary_sensor.nursery_window
+- id: '1662484112575'
+  alias: Air - Humidifier
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.house_state
+    id: 'ON'
+    to: home
+    for:
+      hours: 0
+      minutes: '{{state_attr(''input_datetime.humidifier_late_on'', ''hour'') * 60
+        + state_attr(''input_datetime.humidifier_late_on'', ''minute'')}}'
+      seconds: 0
+  - platform: template
+    value_template: "{% set work_day = states('binary_sensor.workday_sensor') %}\n\n{%
+      set start_work = states('input_datetime.start_night_workday') %} \n{% set start_free
+      = states('input_datetime.start_night_free_day') %} \n\n{% set early_hour = state_attr('input_datetime.humidifier_early_off',
+      'hour') %} \n{% set early_min = state_attr('input_datetime.humidifier_early_off',
+      'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
+      ) %}\n\n{% set work_on = (strptime(start_work, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n{% set free_on = (strptime(start_free, '%H:%M:%S') - early).strftime('%H:%M')
+      %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') == work_on ) or (
+      work_day == 'off' and now().strftime('%H:%M') == free_on ) %}\n  true\n{% else
+      %}\n  false\n{% endif %}"
+    id: 'OFF'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.humidifier
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.humidifier
+    default: []
+  mode: single
