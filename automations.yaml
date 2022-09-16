@@ -878,7 +878,7 @@
   action:
   - service: frontend.set_theme
     data:
-      name: outline
+      name: Mushroom Square
   mode: single
 - id: '1635571062556'
   alias: Utility - Update quiet helper
@@ -1219,7 +1219,8 @@
     to: 'true'
     id: 'ON'
   - platform: state
-    entity_id: sensor.grow_light_scheduler
+    entity_id:
+    - sensor.grow_light_scheduler
     to: 'false'
     id: 'OFF'
   condition: []
@@ -1237,6 +1238,9 @@
       - condition: trigger
         id: 'OFF'
       sequence:
+      - condition: state
+        entity_id: light.grow_light
+        state: 'on'
       - service: scene.turn_on
         target:
           entity_id: scene.tv_lights_relax
@@ -1560,7 +1564,7 @@
         hours: 0
         minutes: 1
         seconds: 0
-      below: '3'
+      below: 2.5
   - service: script.1655204175112
     data:
       Message: De vaatwasser is klaar.
@@ -1763,50 +1767,13 @@
       Group: General
       Timeout: 0
   mode: single
-- id: '1658667498103'
-  alias: Utility - Notify when offline
-  description: Send a notification if any network device is offline for more than
-    5 minutes.
-  trigger:
-  - platform: event
-    event_type: state_changed
-  condition:
-  - condition: template
-    value_template: "{{ trigger.event.data.new_state is not none and\n   trigger.event.data.new_state.domain
-      == 'binary_sensor' and\n   trigger.event.data.new_state.attributes.device_class
-      | default('') == 'connectivity' and\n   trigger.event.data.new_state.state ==
-      'off' }}"
-  action:
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - if:
-    - condition: template
-      value_template: '{{is_state(trigger.event.data.entity_id, off)}}'
-    then:
-    - service: script.1655204175112
-      data:
-        Url: lovelace/network
-        Title: Device offline ❌
-        Timing: Retain till home and no quiet time
-        Timeout: 1440
-        Voice: false
-        Group: Utility
-        Admin_only: true
-        Message: '{{ state_attr(trigger.event.data.entity_id, ''friendly_name'') }}
-          is offline more than 5 minutes.'
-    else:
-    - stop: ''
-  mode: parallel
 - id: '1659155364307'
   alias: Baby - Reset noise monitor
   description: ''
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.zoe_noise
+    - binary_sensor.zoe_geluid
     to: unavailable
     for:
       hours: 0
@@ -1850,6 +1817,9 @@
       - condition: trigger
         id: CLOSE
       sequence:
+      - condition: state
+        entity_id: cover.front_door_cover
+        state: open
       - service: cover.close_cover
         data: {}
         target:
@@ -1858,6 +1828,9 @@
       - condition: trigger
         id: OPEN
       sequence:
+      - condition: state
+        entity_id: cover.front_door_cover
+        state: closed
       - service: cover.open_cover
         data: {}
         target:
@@ -1883,16 +1856,16 @@
           notification_id: low_battery
       - service: persistent_notification.create
         data:
-          message: Replace or charge battery of {{ sensors }}. [More info.](lovelace/hardware)
+          message: Replace or charge battery of {{ sensors }}. [More info.](lovelace-mushroom/batterijen)
           title: Low battery
           notification_id: low_battery
 - id: '1660449882472'
-  alias: Surveillance - Cry notification
+  alias: Surveillance - Baby monitor
   description: ''
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.zoe_noise
+    - binary_sensor.zoe_geluid
     for:
       hours: 0
       minutes: 0
@@ -2091,8 +2064,8 @@
       'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
       ) %}\n\n{% set work_on = (strptime(start_work, '%H:%M:%S') - early).strftime('%H:%M')
       %}\n{% set free_on = (strptime(start_free, '%H:%M:%S') - early).strftime('%H:%M')
-      %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') == work_on ) or (
-      work_day == 'off' and now().strftime('%H:%M') == free_on ) %}\n  true\n{% else
+      %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') > work_on ) or (
+      work_day == 'off' and now().strftime('%H:%M') > free_on ) %}\n  true\n{% else
       %}\n  false\n{% endif %}"
     id: 'OFF'
   condition: []
@@ -2102,6 +2075,18 @@
       - condition: trigger
         id: 'ON'
       sequence:
+      - condition: template
+        value_template: "{% set work_day = states('binary_sensor.workday_sensor')
+          %}\n\n{% set start_work = states('input_datetime.start_night_workday') %}
+          \n{% set start_free = states('input_datetime.start_night_free_day') %} \n\n{%
+          set early_hour = state_attr('input_datetime.humidifier_early_off', 'hour')
+          %} \n{% set early_min = state_attr('input_datetime.humidifier_early_off',
+          'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
+          ) %}\n\n{% set work_on = (strptime(start_work, '%H:%M:%S') - early).strftime('%H:%M')
+          %}\n{% set free_on = (strptime(start_free, '%H:%M:%S') - early).strftime('%H:%M')
+          %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') > work_on ) or
+          ( work_day == 'off' and now().strftime('%H:%M') > free_on ) %}\n  false\n{%
+          else %}\n  true\n{% endif %}"
       - service: switch.turn_on
         data: {}
         target:
@@ -2115,4 +2100,24 @@
         target:
           entity_id: switch.humidifier
     default: []
+  mode: single
+- id: '1663154996923'
+  alias: Utility - Persistent notification for offline devices
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:33:00
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.disconnected
+    above: '0'
+  action:
+  - service: persistent_notification.dismiss
+    data:
+      notification_id: offline
+  - service: persistent_notification.create
+    data:
+      message: 'Offline devices: {{ states(''sensor.disconnected'') }}. [More info.](lovelace-mushroom/netwerk)'
+      title: Offline devices
+      notification_id: offline
   mode: single

@@ -17,7 +17,6 @@ scene: !include scenes.yaml
 binary_sensor: !include binary_sensor.yaml
 mqtt: !include mqtt.yaml
 alarm_control_panel: !include alarm_control_panel.yaml
-utility_meter: !include utility_meter.yaml
 sensor: !include sensor.yaml
 recorder: !include recorder.yaml
 shell_command: !include shell_command.yaml
@@ -58,7 +57,7 @@ spotcast:
 light:
   - platform: group
     unique_id: light.attic
-    name: "Attic"
+    name: "Zolder"
     entities:
       - light.attic_desk
       - light.attic_overhead

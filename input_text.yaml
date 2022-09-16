@@ -3,6 +3,6 @@
 ###############################################################################
 
 commit_message:
-  name: Commit message
-  initial: Your commit message
+  name: Commit bericht
+  initial: Jouw commit bericht
   icon: mdi:card-text-outline

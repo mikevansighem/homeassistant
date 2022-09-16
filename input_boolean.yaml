@@ -3,21 +3,21 @@
 ###############################################################################
 
 quiet:
-  name: Quiet
+  name: Stilte
   icon: mdi:volume-off
 
 holiday:
-  name: Holiday
+  name: Vakantie
   icon: mdi:beach
 
 first_down:
-  name: First down
+  name: Eerste beneden
   icon: mdi:motion-sensor
 
 vacumed:
-  name: vacumed
+  name: Gestofzuigd
   icon: mdi:vacuum
 
 mopped:
-  name: mopped
+  name: Gedweild
   icon: mdi:vacuum

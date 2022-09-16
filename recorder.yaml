@@ -23,11 +23,11 @@ include:
     - sensor.*battery*
     - sensor.*energy*
     - sensor.*power*
+    - sensor.*daily*
 
   entities:
     # General
     - sensor.house_state
-    - sensor.pretty_workday
     - sensor.climate_period
     - sensor.downstairs_temperature
     - sensor.boiler_target_temperature
@@ -49,23 +49,7 @@ include:
     # Utilities
     - sensor.grid_fossil_fuel_percentage
     - sensor.co2_intensity
-    - sensor.power_usage_round
     - sensor.gas_usage
-    - sensor.daily_utility_costs
-    - sensor.monthly_utility_costs
-    - sensor.yearly_utility_costs
-    - sensor.daily_energy_costs
-    - sensor.monthly_energy_costs
-    - sensor.yearly_energy_costs
-    - sensor.daily_gas_costs
-    - sensor.monthly_gas_costs
-    - sensor.yearly_gas_costs
-    - sensor.daily_energy_peak
-    - sensor.monthly_energy_costs_peak
-    - sensor.daily_energy_off_peak_2
-    - sensor.monthly_energy_costs_off_peak
-    - sensor.daily_gas
-    - sensor.fan_controller_total_daily_energy
 
     # Air quality
     - sensor.air_sensor_co2
@@ -110,3 +94,4 @@ include:
 
     # Other
     - sensor.outdoor_lights
+    - sensor.humidifier
