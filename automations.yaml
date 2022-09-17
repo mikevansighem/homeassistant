@@ -1856,7 +1856,7 @@
           notification_id: low_battery
       - service: persistent_notification.create
         data:
-          message: Replace or charge battery of {{ sensors }}. [More info.](lovelace-mushroom/batterijen)
+          message: Vervang batterij {{ sensors }}. [Meer info.](batterijen)
           title: Low battery
           notification_id: low_battery
 - id: '1660449882472'
@@ -1907,9 +1907,9 @@
       notification_id: watchmen_missing_entity
   - service: persistent_notification.create
     data:
-      message: 'Missing entities found: {{ states(''sensor.watchman_missing_entities'')
-        }}. [More info.](lovelace/development)'
-      title: Missing enity
+      message: 'Missende entiteiten: {{ states(''sensor.watchman_missing_entities'')
+        }}. [Meer info.](/systeem)'
+      title: Missende entiteiten
       notification_id: watchmen_missing_entity
   mode: single
 - id: '1660830979144'
@@ -1928,9 +1928,9 @@
       notification_id: watchmen_missing_service
   - service: persistent_notification.create
     data:
-      message: 'Missing services found: {{ states(''sensor.watchman_missing_services'')
-        }}. [More info.](lovelace/development)'
-      title: Missing service
+      message: 'Missende services: {{ states(''sensor.watchman_missing_services'')
+        }}. [Meer info.](/systeem)'
+      title: Missende service
       notification_id: watchmen_missing_service
   mode: single
 - id: '1661359567139'
@@ -1949,8 +1949,8 @@
       notification_id: disk_use
   - service: persistent_notification.create
     data:
-      message: Disk use at {{ states('sensor.disk_use_percent') }}%. [More info.](lovelace/hardware)
-      title: High disk use
+      message: Schijf gebruik {{ states('sensor.disk_use_percent') }}%. [Meer info.](/systeem)
+      title: Hoog schijf gebruik
       notification_id: disk_use
   mode: single
 - id: '1661532418642'
@@ -2117,7 +2117,8 @@
       notification_id: offline
   - service: persistent_notification.create
     data:
-      message: 'Offline devices: {{ states(''sensor.disconnected'') }}. [More info.](lovelace-mushroom/netwerk)'
-      title: Offline devices
+      message: 'Niet verbonden apparaten: {{ states(''sensor.disconnected'') }}. [Meer
+        info.](/netwerk)'
+      title: Offline apparaten
       notification_id: offline
   mode: single

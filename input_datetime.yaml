@@ -91,7 +91,7 @@ night_alarm_early_stop:
 # Quiet time
 
 quiet_offset:
-  name: Vroege stilte tijd 
+  name: Vroege stilte tijd
   icon: mdi:clock
   has_time: true
   has_date: false

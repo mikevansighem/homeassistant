@@ -383,6 +383,34 @@
         {% endfor %}
         {{data.thing|count}}
 
+    # Open windows
+    open_windows:
+      friendly_name: "Open ramen"
+      value_template: >-
+        {% set data = namespace(thing=[]) %}
+        {%- for item in states.binary_sensor  -%}
+          {% if "device_class=window" in item | string %}
+            {% if item.state == 'on' %}
+              {% set data.thing = data.thing + [item.attributes.friendly_name] %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {{data.thing|count}}
+
+    # Open doors
+    open_doors:
+      friendly_name: "Open deuren"
+      value_template: >-
+        {% set data = namespace(thing=[]) %}
+        {%- for item in states.binary_sensor  -%}
+          {% if "device_class=door" in item | string %}
+            {% if item.state == 'on' %}
+              {% set data.thing = data.thing + [item.attributes.friendly_name] %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {{data.thing|count}}
+
     problem_plants:
       friendly_name: "Planten met een probleem"
       value_template: >-
@@ -393,6 +421,11 @@
           {% endif %}
         {% endfor %}
         {{ data.thing|count }}
+
+    missing_entities_services:
+      friendly_name: "Missende entiteiten of services"
+      value_template: >-
+        {{ states("sensor.watchman_missing_entities")|int + states("sensor.watchman_missing_services")|int }}
 
 ###############################################################################
 # STATISTICS

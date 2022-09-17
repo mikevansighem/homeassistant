@@ -3,9 +3,9 @@
 ################################################################################
 
 substitutions:
-  device_name: baby-monitor
-  upper_devicename: Baby-monitor
-  device_description: "Monitors noise in the baby her room."
+  device_name: bluetooth-relay
+  upper_devicename: Bluetooth-relay
+  device_description: "Relays bluetooth signal."
 
 ###############################################################################
 # GENERAL
@@ -59,36 +59,3 @@ binary_sensor:
   - platform: status
     name: "${upper_devicename} status"
     icon: "mdi:wifi"
-
-# Example configuration entry
-sensor:
-  # Sound sensor
-  - platform: adc
-    id: adc_lyd
-    pin: GPIO36
-    name: "Voltage"
-    update_interval: 100ms
-    attenuation: auto
-    # Don't send sound sensor readings to HA
-    internal: true
-
-  # Sound level measurement based upon sound sensor
-  - platform: ct_clamp
-    sensor: adc_lyd
-    name: "Sound level"
-    sample_duration: 500ms
-    update_interval: 500ms
-    filters:
-      # Consider everything below threshold to be zero
-      # You may adjust threshold and delta to your liking
-      - lambda: |-
-          float THRESHOLD = 0.05;
-          if (x < THRESHOLD) {
-            return 0;
-          } else {
-            return x;
-          }
-      # When above threshold, only send results when more than "delta" difference since last time
-      # This reduces the amount of data sent to HA so your log doesn't fill up
-      - delta: 0.005
-

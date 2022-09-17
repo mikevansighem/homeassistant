@@ -38,7 +38,7 @@ sensor.average_ground_temperature:
   friendly_name: Gemiddelde grond temperatuur
   icon: mdi:thermometer
 sensor.average_humidity:
-  friendly_name: Gemiddelde luchtvochtigheid 
+  friendly_name: Gemiddelde luchtvochtigheid
   icon: mdi:water-percent
 
 # Connections

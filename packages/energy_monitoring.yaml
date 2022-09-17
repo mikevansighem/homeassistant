@@ -27,7 +27,7 @@ energy_monitoring:
             {% endif %}
           icon_template: >-
             mdi:cash
-    
+
         # Daily energy costs
         daily_energy_costs_1:
           friendly_name: "Energie kosten dal"
@@ -144,6 +144,16 @@ energy_monitoring:
       name: Energie piek
       cycle: daily
 
+    daily_energy_cost_meter_1:
+      source: sensor.daily_energy_costs_1
+      name: Kosten energie dal
+      cycle: daily
+
+    daily_energy_cost_meter_2:
+      source: sensor.daily_energy_costs_2
+      name: Kosten energie piek
+      cycle: daily
+
     daily_gas:
       source: sensor.gas_consumed
       name: Daily Gas
@@ -153,13 +163,3 @@ energy_monitoring:
       source: sensor.daily_gas_costs_temp
       name: Daily Gas Costs
       cycle: daily
-
-    monthly_utility_costs:
-      source: sensor.daily_utility_costs
-      name: Monthly utility costs
-      cycle: monthly
-
-    yearly_utility_costs:
-      source: sensor.daily_utility_costs
-      name: Yearly utility costs
-      cycle: yearly
