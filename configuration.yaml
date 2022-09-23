@@ -15,7 +15,6 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 binary_sensor: !include binary_sensor.yaml
-mqtt: !include mqtt.yaml
 alarm_control_panel: !include alarm_control_panel.yaml
 sensor: !include sensor.yaml
 recorder: !include recorder.yaml
