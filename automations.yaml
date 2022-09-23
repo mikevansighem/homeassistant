@@ -829,8 +829,8 @@
   action:
   - service: script.1655204175112
     data:
-      Title: "Restarted \U0001F31F"
-      Message: Home Assistant has restarted.
+      Title: "Opnieuw opgestart \U0001F31F"
+      Message: Home Assistant is opnieuw opgestart.
       Url: lovelace/home
       Voice: false
       Admin_only: true
@@ -1348,14 +1348,14 @@
   action:
   - service: script.1655204175112
     data:
-      Title: Configuation failed ❌
-      Message: A configuration deployment has failed.
+      Title: Configuratie niet geslaagd❌
       Url: https://github.com/mikevansighem/homeassistant/actions
       Voice: false
       Admin_only: true
       Timing: Always
       Group: Utility
       Timeout: 1440
+      Message: Een configuratie deployment is niet geslaagd.
   mode: single
 - id: '1651853081537'
   alias: Utility - Cleanup FRITZ!Box
@@ -1417,12 +1417,12 @@
       actions:
       - service: script.1655204175112
         data:
-          Title: "Water me \U0001F4A6"
+          Title: "Water mij \U0001F4A6"
           Url: lovelace/plants
           Timing: Retain till home and no quiet time
           Group: Plants
           Timeout: 1440
-          Message: The {{sensors}} need watering.
+          Message: De {{sensors}} hebben water nodig.
           Voice: false
           Admin_only: false
 - id: '1653651804886'
