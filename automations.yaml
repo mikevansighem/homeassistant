@@ -406,7 +406,7 @@
   mode: queued
   max: 3
 - id: '1629825198745'
-  alias: Climate - Livingroom - NU OOK NOG CENTRALE VERWARMING
+  alias: Climate - Livingroom
   description: 'Turn on and off the heating based on the climate period and the house
     state.
 
@@ -466,11 +466,6 @@
         data:
           hvac_mode: heat
         target:
-          entity_id: climate.central_heating
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
           entity_id:
           - climate.beneden_vloerverwarming
     - conditions:
@@ -478,11 +473,6 @@
         id: 'OFF'
         alias: Trigger is OFF
       sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id: climate.central_heating
       - service: climate.set_hvac_mode
         data:
           hvac_mode: 'off'
@@ -638,7 +628,8 @@
   description: Push the current downstairs temperature to MQTT for the boiler to read.
   trigger:
   - platform: state
-    entity_id: sensor.downstairs_temperature
+    entity_id:
+    - sensor.heating_delta
   - platform: homeassistant
     event: start
   - platform: time_pattern
@@ -648,7 +639,8 @@
   - service: mqtt.publish
     data:
       topic: opentherm-thermostat/current-temperature/set
-      payload_template: '{{states("sensor.downstairs_temperature")}}'
+      payload_template: '{{ state_attr(''climate.central_heating'', ''temperature'')
+        - states(''sensor.heating_delta'')|float }}'
   mode: parallel
   max: 10
 - id: '1631038917696'
@@ -755,11 +747,6 @@
     entity_id: sensor.climate_setpoint
   condition: []
   action:
-  - service: climate.set_temperature
-    target:
-      entity_id: climate.central_heating
-    data:
-      temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
   - service: climate.set_temperature
     target:
       entity_id: climate.beneden_vloerverwarming
@@ -2125,4 +2112,40 @@
         info.](/lovelace/netwerk)'
       title: Offline apparaten
       notification_id: offline
+  mode: single
+- id: '1663946115137'
+  alias: Climate - Switch central heating
+  description: Turn on/off central heating if any thermostat requires heating
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.heating_leading_room
+    to: Niet actief
+    id: 'OFF'
+  - platform: state
+    entity_id:
+    - sensor.heating_leading_room
+    from: Niet actief
+    id: 'ON'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.central_heating
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.central_heating
   mode: single
