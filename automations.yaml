@@ -406,31 +406,21 @@
   mode: queued
   max: 3
 - id: '1629825198745'
-  alias: 'Climate - Heating service '
+  alias: Climate - Livingroom - NU OOK NOG CENTRALE VERWARMING
   description: 'Turn on and off the heating based on the climate period and the house
     state.
 
     Prevent heating when doors remain open.'
   trigger:
   - platform: state
-    entity_id: sensor.climate_period
-    id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
+    entity_id:
+    - sensor.heating_allowed
+    to: 'true'
     id: 'ON'
   - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
+    entity_id:
+    - sensor.heating_allowed
+    to: 'false'
     id: 'OFF'
   - platform: state
     entity_id:
@@ -454,45 +444,51 @@
   action:
   - choose:
     - conditions:
-      - condition: trigger
-        id: 'ON'
-      - condition: not
+      - condition: and
         conditions:
-        - condition: state
-          entity_id: sensor.climate_period
-          state: night
-        - condition: state
-          entity_id: binary_sensor.kitchen_door
-          state: 'on'
-          for:
-            hours: 0
-            minutes: 5
-            seconds: 0
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: holiday
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: away
+        - condition: trigger
+          id: 'ON'
+          alias: Trigger is ON
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.kitchen_door
+            state: 'on'
+            for:
+              hours: 0
+              minutes: 5
+              seconds: 0
+            alias: Deur open voor 5 min
+          alias: Deur niet open voor 5 min
+        alias: Trigegr is ON en Deur niet open voor 5 min
       sequence:
       - service: climate.set_hvac_mode
         data:
           hvac_mode: heat
         target:
           entity_id: climate.central_heating
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id:
+          - climate.beneden_vloerverwarming
     - conditions:
       - condition: trigger
         id: 'OFF'
+        alias: Trigger is OFF
       sequence:
       - service: climate.set_hvac_mode
         data:
           hvac_mode: 'off'
         target:
           entity_id: climate.central_heating
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id:
+          - climate.beneden_vloerverwarming
     default: []
   mode: queued
   max: 3
@@ -764,6 +760,11 @@
       entity_id: climate.central_heating
     data:
       temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
+  - service: climate.set_temperature
+    target:
+      entity_id: climate.beneden_vloerverwarming
+    data:
+      temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
   mode: single
   max: 3
 - id: '1631815874577'
@@ -772,11 +773,12 @@
     to prevent the pump from stalling.
   trigger:
   - platform: state
-    entity_id: climate.central_heating
+    entity_id:
+    - switch.floor_heatingpump_helper
     id: 'ON'
-    to: heat
+    to: 'on'
   - platform: state
-    entity_id: climate.central_heating
+    entity_id: switch.floor_heatingpump_helper
     id: 'OFF'
     to: 'off'
     for:
@@ -784,7 +786,6 @@
       minutes: '{{ state_attr(''input_datetime.floor_heating_pump_delay'', ''timestamp'')
         / 60 | int}}'
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: switch.floor_heating_pump_on_off
     id: TIME
@@ -793,7 +794,6 @@
       hours: 12
       minutes: 0
       seconds: 0
-      milliseconds: 0
   condition: []
   action:
   - choose:
@@ -804,6 +804,7 @@
       - service: switch.turn_on
         target:
           entity_id: switch.floor_heating_pump_on_off
+        data: {}
     - conditions:
       - condition: trigger
         id: 'OFF'
@@ -811,6 +812,7 @@
       - service: switch.turn_off
         target:
           entity_id: switch.floor_heating_pump_on_off
+        data: {}
     - conditions:
       - condition: trigger
         id: TIME
@@ -818,6 +820,7 @@
       - service: switch.turn_on
         target:
           entity_id: switch.floor_heating_pump_on_off
+        data: {}
       - delay:
           hours: 0
           minutes: 3
@@ -826,6 +829,7 @@
       - service: switch.turn_off
         target:
           entity_id: switch.floor_heating_pump_on_off
+        data: {}
     default: []
   mode: restart
 - id: '1632764660880'
@@ -1856,7 +1860,7 @@
           notification_id: low_battery
       - service: persistent_notification.create
         data:
-          message: Vervang batterij {{ sensors }}. [Meer info.](batterijen)
+          message: Vervang batterij {{ sensors }}. [Meer info.](/lovelace/batterijen)
           title: Low battery
           notification_id: low_battery
 - id: '1660449882472'
@@ -1908,7 +1912,7 @@
   - service: persistent_notification.create
     data:
       message: 'Missende entiteiten: {{ states(''sensor.watchman_missing_entities'')
-        }}. [Meer info.](/systeem)'
+        }}. [Meer info.](/lovelace/systeem)'
       title: Missende entiteiten
       notification_id: watchmen_missing_entity
   mode: single
@@ -1929,7 +1933,7 @@
   - service: persistent_notification.create
     data:
       message: 'Missende services: {{ states(''sensor.watchman_missing_services'')
-        }}. [Meer info.](/systeem)'
+        }}. [Meer info.](/lovelace/systeem)'
       title: Missende service
       notification_id: watchmen_missing_service
   mode: single
@@ -1949,7 +1953,7 @@
       notification_id: disk_use
   - service: persistent_notification.create
     data:
-      message: Schijf gebruik {{ states('sensor.disk_use_percent') }}%. [Meer info.](/systeem)
+      message: Schijf gebruik {{ states('sensor.disk_use_percent') }}%. [Meer info.](/lovelace/systeem)
       title: Hoog schijf gebruik
       notification_id: disk_use
   mode: single
@@ -2118,7 +2122,7 @@
   - service: persistent_notification.create
     data:
       message: 'Niet verbonden apparaten: {{ states(''sensor.disconnected'') }}. [Meer
-        info.](/netwerk)'
+        info.](/lovelace/netwerk)'
       title: Offline apparaten
       notification_id: offline
   mode: single

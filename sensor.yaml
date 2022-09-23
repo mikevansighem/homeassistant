@@ -80,7 +80,6 @@
   name: "downstairs temperature"
   round_digits: 1
   entity_ids:
-    - sensor.downstairs_hallway_motion_temperature
     - sensor.livingroom_motion_temperature
     - sensor.stairs_closet_motion_temperature
     - sensor.air_sensor_temperature
@@ -148,7 +147,7 @@
 
     # Quiet time schedule
     quiet_time_schedule:
-      friendly_name: "Quiet time schedule"
+      friendly_name: "Stilte tijd schema"
       icon_template: mdi:volume-off
       value_template: >-
         {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}
@@ -174,7 +173,7 @@
 
     # outdoor light schedule
     outdoor_lights:
-      friendly_name: "Outdoor lights"
+      friendly_name: "Buiten lampen schema"
       value_template: >-
         {% set mod_now = now().hour * 60 + now().minute %}
         {%set dawn = as_local(as_datetime(state_attr('sun.sun', 'next_dawn')))%}
@@ -200,7 +199,7 @@
         {%endif%}
 
     somebody_home:
-      friendly_name: "Somebody home"
+      friendly_name: "Iemand thuis"
       value_template: >-
           {% set mike_home = is_state('person.tmp', 'home') %}
           {% set anneloes_home = is_state('person.anneloes_jagt', 'home') %}
@@ -306,9 +305,23 @@
             mdi:minus
           {% endif %}
 
-    # Thermostat setpoint for time of the day.
+    # Sensor to check if heating is allowed
+    heating_allowed:
+      friendly_name: "Verwarmen toegestaan"
+      value_template: >-
+        {% set house_state = states('sensor.house_state') %}
+        {% set climate_period = states('sensor.climate_period') %}
+        {% if house_state == 'away' or house_state == 'holiday' %}
+          false
+        {% elif climate_period != 'night' %}
+          true
+        {% else %}
+          false
+        {% endif %}
+
+    # Downstairs thermostat setpoint for time of the day.
     climate_setpoint:
-      friendly_name: "Climate setpoint"
+      friendly_name: "Beneden temperatuur instelpunt"
       unit_of_measurement: "°C"
       device_class: temperature
       value_template: >-
@@ -325,7 +338,7 @@
     # A template to determine if the growlight should be on.
     # It will turn on the grow light if nobody is home and the sun is up.
     grow_light_scheduler:
-      friendly_name: "Grow light scheduler"
+      friendly_name: "Groei lamp schema"
       value_template: >-
         {% set house = states('sensor.house_state') %}
         {% set sun = states('sun.sun') %}

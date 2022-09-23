@@ -33,6 +33,8 @@ include:
     - sensor.downstairs_temperature
     - sensor.boiler_target_temperature
     - sensor.boiler_temperature
+    - sensor.heating_delta
+    - sensor.heating_leading_room
 
     # Watering
     - sensor.watering_level
