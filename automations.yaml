@@ -341,25 +341,55 @@
   alias: Climate - Hot water service
   description: ''
   trigger:
-  - platform: state
-    entity_id: sensor.climate_period
+  - platform: template
+    value_template: "        {% set night_start_free = state_attr('input_datetime.start_night_free_day',
+      'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}\n
+      \       {% set night_start_work = state_attr('input_datetime.start_night_workday',
+      'hour') * 60 + state_attr('input_datetime.start_night_workday', 'minute')%}\n
+      \       {% set night_end_free = state_attr('input_datetime.end_night_free_day',
+      'hour') * 60 + state_attr('input_datetime.end_night_free_day', 'minute')%}\n
+      \       {% set night_end_work = state_attr('input_datetime.end_night_workday',
+      'hour') * 60 + state_attr('input_datetime.end_night_workday', 'minute')%}\n
+      \       {% set pre_heat_offset = state_attr('input_datetime.hot_water_pre_heat',
+      'hour') * 60 + state_attr('input_datetime.hot_water_pre_heat', 'minute')%}\n
+      \       {% set stop_offset = state_attr('input_datetime.hot_water_early_stop',
+      'hour') * 60 + state_attr('input_datetime.hot_water_early_stop', 'minute')%}\n
+      \       {% set now = (states('sensor.time')[:2] | int)*60 + (states('sensor.time')[-2:]
+      | int)%}\n        {% set house = states('sensor.house_state') %}\n\n        {%
+      if is_state('binary_sensor.workday_sensor', 'off') %}\n          {% if (night_end_free
+      - pre_heat_offset) < now < (night_start_free - stop_offset) %}\n            {%
+      if house == 'away' or house == 'holiday' %}\n              false\n            {%else%}\n
+      \             true\n            {%endif%}\n          {%else%}\n            false\n
+      \         {%endif%}\n        {%else%}\n          {% if (night_end_work - pre_heat_offset)
+      < now < (night_start_work - stop_offset) %}\n            {% if house == 'away'
+      or house == 'holiday' %}\n              false\n            {%else%}\n              true\n
+      \           {%endif%}\n          {%else%}\n            false\n          {%endif%}\n
+      \       {%endif%}"
     id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
-    id: 'ON'
-  - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
+  - platform: template
+    value_template: "        {% set night_start_free = state_attr('input_datetime.start_night_free_day',
+      'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}\n
+      \       {% set night_start_work = state_attr('input_datetime.start_night_workday',
+      'hour') * 60 + state_attr('input_datetime.start_night_workday', 'minute')%}\n
+      \       {% set night_end_free = state_attr('input_datetime.end_night_free_day',
+      'hour') * 60 + state_attr('input_datetime.end_night_free_day', 'minute')%}\n
+      \       {% set night_end_work = state_attr('input_datetime.end_night_workday',
+      'hour') * 60 + state_attr('input_datetime.end_night_workday', 'minute')%}\n
+      \       {% set pre_heat_offset = state_attr('input_datetime.hot_water_pre_heat',
+      'hour') * 60 + state_attr('input_datetime.hot_water_pre_heat', 'minute')%}\n
+      \       {% set stop_offset = state_attr('input_datetime.hot_water_early_stop',
+      'hour') * 60 + state_attr('input_datetime.hot_water_early_stop', 'minute')%}\n
+      \       {% set now = (states('sensor.time')[:2] | int)*60 + (states('sensor.time')[-2:]
+      | int)%}\n        {% set house = states('sensor.house_state') %}\n\n        {%
+      if is_state('binary_sensor.workday_sensor', 'off') %}\n          {% if (night_end_free
+      - pre_heat_offset) < now < (night_start_free - stop_offset) %}\n            {%
+      if house == 'away' or house == 'holiday' %}\n              true\n            {%else%}\n
+      \             false\n            {%endif%}\n          {%else%}\n            true\n
+      \         {%endif%}\n        {%else%}\n          {% if (night_end_work - pre_heat_offset)
+      < now < (night_start_work - stop_offset) %}\n            {% if house == 'away'
+      or house == 'holiday' %}\n              true\n            {%else%}\n              false\n
+      \           {%endif%}\n          {%else%}\n            true\n          {%endif%}\n
+      \       {%endif%}"
     id: 'OFF'
   condition: []
   action:
@@ -367,21 +397,6 @@
     - conditions:
       - condition: trigger
         id: 'ON'
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.climate_period
-          state: night
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: holiday
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: away
       sequence:
       - service: climate.set_hvac_mode
         data:

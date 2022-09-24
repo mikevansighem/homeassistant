@@ -35,6 +35,7 @@ include:
     - sensor.boiler_temperature
     - sensor.heating_delta
     - sensor.heating_leading_room
+    - switch.floor_heatingpump_helper
 
     # Watering
     - sensor.watering_level
