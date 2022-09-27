@@ -80,7 +80,6 @@
   name: "downstairs temperature"
   round_digits: 1
   entity_ids:
-    - sensor.downstairs_hallway_motion_temperature
     - sensor.livingroom_motion_temperature
     - sensor.stairs_closet_motion_temperature
     - sensor.air_sensor_temperature
@@ -119,47 +118,9 @@
 - platform: template
   sensors:
 
-    # Rounded power usage
-    power_usage_round:
-      friendly_name: "Power usage"
-      device_class: 'energy'
-      unit_of_measurement: 'W'
-      value_template: >-
-        {{ (((states('sensor.power_consumed') | float(0))*100)| round(0))*10|int }}
-      icon_template: >-
-        mdi:lightning-bolt
-
-  # Combined energy sensors
-    daily_energy:
-      friendly_name: "Daily energy"
-      device_class: 'energy'
-      unit_of_measurement: 'kWh'
-      value_template: >-
-        {{ states('sensor.daily_energy_off_peak') | float(0) + states('sensor.daily_energy_peak') | float(0) }}
-      icon_template: >-
-        mdi:lightning-bolt
-
-    monthly_energy:
-      friendly_name: "Monthly energy"
-      unit_of_measurement: 'kWh'
-      device_class: 'energy'
-      value_template: >-
-        {{ states('sensor.monthly_energy_off_peak') | float(0) + states('sensor.monthly_energy_peak') | float(0) }}
-      icon_template: >-
-        mdi:lightning-bolt
-
-    yearly_energy:
-      friendly_name: "Yearly energy"
-      unit_of_measurement: 'kWh'
-      device_class: 'energy'
-      value_template: >-
-        {{ states('sensor.yearly_energy_off_peak') | float(0) + states('sensor.yearly_energy_peak') | float(0) }}
-      icon_template: >-
-        mdi:lightning-bolt
-
     # Alarm panel battery sensor
     alarm_panel_battery:
-      friendly_name: "Alarm panel"
+      friendly_name: "Alarm paneel"
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-
@@ -186,7 +147,7 @@
 
     # Quiet time schedule
     quiet_time_schedule:
-      friendly_name: "Quiet time schedule"
+      friendly_name: "Stilte tijd schema"
       icon_template: mdi:volume-off
       value_template: >-
         {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}
@@ -212,7 +173,7 @@
 
     # outdoor light schedule
     outdoor_lights:
-      friendly_name: "Outdoor lights"
+      friendly_name: "Buiten lampen schema"
       value_template: >-
         {% set mod_now = now().hour * 60 + now().minute %}
         {%set dawn = as_local(as_datetime(state_attr('sun.sun', 'next_dawn')))%}
@@ -238,7 +199,7 @@
         {%endif%}
 
     somebody_home:
-      friendly_name: "Somebody home"
+      friendly_name: "Iemand thuis"
       value_template: >-
           {% set mike_home = is_state('person.tmp', 'home') %}
           {% set anneloes_home = is_state('person.anneloes_jagt', 'home') %}
@@ -344,9 +305,23 @@
             mdi:minus
           {% endif %}
 
-    # Thermostat setpoint for time of the day.
+    # Sensor to check if heating is allowed
+    heating_allowed:
+      friendly_name: "Verwarmen toegestaan"
+      value_template: >-
+        {% set house_state = states('sensor.house_state') %}
+        {% set climate_period = states('sensor.climate_period') %}
+        {% if house_state == 'away' or house_state == 'holiday' %}
+          false
+        {% elif climate_period != 'night' %}
+          true
+        {% else %}
+          false
+        {% endif %}
+
+    # Downstairs thermostat setpoint for time of the day.
     climate_setpoint:
-      friendly_name: "Climate setpoint"
+      friendly_name: "Beneden temperatuur instelpunt"
       unit_of_measurement: "°C"
       device_class: temperature
       value_template: >-
@@ -360,26 +335,10 @@
          {{ states('input_number.night_temperature') }}
        {% endif %}
 
-    # Duplicate workday sensor with nice icons for dashboard
-    pretty_workday:
-      friendly_name: "Pretty Workday"
-      value_template: >-
-          {% if is_state('binary_sensor.workday_sensor', 'on') %}
-            Workday
-          {% else %}
-            Free day
-          {% endif %}
-      icon_template: >-
-          {% if is_state('binary_sensor.workday_sensor', 'on') %}
-            mdi:briefcase
-          {% else %}
-            mdi:party-popper
-          {% endif %}
-
     # A template to determine if the growlight should be on.
     # It will turn on the grow light if nobody is home and the sun is up.
     grow_light_scheduler:
-      friendly_name: "Grow light scheduler"
+      friendly_name: "Groei lamp schema"
       value_template: >-
         {% set house = states('sensor.house_state') %}
         {% set sun = states('sun.sun') %}
@@ -389,107 +348,97 @@
           false
         {%endif%}
 
-    # Gas costs including fixed costs to be fed into an utility meter
-    daily_gas_costs_temp:
-      friendly_name: "Daily gas costs temp"
-      unit_of_measurement: "€"
-      value_template: >-
-        {% if is_state('sensor.time', "00:00") %}
-          0
-        {% elif is_state('sensor.time', "00:01") %}
-          0
-        {% else %}
-          {{((states('sensor.daily_gas') | float(0) * states('input_number.gas_tariff') | float(0) )+(states('input_number.fixed_gas_tariff') | float(0) /365)) | round(2)}}
-        {% endif %}
-      icon_template: >-
-        mdi:cash
-
-    # Daily energy costs
-    daily_energy_costs_1:
-      friendly_name: "Daily energy costs off-peak"
-      unit_of_measurement: "€"
-      value_template: >-
-        {% set fixed = states('input_number.fixed_energy_tariff') | float(0) %}
-        {% set fixed_day = fixed / 365 %}
-        {% set tariff_1 = states('input_number.energy_tariff_1') | float(0) %}
-        {% set useage_1 = states('sensor.daily_energy_off_peak') | float(0) %}
-        {% set useage_2 = states('sensor.daily_energy_peak') | float(0) %}
-        {% set usage = useage_1 + useage_2 %}
-
-        {% if usage == 0 %}
-          0
-        {% else %}
-
-          {% set fixed_1 = useage_1 / usage * fixed_day %}
-          {% set result = (tariff_1 * useage_1 + fixed_1) | round(2) %}
-
-          {% if result > 0 %}
-            {{ result }}
-          {% else %}
-            0
-          {% endif %}
-        {% endif %}
-      icon_template: >-
-        mdi:cash
-
-    daily_energy_costs_2:
-      friendly_name: "Daily energy costs peak"
-      unit_of_measurement: "€"
-      value_template: >-
-        {% set fixed = states('input_number.fixed_energy_tariff') | float(0) %}
-        {% set fixed_day = fixed / 365 %}
-        {% set tariff_2 = states('input_number.energy_tariff_2') | float(0) %}
-        {% set useage_1 = states('sensor.daily_energy_off_peak') | float(0) %}
-        {% set useage_2 = states('sensor.daily_energy_peak') | float(0) %}
-        {% set usage = useage_1 + useage_2 %}
-
-        {% if usage == 0 %}
-          0
-        {% else %}
-
-          {% set fixed_2 = useage_2 / usage * fixed_day %}
-          {% set result = (tariff_2 * useage_2 + fixed_2) | round(2) %}
-
-          {% if result > 0 %}
-            {{ result }}
-          {% else %}
-            0
-          {% endif %}
-        {% endif %}
-      icon_template: >-
-        mdi:cash
-
-    # Calculate the daily energy costs
-    daily_energy_costs:
-      friendly_name: "Daily energy costs"
-      unit_of_measurement: "€"
-      value_template: >-
-        {{ states('sensor.daily_energy_costs_1') | float(0) + states('sensor.daily_energy_costs_2') | float(0) }}
-      icon_template: >-
-        mdi:cash
-
-    # Calculate utility costs
-    daily_utility_costs:
-      friendly_name: "Daily utility costs"
-      unit_of_measurement: "€"
-      value_template: >-
-        {{states('sensor.daily_energy_costs') | float(0) + states('sensor.daily_gas_costs') | float(0) }}
-      icon_template: >-
-        mdi:cash
-
     # Icon for air quality to be used in dashboards
-    air_quality:
-      friendly_name: "Air quality"
+    humidifier:
+      friendly_name: "Luchtbevochtiger"
       value_template: >-
-        {{states('sensor.air_sensor_quality')}}
+        {% if states('switch.humidifier') == 'off' %}
+          uit
+        {% elif states('sensor.humidifier_power')|int > 0 %}
+          aan
+        {% else %}
+          standby
+        {%endif%}
       icon_template: >-
-        {% if is_state('sensor.air_sensor_quality', 'Good') or is_state('sensor.air_sensor_quality', 'Excellent')%}
-          mdi:emoticon
-        {% elif is_state('sensor.air_sensor_quality', 'Moderate') %}
-          mdi:emoticon-neutral
-        {% elif is_state('sensor.air_sensor_quality', 'Unhealty') or is_state('sensor.air_sensor_quality', 'Poor') %}
-          mdi:emoticon-sad
-        {% endif %}
+        {% if states('switch.humidifier') == 'off' %}
+          mdi:air-humidifier-off
+        {% elif states('sensor.humidifier_power')|int > 0 %}
+          mdi:air-humidifier
+        {% else %}
+          mdi:air-humidifier
+        {%endif%}
+
+    # Low batteries to be used in the UI
+    low_batteries:
+      friendly_name: "Lege batterijen"
+      value_template: >-
+        {%- set threshold = 15 -%}
+        {% set data = namespace(thing=[]) %}
+        {%- set domains = ['light', 'switch', 'sensor', 'binary_sensor', 'cover'] -%}
+        {%- for domain in domains -%}
+          {%- for item in states[domain] if ((item.attributes.battery_level is defined and item.attributes['battery_level'] | int(100) < threshold) or ("battery" in item.name | lower and ((item.state | int(100) < threshold and item.state|int != 0) or item.state | lower == "low" or item.state | lower == "unknown"))) -%}
+            {% set data.thing = data.thing + [item.attributes.friendly_name] %}
+          {%- endfor -%}
+        {%- endfor -%}
+        {{data.thing|count}}
+
+    # Disconnected devices to be used in the UI
+    disconnected:
+      friendly_name: "Niet verbonden"
+      value_template: >-
+        {% set data = namespace(thing=[]) %}
+        {%- for item in states.binary_sensor  -%}
+          {% if "connectivity" in item | string %}
+            {% if item.state == 'off' %}
+              {% set data.thing = data.thing + [item.attributes.friendly_name] %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {{data.thing|count}}
+
+    # Open windows
+    open_windows:
+      friendly_name: "Open ramen"
+      value_template: >-
+        {% set data = namespace(thing=[]) %}
+        {%- for item in states.binary_sensor  -%}
+          {% if "device_class=window" in item | string %}
+            {% if item.state == 'on' %}
+              {% set data.thing = data.thing + [item.attributes.friendly_name] %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {{data.thing|count}}
+
+    # Open doors
+    open_doors:
+      friendly_name: "Open deuren"
+      value_template: >-
+        {% set data = namespace(thing=[]) %}
+        {%- for item in states.binary_sensor  -%}
+          {% if "device_class=door" in item | string %}
+            {% if item.state == 'on' %}
+              {% set data.thing = data.thing + [item.attributes.friendly_name] %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {{data.thing|count}}
+
+    problem_plants:
+      friendly_name: "Planten met een probleem"
+      value_template: >-
+        {% set data = namespace(thing=[]) %}
+        {%- for item in states.plant  -%}
+          {% if "problem=none" not in item | string %}
+            {% set data.thing = data.thing + [item.attributes.friendly_name] %}
+          {% endif %}
+        {% endfor %}
+        {{ data.thing|count }}
+
+    missing_entities_services:
+      friendly_name: "Missende entiteiten of services"
+      value_template: >-
+        {{ states("sensor.watchman_missing_entities")|int + states("sensor.watchman_missing_services")|int }}
 
 ###############################################################################
 # STATISTICS

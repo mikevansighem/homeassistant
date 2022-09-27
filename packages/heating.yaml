@@ -1,0 +1,207 @@
+###############################################################################
+# HEATING
+###############################################################################
+
+# Control the multizone heating
+heating:
+
+  #############################################################################
+  # SWITCH
+  #############################################################################
+
+  switch:
+    - platform: template
+      switches:
+        floor_heatingpump_helper:
+          turn_on:
+            service: schedule.reload
+          turn_off:
+            service: schedule.reload
+
+  #############################################################################
+  # CLIMATE
+  #############################################################################
+
+  climate:
+    - platform: generic_thermostat
+      name: "Beneden vloerverwarming"
+      heater: switch.floor_heatingpump_helper
+      target_sensor: sensor.downstairs_temperature
+      min_temp: 15
+      max_temp: 25
+      ac_mode: false
+      min_cycle_duration:
+        minutes: 10
+      cold_tolerance: 0
+      hot_tolerance: 3
+      initial_hvac_mode: "off"
+      away_temp: 16
+      precision: 0.1
+
+  #############################################################################
+  # TEMPLATE
+  #############################################################################
+
+  template:
+    - sensor:
+
+        # Calculate delta to be passed to the central heating
+        - name: "Heating delta"
+          unit_of_measurement: "°C"
+          state: >-
+            {% set heating_need = [] %}
+            {% set heating_need = namespace(rooms=[],delta=[]) %}
+            {% for room in ['climate.beneden_vloerverwarming', 'climate.bathroom_radiator_thermostat', 'climate.bedroom_radiator_thermostat', 'climate.closet_radiator_thermostat', 'climate.kids_room_radiator_thermostat']  %}
+              {% if states(room) == 'heat' %}
+                {% set current = state_attr(room, 'current_temperature') %}
+                {% set setpoint = state_attr(room, 'temperature') %}
+                {% set delta = setpoint - current %}
+                {% set heating_need.rooms = heating_need.rooms + [room] %}
+                {% set heating_need.delta = heating_need.delta + [delta] %}
+              {% endif %}
+            {% endfor %}
+
+            {% set highest_delta = namespace(current_central=-1000, room='None') %}
+            {% if heating_need.rooms|count > 0 %}
+              {% for i in range(heating_need.rooms|count) %}
+                {% if highest_delta.current_central < heating_need.delta[i] %}
+                  {% set highest_delta.current_central = heating_need.delta[i] %}
+                  {% set highest_delta.room = heating_need.rooms[i] %}
+                {% endif %}
+              {% endfor %}
+              {% set result_delta = highest_delta.current_central %}
+              {% set result_room = highest_delta.room %}
+            {% else %}
+              {% set result_delta = 0 %}
+              {% set result_room = "None" %}
+            {% endif %}
+
+            {{ result_delta }}
+
+        # Calculate delta to be passed to the central heating
+        - name: "Heating leading room"
+          state: >-
+            {% set heating_need = [] %}
+            {% set heating_need = namespace(rooms=[],delta=[]) %}
+            {% for room in ['climate.beneden_vloerverwarming', 'climate.bathroom_radiator_thermostat', 'climate.bedroom_radiator_thermostat', 'climate.closet_radiator_thermostat', 'climate.kids_room_radiator_thermostat']  %}
+              {% if states(room) == 'heat' %}
+                {% set current = state_attr(room, 'current_temperature') %}
+                {% set setpoint = state_attr(room, 'temperature') %}
+                {% set delta = setpoint - current %}
+                {% set heating_need.rooms = heating_need.rooms + [room] %}
+                {% set heating_need.delta = heating_need.delta + [delta] %}
+              {% endif %}
+            {% endfor %}
+
+            {% set highest_delta = namespace(current_central=-1000, room='None') %}
+            {% if heating_need.rooms|count > 0 %}
+              {% for i in range(heating_need.rooms|count) %}
+                {% if highest_delta.current_central < heating_need.delta[i] %}
+                  {% set highest_delta.current_central = heating_need.delta[i] %}
+                  {% set highest_delta.room = heating_need.rooms[i] %}
+                {% endif %}
+              {% endfor %}
+              {% set result_delta = highest_delta.current_central %}
+              {% set result_room = highest_delta.room %}
+            {% else %}
+              {% set result_delta = 0 %}
+              {% set result_room = "Niet actief" %}
+            {% endif %}
+
+            {{ result_room }}
+
+  #############################################################################
+  # MQTT
+  #############################################################################
+
+  mqtt:
+
+    climate:
+
+      # Thermostat
+      - icon: mdi:water-boiler
+        modes:
+          - "off"
+          - "heat"
+        name: "Central heating"
+        unique_id: "fQOTEYDCYf3jyVV2QJH2"
+        current_temperature_topic: "opentherm-thermostat/current-temperature/get"
+        mode_command_topic: "opentherm-thermostat/mode/set"
+        mode_state_topic: "opentherm-thermostat/mode/get"
+        temperature_command_topic: "opentherm-thermostat/setpoint-temperature/set"
+        temperature_state_topic: "opentherm-thermostat/setpoint-temperature/get"
+        min_temp: 12
+        max_temp: 28
+        value_template: "{{ value }}"
+        temp_step: 0.5
+
+      # Hot water
+      - icon: mdi:water-pump
+        modes:
+          - "off"
+          - "heat"
+        name: "Hot water service"
+        unique_id: "NIFQbOND7GFNzowcENAG"
+        current_temperature_topic: "opentherm-thermostat/boiler-temperature/get"
+        mode_command_topic: "opentherm-thermostat/dhw-state/set"
+        mode_state_topic: "opentherm-thermostat/dhw-state/get"
+        temperature_command_topic: "opentherm-thermostat/dhw-temperature/set"
+        temperature_state_topic: "opentherm-thermostat/dhw-temperature/get"
+        min_temp: 10
+        max_temp: 80
+        value_template: "{{ value }}"
+        temp_step: 0.5
+        mode_command_template: >-
+          {% set values = { 'heat':'on', 'off':'off'} %}
+          {{ values[value] if value in values.keys() else 'off' }}
+        mode_state_template: >-
+          {% set values = { 'on':'heat', 'off':'off'} %}
+          {{ values[value] if value in values.keys() else 'off' }}
+
+    sensor:
+
+      - name: "Current thermostat temperature"
+        device_class: temperature
+        state_topic: "opentherm-thermostat/current-temperature/get"
+        value_template: "{{ value }}"
+        unit_of_measurement: '°C'
+        icon: mdi:thermometer
+
+      - name: "Target thermostat temperature"
+        device_class: temperature
+        state_topic: "opentherm-thermostat/setpoint-temperature/get"
+        value_template: "{{ value }}"
+        unit_of_measurement: '°C'
+        icon: mdi:thermometer
+
+      - name: "Boiler temperature"
+        device_class: temperature
+        state_topic: "opentherm-thermostat/boiler-temperature/get"
+        value_template: "{{ value }}"
+        unit_of_measurement: '°C'
+        icon: mdi:thermometer
+
+      - name: "Boiler target temperature"
+        device_class: temperature
+        state_topic: "opentherm-thermostat/boiler-target-temperature/get"
+        value_template: "{{ value }}"
+        unit_of_measurement: '°C'
+        icon: mdi:thermometer
+
+      - name: "Boiler mode"
+        device_class: temperature
+        state_topic: "opentherm-thermostat/mode/get"
+        value_template: "{{ value }}"
+        icon: mdi:water-boiler
+
+      - name: "Water target temperature"
+        device_class: temperature
+        state_topic: "opentherm-thermostat/dhw-temperature/get"
+        value_template: "{{ value }}"
+        unit_of_measurement: '°C'
+        icon: mdi:thermometer
+
+      - name: "Water service"
+        state_topic: "opentherm-thermostat/dhw-state/get"
+        value_template: "{{ value }}"
+        icon: mdi:water-boiler

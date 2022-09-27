@@ -19,20 +19,20 @@ zamioculcas:
     conductivity: sensor.zamioculcas_conductivity
     brightness: sensor.zamioculcas_illuminance
 
-devils_vine:
-  max_brightness: 12000
-  # min_brightness: 500
+drakenbloedboom:
+  max_brightness: 55500
+  # min_brightness: 2000
   max_moisture: 60
   min_moisture: 15
-  max_temperature: 32
+  max_temperature: 35
   min_temperature: 10
-  max_conductivity: 2000
-  min_conductivity: 350
+  max_conductivity: 1500
+  min_conductivity: 50
   sensors:
-    moisture: sensor.devils_vine_moisture
-    temperature: sensor.devils_vine_temperature
-    conductivity: sensor.devils_vine_conductivity
-    brightness: sensor.devils_vine_illuminance
+    moisture: sensor.drakenbloedboom_moisture
+    temperature: sensor.drakenbloedboom_temperature
+    conductivity: sensor.drakenbloedboom_conductivity
+    brightness: sensor.drakenbloedboom_illuminance
 
 fern:
   max_brightness: 4000

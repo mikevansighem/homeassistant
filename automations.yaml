@@ -341,25 +341,55 @@
   alias: Climate - Hot water service
   description: ''
   trigger:
-  - platform: state
-    entity_id: sensor.climate_period
+  - platform: template
+    value_template: "        {% set night_start_free = state_attr('input_datetime.start_night_free_day',
+      'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}\n
+      \       {% set night_start_work = state_attr('input_datetime.start_night_workday',
+      'hour') * 60 + state_attr('input_datetime.start_night_workday', 'minute')%}\n
+      \       {% set night_end_free = state_attr('input_datetime.end_night_free_day',
+      'hour') * 60 + state_attr('input_datetime.end_night_free_day', 'minute')%}\n
+      \       {% set night_end_work = state_attr('input_datetime.end_night_workday',
+      'hour') * 60 + state_attr('input_datetime.end_night_workday', 'minute')%}\n
+      \       {% set pre_heat_offset = state_attr('input_datetime.hot_water_pre_heat',
+      'hour') * 60 + state_attr('input_datetime.hot_water_pre_heat', 'minute')%}\n
+      \       {% set stop_offset = state_attr('input_datetime.hot_water_early_stop',
+      'hour') * 60 + state_attr('input_datetime.hot_water_early_stop', 'minute')%}\n
+      \       {% set now = (states('sensor.time')[:2] | int)*60 + (states('sensor.time')[-2:]
+      | int)%}\n        {% set house = states('sensor.house_state') %}\n\n        {%
+      if is_state('binary_sensor.workday_sensor', 'off') %}\n          {% if (night_end_free
+      - pre_heat_offset) < now < (night_start_free - stop_offset) %}\n            {%
+      if house == 'away' or house == 'holiday' %}\n              false\n            {%else%}\n
+      \             true\n            {%endif%}\n          {%else%}\n            false\n
+      \         {%endif%}\n        {%else%}\n          {% if (night_end_work - pre_heat_offset)
+      < now < (night_start_work - stop_offset) %}\n            {% if house == 'away'
+      or house == 'holiday' %}\n              false\n            {%else%}\n              true\n
+      \           {%endif%}\n          {%else%}\n            false\n          {%endif%}\n
+      \       {%endif%}"
     id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
-    id: 'ON'
-  - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
+  - platform: template
+    value_template: "        {% set night_start_free = state_attr('input_datetime.start_night_free_day',
+      'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}\n
+      \       {% set night_start_work = state_attr('input_datetime.start_night_workday',
+      'hour') * 60 + state_attr('input_datetime.start_night_workday', 'minute')%}\n
+      \       {% set night_end_free = state_attr('input_datetime.end_night_free_day',
+      'hour') * 60 + state_attr('input_datetime.end_night_free_day', 'minute')%}\n
+      \       {% set night_end_work = state_attr('input_datetime.end_night_workday',
+      'hour') * 60 + state_attr('input_datetime.end_night_workday', 'minute')%}\n
+      \       {% set pre_heat_offset = state_attr('input_datetime.hot_water_pre_heat',
+      'hour') * 60 + state_attr('input_datetime.hot_water_pre_heat', 'minute')%}\n
+      \       {% set stop_offset = state_attr('input_datetime.hot_water_early_stop',
+      'hour') * 60 + state_attr('input_datetime.hot_water_early_stop', 'minute')%}\n
+      \       {% set now = (states('sensor.time')[:2] | int)*60 + (states('sensor.time')[-2:]
+      | int)%}\n        {% set house = states('sensor.house_state') %}\n\n        {%
+      if is_state('binary_sensor.workday_sensor', 'off') %}\n          {% if (night_end_free
+      - pre_heat_offset) < now < (night_start_free - stop_offset) %}\n            {%
+      if house == 'away' or house == 'holiday' %}\n              true\n            {%else%}\n
+      \             false\n            {%endif%}\n          {%else%}\n            true\n
+      \         {%endif%}\n        {%else%}\n          {% if (night_end_work - pre_heat_offset)
+      < now < (night_start_work - stop_offset) %}\n            {% if house == 'away'
+      or house == 'holiday' %}\n              true\n            {%else%}\n              false\n
+      \           {%endif%}\n          {%else%}\n            true\n          {%endif%}\n
+      \       {%endif%}"
     id: 'OFF'
   condition: []
   action:
@@ -367,21 +397,6 @@
     - conditions:
       - condition: trigger
         id: 'ON'
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.climate_period
-          state: night
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: holiday
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: away
       sequence:
       - service: climate.set_hvac_mode
         data:
@@ -406,31 +421,21 @@
   mode: queued
   max: 3
 - id: '1629825198745'
-  alias: 'Climate - Heating service '
+  alias: Climate - Livingroom
   description: 'Turn on and off the heating based on the climate period and the house
     state.
 
     Prevent heating when doors remain open.'
   trigger:
   - platform: state
-    entity_id: sensor.climate_period
-    id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
+    entity_id:
+    - sensor.heating_allowed
+    to: 'true'
     id: 'ON'
   - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
+    entity_id:
+    - sensor.heating_allowed
+    to: 'false'
     id: 'OFF'
   - platform: state
     entity_id:
@@ -454,45 +459,41 @@
   action:
   - choose:
     - conditions:
-      - condition: trigger
-        id: 'ON'
-      - condition: not
+      - condition: and
         conditions:
-        - condition: state
-          entity_id: sensor.climate_period
-          state: night
-        - condition: state
-          entity_id: binary_sensor.kitchen_door
-          state: 'on'
-          for:
-            hours: 0
-            minutes: 5
-            seconds: 0
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: holiday
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: sensor.house_state
-          state: away
+        - condition: trigger
+          id: 'ON'
+          alias: Trigger is ON
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.kitchen_door
+            state: 'on'
+            for:
+              hours: 0
+              minutes: 5
+              seconds: 0
+            alias: Deur open voor 5 min
+          alias: Deur niet open voor 5 min
+        alias: Trigegr is ON en Deur niet open voor 5 min
       sequence:
       - service: climate.set_hvac_mode
         data:
           hvac_mode: heat
         target:
-          entity_id: climate.central_heating
+          entity_id:
+          - climate.beneden_vloerverwarming
     - conditions:
       - condition: trigger
         id: 'OFF'
+        alias: Trigger is OFF
       sequence:
       - service: climate.set_hvac_mode
         data:
           hvac_mode: 'off'
         target:
-          entity_id: climate.central_heating
+          entity_id:
+          - climate.beneden_vloerverwarming
     default: []
   mode: queued
   max: 3
@@ -638,11 +639,12 @@
   mode: parallel
   max: 10
 - id: '1630829332532'
-  alias: Climate - Publish downstairs temperature to MQTT
-  description: Push the current downstairs temperature to MQTT for the boiler to read.
+  alias: Climate - Publish central heating current temp to MQTT
+  description: ''
   trigger:
   - platform: state
-    entity_id: sensor.downstairs_temperature
+    entity_id:
+    - sensor.heating_delta
   - platform: homeassistant
     event: start
   - platform: time_pattern
@@ -652,7 +654,10 @@
   - service: mqtt.publish
     data:
       topic: opentherm-thermostat/current-temperature/set
-      payload_template: '{{states("sensor.downstairs_temperature")}}'
+      payload_template: '{% if states(''sensor.heating_leading_room'') == ''climate.beneden_vloerverwarming''
+        %} {{state_attr(''climate.central_heating'', ''temperature'') - states(''sensor.heating_delta'')|float}}
+        {% else %} {{state_attr(''climate.central_heating'', ''temperature'') - states(''sensor.heating_delta'')|float
+        + 1 }} {% endif %}'
   mode: parallel
   max: 10
 - id: '1631038917696'
@@ -761,30 +766,16 @@
   action:
   - service: climate.set_temperature
     target:
-      entity_id: climate.central_heating
+      entity_id: climate.beneden_vloerverwarming
     data:
       temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
   mode: single
   max: 3
 - id: '1631815874577'
   alias: Climate - Floor heating pump
-  description: Floor heating pump follows the central heating. Every night it turns
-    to prevent the pump from stalling.
+  description: Floor heating pump runs if there is a temp delta lager then -1 Every
+    night it turns to prevent the pump from stalling.
   trigger:
-  - platform: state
-    entity_id: climate.central_heating
-    id: 'ON'
-    to: heat
-  - platform: state
-    entity_id: climate.central_heating
-    id: 'OFF'
-    to: 'off'
-    for:
-      hours: 0
-      minutes: '{{ state_attr(''input_datetime.floor_heating_pump_delay'', ''timestamp'')
-        / 60 | int}}'
-      seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: switch.floor_heating_pump_on_off
     id: TIME
@@ -793,7 +784,20 @@
       hours: 12
       minutes: 0
       seconds: 0
-      milliseconds: 0
+  - platform: template
+    value_template: "{% set state = states('climate.beneden_vloerverwarming') %}\n{%
+      set delta = state_attr('climate.beneden_vloerverwarming', \"temperature\") -
+      state_attr('climate.beneden_vloerverwarming', \"current_temperature\") %}\n{{delta}}\n{%
+      if state == 'heat' and delta|float > -5 %}\n  true\n{% else %}\n false\n{% endif
+      %}"
+    id: 'ON'
+  - platform: template
+    value_template: "{% set state = states('climate.beneden_vloerverwarming') %}\n{%
+      set delta = state_attr('climate.beneden_vloerverwarming', \"temperature\") -
+      state_attr('climate.beneden_vloerverwarming', \"current_temperature\") %}\n{{delta}}\n{%
+      if state == 'heat' and delta|float > -5 %}\n  false\n{% else %}\n true\n{% endif
+      %}"
+    id: 'OFF'
   condition: []
   action:
   - choose:
@@ -804,6 +808,7 @@
       - service: switch.turn_on
         target:
           entity_id: switch.floor_heating_pump_on_off
+        data: {}
     - conditions:
       - condition: trigger
         id: 'OFF'
@@ -811,6 +816,7 @@
       - service: switch.turn_off
         target:
           entity_id: switch.floor_heating_pump_on_off
+        data: {}
     - conditions:
       - condition: trigger
         id: TIME
@@ -818,6 +824,7 @@
       - service: switch.turn_on
         target:
           entity_id: switch.floor_heating_pump_on_off
+        data: {}
       - delay:
           hours: 0
           minutes: 3
@@ -826,6 +833,7 @@
       - service: switch.turn_off
         target:
           entity_id: switch.floor_heating_pump_on_off
+        data: {}
     default: []
   mode: restart
 - id: '1632764660880'
@@ -838,8 +846,8 @@
   action:
   - service: script.1655204175112
     data:
-      Title: "Restarted \U0001F31F"
-      Message: Home Assistant has restarted.
+      Title: "Opnieuw opgestart \U0001F31F"
+      Message: Home Assistant is opnieuw opgestart.
       Url: lovelace/home
       Voice: false
       Admin_only: true
@@ -878,7 +886,7 @@
   action:
   - service: frontend.set_theme
     data:
-      name: outline
+      name: Mushroom Square
   mode: single
 - id: '1635571062556'
   alias: Utility - Update quiet helper
@@ -1219,7 +1227,8 @@
     to: 'true'
     id: 'ON'
   - platform: state
-    entity_id: sensor.grow_light_scheduler
+    entity_id:
+    - sensor.grow_light_scheduler
     to: 'false'
     id: 'OFF'
   condition: []
@@ -1237,6 +1246,9 @@
       - condition: trigger
         id: 'OFF'
       sequence:
+      - condition: state
+        entity_id: light.grow_light
+        state: 'on'
       - service: scene.turn_on
         target:
           entity_id: scene.tv_lights_relax
@@ -1353,14 +1365,14 @@
   action:
   - service: script.1655204175112
     data:
-      Title: Configuation failed ❌
-      Message: A configuration deployment has failed.
+      Title: Configuratie niet geslaagd❌
       Url: https://github.com/mikevansighem/homeassistant/actions
       Voice: false
       Admin_only: true
       Timing: Always
       Group: Utility
       Timeout: 1440
+      Message: Een configuratie deployment is niet geslaagd.
   mode: single
 - id: '1651853081537'
   alias: Utility - Cleanup FRITZ!Box
@@ -1422,12 +1434,12 @@
       actions:
       - service: script.1655204175112
         data:
-          Title: "Water me \U0001F4A6"
+          Title: "Water mij \U0001F4A6"
           Url: lovelace/plants
           Timing: Retain till home and no quiet time
           Group: Plants
           Timeout: 1440
-          Message: The {{sensors}} need watering.
+          Message: De {{sensors}} hebben water nodig.
           Voice: false
           Admin_only: false
 - id: '1653651804886'
@@ -1560,7 +1572,7 @@
         hours: 0
         minutes: 1
         seconds: 0
-      below: '3'
+      below: 2.5
   - service: script.1655204175112
     data:
       Message: De vaatwasser is klaar.
@@ -1763,50 +1775,13 @@
       Group: General
       Timeout: 0
   mode: single
-- id: '1658667498103'
-  alias: Utility - Notify when offline
-  description: Send a notification if any network device is offline for more than
-    5 minutes.
-  trigger:
-  - platform: event
-    event_type: state_changed
-  condition:
-  - condition: template
-    value_template: "{{ trigger.event.data.new_state is not none and\n   trigger.event.data.new_state.domain
-      == 'binary_sensor' and\n   trigger.event.data.new_state.attributes.device_class
-      | default('') == 'connectivity' and\n   trigger.event.data.new_state.state ==
-      'off' }}"
-  action:
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - if:
-    - condition: template
-      value_template: '{{is_state(trigger.event.data.entity_id, off)}}'
-    then:
-    - service: script.1655204175112
-      data:
-        Url: lovelace/network
-        Title: Device offline ❌
-        Timing: Retain till home and no quiet time
-        Timeout: 1440
-        Voice: false
-        Group: Utility
-        Admin_only: true
-        Message: '{{ state_attr(trigger.event.data.entity_id, ''friendly_name'') }}
-          is offline more than 5 minutes.'
-    else:
-    - stop: ''
-  mode: parallel
 - id: '1659155364307'
   alias: Baby - Reset noise monitor
   description: ''
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.zoe_noise
+    - binary_sensor.zoe_geluid
     to: unavailable
     for:
       hours: 0
@@ -1850,6 +1825,9 @@
       - condition: trigger
         id: CLOSE
       sequence:
+      - condition: state
+        entity_id: cover.front_door_cover
+        state: open
       - service: cover.close_cover
         data: {}
         target:
@@ -1858,6 +1836,9 @@
       - condition: trigger
         id: OPEN
       sequence:
+      - condition: state
+        entity_id: cover.front_door_cover
+        state: closed
       - service: cover.open_cover
         data: {}
         target:
@@ -1883,16 +1864,16 @@
           notification_id: low_battery
       - service: persistent_notification.create
         data:
-          message: Replace or charge battery of {{ sensors }}. [More info.](lovelace/hardware)
+          message: Vervang batterij {{ sensors }}. [Meer info.](/lovelace/batterijen)
           title: Low battery
           notification_id: low_battery
 - id: '1660449882472'
-  alias: Surveillance - Cry notification
+  alias: Surveillance - Baby monitor
   description: ''
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.zoe_noise
+    - binary_sensor.zoe_geluid
     for:
       hours: 0
       minutes: 0
@@ -1934,9 +1915,9 @@
       notification_id: watchmen_missing_entity
   - service: persistent_notification.create
     data:
-      message: 'Missing entities found: {{ states(''sensor.watchman_missing_entities'')
-        }}. [More info.](lovelace/development)'
-      title: Missing enity
+      message: 'Missende entiteiten: {{ states(''sensor.watchman_missing_entities'')
+        }}. [Meer info.](/lovelace/systeem)'
+      title: Missende entiteiten
       notification_id: watchmen_missing_entity
   mode: single
 - id: '1660830979144'
@@ -1955,9 +1936,9 @@
       notification_id: watchmen_missing_service
   - service: persistent_notification.create
     data:
-      message: 'Missing services found: {{ states(''sensor.watchman_missing_services'')
-        }}. [More info.](lovelace/development)'
-      title: Missing service
+      message: 'Missende services: {{ states(''sensor.watchman_missing_services'')
+        }}. [Meer info.](/lovelace/systeem)'
+      title: Missende service
       notification_id: watchmen_missing_service
   mode: single
 - id: '1661359567139'
@@ -1976,8 +1957,8 @@
       notification_id: disk_use
   - service: persistent_notification.create
     data:
-      message: Disk use at {{ states('sensor.disk_use_percent') }}%. [More info.](lovelace/hardware)
-      title: High disk use
+      message: Schijf gebruik {{ states('sensor.disk_use_percent') }}%. [Meer info.](/lovelace/systeem)
+      title: Hoog schijf gebruik
       notification_id: disk_use
   mode: single
 - id: '1661532418642'
@@ -2091,8 +2072,8 @@
       'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
       ) %}\n\n{% set work_on = (strptime(start_work, '%H:%M:%S') - early).strftime('%H:%M')
       %}\n{% set free_on = (strptime(start_free, '%H:%M:%S') - early).strftime('%H:%M')
-      %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') == work_on ) or (
-      work_day == 'off' and now().strftime('%H:%M') == free_on ) %}\n  true\n{% else
+      %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') > work_on ) or (
+      work_day == 'off' and now().strftime('%H:%M') > free_on ) %}\n  true\n{% else
       %}\n  false\n{% endif %}"
     id: 'OFF'
   condition: []
@@ -2102,6 +2083,18 @@
       - condition: trigger
         id: 'ON'
       sequence:
+      - condition: template
+        value_template: "{% set work_day = states('binary_sensor.workday_sensor')
+          %}\n\n{% set start_work = states('input_datetime.start_night_workday') %}
+          \n{% set start_free = states('input_datetime.start_night_free_day') %} \n\n{%
+          set early_hour = state_attr('input_datetime.humidifier_early_off', 'hour')
+          %} \n{% set early_min = state_attr('input_datetime.humidifier_early_off',
+          'minute') %} \n{% set early = timedelta( hours = early_hour, minutes = early_min
+          ) %}\n\n{% set work_on = (strptime(start_work, '%H:%M:%S') - early).strftime('%H:%M')
+          %}\n{% set free_on = (strptime(start_free, '%H:%M:%S') - early).strftime('%H:%M')
+          %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') > work_on ) or
+          ( work_day == 'off' and now().strftime('%H:%M') > free_on ) %}\n  false\n{%
+          else %}\n  true\n{% endif %}"
       - service: switch.turn_on
         data: {}
         target:
@@ -2115,4 +2108,61 @@
         target:
           entity_id: switch.humidifier
     default: []
+  mode: single
+- id: '1663154996923'
+  alias: Utility - Persistent notification for offline devices
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:33:00
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.disconnected
+    above: '0'
+  action:
+  - service: persistent_notification.dismiss
+    data:
+      notification_id: offline
+  - service: persistent_notification.create
+    data:
+      message: 'Niet verbonden apparaten: {{ states(''sensor.disconnected'') }}. [Meer
+        info.](/lovelace/netwerk)'
+      title: Offline apparaten
+      notification_id: offline
+  mode: single
+- id: '1663946115137'
+  alias: Climate - Switch central heating
+  description: Turn on/off central heating if any thermostat requires heating
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.heating_leading_room
+    to: Niet actief
+    id: 'OFF'
+  - platform: state
+    entity_id:
+    - sensor.heating_leading_room
+    from: Niet actief
+    id: 'ON'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.central_heating
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.central_heating
   mode: single

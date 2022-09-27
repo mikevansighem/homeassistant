@@ -6,11 +6,8 @@
 plant.zamioculcas:
   friendly_name: Zamioculcas
   entity_picture: http://homeassistant.local:8123/local/plants/zamioculcas_zamiifolia.jpg
-plant.devils_vine:
-  friendly_name: Devil's vine
-  entity_picture: http://homeassistant.local:8123/local/plants/epipremnum_aureum.jpg
 plant.fern:
-  friendly_name: Fern
+  friendly_name: Varen
   entity_picture: http://homeassistant.local:8123/local/plants/fern.jpg
 
 # Other
@@ -28,51 +25,37 @@ sensor.daily_gas:
   device_class: gas
   state_class: total_increasing
   icon: mdi:fire
-sensor.monthly_gas:
-  device_class: gas
-  state_class: total_increasing
-  icon: mdi:fire
-sensor.yearly_gas:
-  device_class: gas
-  state_class: total_increasing
-  icon: mdi:fire
 sensor.gas_usage:
   icon: mdi:fire
-sensor.monthly_energy_costs:
-  icon: mdi:cash
-sensor.yearly_energy_costs:
-  icon: mdi:cash
-sensor.yearly_energy_costs_off_peak:
-  icon: mdi:cash
-sensor.yearly_energy_costs_peak:
-  icon: mdi:cash
-sensor.monthly_energy_costs_peak:
-  icon: mdi:cash
-sensor.monthly_energy_costs_off_peak:
-  icon: mdi:cash
-sensor.monthly_gas_costs:
-  icon: mdi:cash
-sensor.yearly_gas_costs:
-  icon: mdi:cash
-sensor.monthly_utility_costs:
-  icon: mdi:cash
-sensor.yearly_utility_costs:
-  icon: mdi:cash
 sensor.daily_gas_costs:
   icon: mdi:cash
 
+# Weather
+sensor.average_ground_temperature:
+  friendly_name: Gemiddelde grond temperatuur
+  icon: mdi:thermometer
+sensor.average_humidity:
+  friendly_name: Gemiddelde luchtvochtigheid
+  icon: mdi:water-percent
+
 # Connections
-binary_sensor.bedroom_home_mini:
+binary_sensor.slaapkamer_home_mini:
   icon: mdi:wifi
-binary_sensor.scullery_range_extender:
+binary_sensor.bijkeuken_range_extender:
   icon: mdi:wifi
-binary_sensor.opentherm_controller:
+binary_sensor.opentherm_besturing:
   icon: mdi:wifi
-binary_sensor.livingroom_home_mini:
+binary_sensor.woonkamer_home_mini:
   icon: mdi:wifi
-binary_sensor.sprinkler_controller:
+binary_sensor.eetkamer_home_mini:
   icon: mdi:wifi
-binary_sensor.dining_room_home_mini:
+binary_sensor.noenoe:
+  icon: mdi:wifi
+binary_sensor.soapie:
+  icon: mdi:wifi
+binary_sensor.opensprinkler:
+  icon: mdi:wifi
+binary_sensor.zoe_camera:
   icon: mdi:wifi
 
 # Watchmen entities

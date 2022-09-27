@@ -15,6 +15,8 @@
 - [Button-card](https://github.com/custom-cards/button-card): Lovelace button-card for home assistant.
 - [Card-mod](https://github.com/custom-cards/button-card): Add CSS styles to (almost) any lovelace card.
 - [Auto-entities](https://github.com/thomasloven/lovelace-auto-entities): Automatically populate lovelace cards with entities matching certain criteria.
+- [Mushroom](https://github.com/piitaya/lovelace-mushroom): A collection of minimal cards for Home Assistant Dashboard UI.
+- [Mushroom themes](https://github.com/piitaya/lovelace-mushroom): Allow you to customize your Mushroom dashboard using Home Assistant themes.
 
 ## Addons
 

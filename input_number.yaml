@@ -22,7 +22,7 @@ aux_volume:
 
 # Temperature for hot water
 hot_water_temperature:
-  name: Hot water temperature
+  name: Heet water temperatuur
   icon: mdi:water-pump
   min: 45
   max: 85
@@ -32,7 +32,7 @@ hot_water_temperature:
 
 # Night temperature
 night_temperature:
-  name: Night temperature
+  name: Nacht temperatuur
   icon: mdi:thermometer
   min: 0
   max: 30
@@ -42,7 +42,7 @@ night_temperature:
 
 # Day temperature
 day_temperature:
-  name: Day temperature
+  name: Dag temperatuur
   icon: mdi:thermometer
   min: 0
   max: 30
@@ -52,7 +52,7 @@ day_temperature:
 
 # Evening temperature
 evening_temperature:
-  name: Evening temperature
+  name: Avond temperatuur
   icon: mdi:thermometer
   min: 0
   max: 30
@@ -62,7 +62,7 @@ evening_temperature:
 
 # Morning  temperature
 morning_temperature:
-  name: Morning temperature
+  name: Ochtend temperatuur
   icon: mdi:thermometer
   min: 0
   max: 30
@@ -72,7 +72,7 @@ morning_temperature:
 
 # Energy tariffs
 gas_tariff:
-  name: Gas tariff
+  name: Gas tarief
   icon: mdi:cash
   min: 0
   max: 500
@@ -81,25 +81,25 @@ gas_tariff:
   mode: box
 
 fixed_gas_tariff:
-  name: Fixed gas tariff
+  name: Vaste gas tarief
   icon: mdi:cash
   min: 0
   max: 500
   step: 0.01
-  unit_of_measurement: "€/Year"
+  unit_of_measurement: "€/Jaar"
   mode: box
 
 fixed_energy_tariff:
-  name: Fixed energy tariff
+  name: Vaste energie tarief
   icon: mdi:cash
   min: -500
   max: 500
   step: 0.01
-  unit_of_measurement: "€/Year"
+  unit_of_measurement: "€/Jaar"
   mode: box
 
 energy_tariff_1:
-  name: Energy tariff off-peak
+  name: Energie tarief dal
   icon: mdi:cash
   min: 0
   max: 100
@@ -108,7 +108,7 @@ energy_tariff_1:
   mode: box
 
 energy_tariff_2:
-  name: Energy tariff peak
+  name: Energie tarief piek
   icon: mdi:cash
   min: 0
   max: 100

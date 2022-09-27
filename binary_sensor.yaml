@@ -5,7 +5,7 @@
 # NOISE SENSOR
 
 - platform: ffmpeg_noise
-  name: "Zoë noise"
+  name: "Zoë geluid"
   input: !secret nursery_camera_rtsp
   extra_arguments: -filter:a highpass=f=300,lowpass=f=2500,volume=volume=2 -nostats
   initial_state: true
@@ -22,37 +22,37 @@
 
 - platform: ping
   host: 192.168.2.38
-  name: "Sprinkler controller"
+  name: "OpenSprinkler"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.194
-  name: "Bedroom home mini"
+  name: "Slaapkamer home mini"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.14
-  name: "Livingroom home mini"
+  name: "Woonkamer home mini"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.30
-  name: "Hue utility bridge"
+  name: "Hue bridge"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.34
-  name: "Opentherm controller"
+  name: "Opentherm besturing"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.32
-  name: "Dining room home mini"
+  name: "Eetkamer home mini"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.196
-  name: "Scullery range extender"
+  name: "Bijkeuken range extender"
   scan_interval: 30
 
 - platform: ping
@@ -77,10 +77,10 @@
 
 - platform: ping
   host: 192.168.2.54
-  name: "Kids camera"
+  name: "Zoë camera"
   scan_interval: 30
 
 - platform: ping
   host: 192.168.2.48
-  name: "Livingroom FRITZ!Powerline"
+  name: "Woonkamer FRITZ!Powerline"
   scan_interval: 30

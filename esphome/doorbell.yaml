@@ -4,8 +4,8 @@
 
 substitutions:
   device_name: doorbell
-  upper_devicename: Doorbell
-  device_description: "Doorbell and chime"
+  upper_devicename: Deurbel
+  device_description: "Deurbel"
 
 ###############################################################################
 # GENERAL

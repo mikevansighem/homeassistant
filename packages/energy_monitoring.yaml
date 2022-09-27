@@ -13,9 +13,101 @@ energy_monitoring:
     - platform: template
       sensors:
 
+        # Gas costs including fixed costs to be fed into an utility meter
+        daily_gas_costs_temp:
+          friendly_name: "Daily gas costs temp"
+          unit_of_measurement: "€"
+          value_template: >-
+            {% if is_state('sensor.time', "00:00") %}
+              0
+            {% elif is_state('sensor.time', "00:01") %}
+              0
+            {% else %}
+              {{((states('sensor.daily_gas') | float(0) * states('input_number.gas_tariff') | float(0) )+(states('input_number.fixed_gas_tariff') | float(0) /365)) | round(2)}}
+            {% endif %}
+          icon_template: >-
+            mdi:cash
+
+        # Daily energy costs
+        daily_energy_costs_1:
+          friendly_name: "Energie kosten dal"
+          unit_of_measurement: "€"
+          value_template: >-
+            {% set fixed = states('input_number.fixed_energy_tariff') | float(0) %}
+            {% set fixed_day = fixed / 365 %}
+            {% set tariff_1 = states('input_number.energy_tariff_1') | float(0) %}
+            {% set useage_1 = states('sensor.energie_dal') | float(0) %}
+            {% set useage_2 = states('sensor.energie_piek') | float(0) %}
+            {% set usage = useage_1 + useage_2 %}
+            {% if usage == 0 %}
+              0
+            {% else %}
+              {% set fixed_1 = useage_1 / usage * fixed_day %}
+              {% set result = (tariff_1 * useage_1 + fixed_1) | round(2) %}
+              {% if result > 0 %}
+                {{ result }}
+              {% else %}
+                0
+              {% endif %}
+            {% endif %}
+          icon_template: >-
+            mdi:cash
+
+        daily_energy_costs_2:
+          friendly_name: "Energie kosten piek"
+          unit_of_measurement: "€"
+          value_template: >-
+            {% set fixed = states('input_number.fixed_energy_tariff') | float(0) %}
+            {% set fixed_day = fixed / 365 %}
+            {% set tariff_2 = states('input_number.energy_tariff_2') | float(0) %}
+            {% set useage_1 = states('sensor.energie_dal') | float(0) %}
+            {% set useage_2 = states('sensor.energie_piek') | float(0) %}
+            {% set usage = useage_1 + useage_2 %}
+            {% if usage == 0 %}
+              0
+            {% else %}
+              {% set fixed_2 = useage_2 / usage * fixed_day %}
+              {% set result = (tariff_2 * useage_2 + fixed_2) | round(2) %}
+              {% if result > 0 %}
+                {{ result }}
+              {% else %}
+                0
+              {% endif %}
+            {% endif %}
+          icon_template: >-
+            mdi:cash
+
+      # Combined energy sensors
+        daily_energy:
+          friendly_name: "Totale energie"
+          device_class: 'energy'
+          unit_of_measurement: 'kWh'
+          value_template: >-
+            {{ states('sensor.energie_piek') | float(0) + states('sensor.energie_dal') | float(0) }}
+          icon_template: >-
+            mdi:lightning-bolt
+
+        # Calculate the daily energy costs
+        daily_energy_costs:
+          friendly_name: "totale energie kosten"
+          unit_of_measurement: "€"
+          value_template: >-
+            {{ states('sensor.daily_energy_costs_1') | float(0) + states('sensor.daily_energy_costs_2') | float(0) }}
+          icon_template: >-
+            mdi:cash
+
+        # Calculate utility costs
+        daily_utility_costs:
+          friendly_name: "Totale nuts kosten"
+          unit_of_measurement: "€"
+          value_template: >-
+            {{states('sensor.daily_energy_costs') | float(0) + states('sensor.daily_gas_costs') | float(0) }}
+          icon_template: >-
+            mdi:cash
+
         # Floor heating pump power usage
         floor_heating_pump_power:
-          friendly_name: "Floor heating pump power"
+          friendly_name: "Vloer verwarmingspomp vermogen"
           device_class: 'power'
           unit_of_measurement: 'W'
           value_template: >-
@@ -30,8 +122,44 @@ energy_monitoring:
       # Convert W to kWh
     - platform: integration
       source: sensor.floor_heating_pump_power
-      name: 'Floor heating pump energy'
+      name: 'Vloer verwarmingspomp  energie'
       unit_prefix: k
       round: 4
       method: 'left'
       unique_id: floor_heating_pump_energy
+
+  #############################################################################
+  # UTILITY METERS
+  #############################################################################
+
+  utility_meter:
+
+    daily_energy_tariff_1:
+      source: sensor.energy_consumed_tariff_1
+      name: Energie dal
+      cycle: daily
+
+    daily_energy_tariff_2:
+      source: sensor.energy_consumed_tariff_2
+      name: Energie piek
+      cycle: daily
+
+    daily_energy_cost_meter_1:
+      source: sensor.daily_energy_costs_1
+      name: Kosten energie dal
+      cycle: daily
+
+    daily_energy_cost_meter_2:
+      source: sensor.daily_energy_costs_2
+      name: Kosten energie piek
+      cycle: daily
+
+    daily_gas:
+      source: sensor.gas_consumed
+      name: Daily Gas
+      cycle: daily
+
+    daily_gas_costs:
+      source: sensor.daily_gas_costs_temp
+      name: Daily Gas Costs
+      cycle: daily
