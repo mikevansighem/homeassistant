@@ -75,10 +75,10 @@ include:
     - device_tracker.sm_a202f
 
     # Plants
-    - sensor.devils_vine_conductivity
-    - sensor.devils_vine_illuminance
-    - sensor.devils_vine_moisture
-    - sensor.devils_vine_temperature
+    - sensor.drakenbloedboom_conductivity
+    - sensor.drakenbloedboom_illuminance
+    - sensor.drakenbloedboom_moisture
+    - sensor.drakenbloedboom_temperature
     - sensor.zamioculcas_conductivity
     - sensor.zamioculcas_illuminance
     - sensor.zamioculcas_moisture

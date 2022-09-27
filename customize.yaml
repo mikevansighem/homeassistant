@@ -6,9 +6,6 @@
 plant.zamioculcas:
   friendly_name: Zamioculcas
   entity_picture: http://homeassistant.local:8123/local/plants/zamioculcas_zamiifolia.jpg
-plant.devils_vine:
-  friendly_name: Drakenklimop
-  entity_picture: http://homeassistant.local:8123/local/plants/epipremnum_aureum.jpg
 plant.fern:
   friendly_name: Varen
   entity_picture: http://homeassistant.local:8123/local/plants/fern.jpg

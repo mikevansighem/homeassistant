@@ -639,8 +639,8 @@
   mode: parallel
   max: 10
 - id: '1630829332532'
-  alias: Climate - Publish downstairs temperature to MQTT
-  description: Push the current downstairs temperature to MQTT for the boiler to read.
+  alias: Climate - Publish central heating current temp to MQTT
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -654,8 +654,10 @@
   - service: mqtt.publish
     data:
       topic: opentherm-thermostat/current-temperature/set
-      payload_template: '{{ state_attr(''climate.central_heating'', ''temperature'')
-        - states(''sensor.heating_delta'')|float }}'
+      payload_template: '{% if states(''sensor.heating_leading_room'') == ''climate.beneden_vloerverwarming''
+        %} {{state_attr(''climate.central_heating'', ''temperature'') - states(''sensor.heating_delta'')|float}}
+        {% else %} {{state_attr(''climate.central_heating'', ''temperature'') - states(''sensor.heating_delta'')|float
+        + 1 }} {% endif %}'
   mode: parallel
   max: 10
 - id: '1631038917696'
@@ -771,23 +773,9 @@
   max: 3
 - id: '1631815874577'
   alias: Climate - Floor heating pump
-  description: Floor heating pump follows the central heating. Every night it turns
-    to prevent the pump from stalling.
+  description: Floor heating pump runs if there is a temp delta lager then -1 Every
+    night it turns to prevent the pump from stalling.
   trigger:
-  - platform: state
-    entity_id:
-    - switch.floor_heatingpump_helper
-    id: 'ON'
-    to: 'on'
-  - platform: state
-    entity_id: switch.floor_heatingpump_helper
-    id: 'OFF'
-    to: 'off'
-    for:
-      hours: 0
-      minutes: '{{ state_attr(''input_datetime.floor_heating_pump_delay'', ''timestamp'')
-        / 60 | int}}'
-      seconds: 0
   - platform: state
     entity_id: switch.floor_heating_pump_on_off
     id: TIME
@@ -796,6 +784,20 @@
       hours: 12
       minutes: 0
       seconds: 0
+  - platform: template
+    value_template: "{% set state = states('climate.beneden_vloerverwarming') %}\n{%
+      set delta = state_attr('climate.beneden_vloerverwarming', \"temperature\") -
+      state_attr('climate.beneden_vloerverwarming', \"current_temperature\") %}\n{{delta}}\n{%
+      if state == 'heat' and delta|float > -5 %}\n  true\n{% else %}\n false\n{% endif
+      %}"
+    id: 'ON'
+  - platform: template
+    value_template: "{% set state = states('climate.beneden_vloerverwarming') %}\n{%
+      set delta = state_attr('climate.beneden_vloerverwarming', \"temperature\") -
+      state_attr('climate.beneden_vloerverwarming', \"current_temperature\") %}\n{{delta}}\n{%
+      if state == 'heat' and delta|float > -5 %}\n  false\n{% else %}\n true\n{% endif
+      %}"
+    id: 'OFF'
   condition: []
   action:
   - choose:
