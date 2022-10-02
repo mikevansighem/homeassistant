@@ -6,6 +6,36 @@
 heating:
 
   #############################################################################
+  # GROUP
+  #############################################################################
+ 
+  group:
+    climate:
+      name: "Beneden verwarming"
+      entities:
+        - climate.beneden_vloerverwarming
+        - climate.woonkamer_radiator_thermostat
+
+  #############################################################################
+  # SENSOR
+  #############################################################################
+ 
+  sensor:
+    # Downstairs average
+    - platform: min_max
+      type: mean
+      name: "downstairs temperature"
+      round_digits: 1
+      entity_ids:
+        - sensor.livingroom_motion_temperature
+        - sensor.stairs_closet_motion_temperature
+        - sensor.air_sensor_temperature
+        - sensor.drakenbloedboom_temperature
+        - sensor.zamioculcas_temperature
+        - sensor.fern_temperature
+        - sensor.living_room_radiator_current_temperature
+
+  #############################################################################
   # SWITCH
   #############################################################################
 
@@ -51,7 +81,7 @@ heating:
           state: >-
             {% set heating_need = [] %}
             {% set heating_need = namespace(rooms=[],delta=[]) %}
-            {% for room in ['climate.beneden_vloerverwarming', 'climate.bathroom_radiator_thermostat', 'climate.bedroom_radiator_thermostat', 'climate.closet_radiator_thermostat', 'climate.kids_room_radiator_thermostat']  %}
+            {% for room in ['climate.beneden_vloerverwarming', 'climate.woonkamer_radiator_thermostat', 'climate.garage_radiator_thermostat', 'climate.bathroom_radiator_thermostat', 'climate.bedroom_radiator_thermostat', 'climate.closet_radiator_thermostat', 'climate.kids_room_radiator_thermostat']  %}
               {% if states(room) == 'heat' %}
                 {% set current = state_attr(room, 'current_temperature') %}
                 {% set setpoint = state_attr(room, 'temperature') %}
@@ -83,7 +113,7 @@ heating:
           state: >-
             {% set heating_need = [] %}
             {% set heating_need = namespace(rooms=[],delta=[]) %}
-            {% for room in ['climate.beneden_vloerverwarming', 'climate.bathroom_radiator_thermostat', 'climate.bedroom_radiator_thermostat', 'climate.closet_radiator_thermostat', 'climate.kids_room_radiator_thermostat']  %}
+            {% for room in ['climate.beneden_vloerverwarming', 'climate.woonkamer_radiator_thermostat', 'climate.garage_radiator_thermostat', 'climate.bathroom_radiator_thermostat', 'climate.bedroom_radiator_thermostat', 'climate.closet_radiator_thermostat', 'climate.kids_room_radiator_thermostat']  %}
               {% if states(room) == 'heat' %}
                 {% set current = state_attr(room, 'current_temperature') %}
                 {% set setpoint = state_attr(room, 'temperature') %}
@@ -109,6 +139,10 @@ heating:
             {% endif %}
 
             {{ result_room }}
+
+        # Livingroom radiator current temprature to be passed to the avarge downstairs sensor.
+        - name: "Living room radiator current temperature"
+          state: "{{state_attr('climate.woonkamer_radiator_thermostat', 'current_temperature')}}"
 
   #############################################################################
   # MQTT

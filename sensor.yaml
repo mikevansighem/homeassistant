@@ -71,23 +71,6 @@
   duration: 00:00:30
 
 ###############################################################################
-# AVARAGE OF TEMPERATURE
-###############################################################################
-
-# Downstairs average
-- platform: min_max
-  type: mean
-  name: "downstairs temperature"
-  round_digits: 1
-  entity_ids:
-    - sensor.livingroom_motion_temperature
-    - sensor.stairs_closet_motion_temperature
-    - sensor.air_sensor_temperature
-    - sensor.devils_vine_temperature
-    - sensor.zamioculcas_temperature
-    - sensor.fern_temperature
-
-###############################################################################
 # SYSTEM MONITOR
 ###############################################################################
 

@@ -420,83 +420,6 @@
     default: []
   mode: queued
   max: 3
-- id: '1629825198745'
-  alias: Climate - Livingroom
-  description: 'Turn on and off the heating based on the climate period and the house
-    state.
-
-    Prevent heating when doors remain open.'
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.heating_allowed
-    to: 'true'
-    id: 'ON'
-  - platform: state
-    entity_id:
-    - sensor.heating_allowed
-    to: 'false'
-    id: 'OFF'
-  - platform: state
-    entity_id:
-    - binary_sensor.kitchen_door
-    to: 'on'
-    id: 'OFF'
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-  - platform: state
-    entity_id:
-    - binary_sensor.kitchen_door
-    to: 'off'
-    id: 'ON'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id: 'ON'
-          alias: Trigger is ON
-        - condition: not
-          conditions:
-          - condition: state
-            entity_id: binary_sensor.kitchen_door
-            state: 'on'
-            for:
-              hours: 0
-              minutes: 5
-              seconds: 0
-            alias: Deur open voor 5 min
-          alias: Deur niet open voor 5 min
-        alias: Trigegr is ON en Deur niet open voor 5 min
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id:
-          - climate.beneden_vloerverwarming
-    - conditions:
-      - condition: trigger
-        id: 'OFF'
-        alias: Trigger is OFF
-      sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id:
-          - climate.beneden_vloerverwarming
-    default: []
-  mode: queued
-  max: 3
 - id: '1630259774998'
   alias: Lights - Holiday replay
   description: ''
@@ -757,7 +680,7 @@
   mode: queued
   max: 3
 - id: '1631473532138'
-  alias: Climate - Update setpoint
+  alias: Climate - Update livingroom radiator setpoint
   description: Update the central heating setpoint when the climate period changes.
   trigger:
   - platform: state
@@ -766,9 +689,9 @@
   action:
   - service: climate.set_temperature
     target:
-      entity_id: climate.beneden_vloerverwarming
+      entity_id: climate.woonkamer_radiator_thermostat
     data:
-      temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
+      temperature: '{{ states(''sensor.climate_setpoint'') | float + 1 }}'
   mode: single
   max: 3
 - id: '1631815874577'
@@ -2166,3 +2089,64 @@
         target:
           entity_id: climate.central_heating
   mode: single
+- id: '1664697081587'
+  alias: Climate - Floorheating follows radiator
+  description: Downstairs floorheating follows the livingroom radiator setpoint to
+    give easy and physical controls.
+  trigger:
+  - platform: state
+    entity_id:
+    - climate.woonkamer_radiator_thermostat
+    attribute: temperature
+    id: TEMP
+  - platform: state
+    entity_id:
+    - climate.woonkamer_radiator_thermostat
+    to: 'off'
+    id: 'OFF'
+  - platform: state
+    entity_id:
+    - climate.woonkamer_radiator_thermostat
+    id: 'ON'
+    to: heat
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: TEMP
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.beneden_vloerverwarming
+        data:
+          temperature: '{{ state_attr(''climate.woonkamer_radiator_thermostat'', ''temperature'')
+            | float }}'
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.beneden_vloerverwarming
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.beneden_vloerverwarming
+  mode: queued
+  max: 3
+- id: '1664697769087'
+  alias: Climate - Livingroom
+  description: ''
+  use_blueprint:
+    path: radiator_control.yaml
+    input:
+      radiator: climate.woonkamer_radiator_thermostat
+      window: binary_sensor.kitchen_door
