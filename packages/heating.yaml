@@ -83,7 +83,7 @@ heating:
                 {% set heating_need.delta = heating_need.delta + [delta] %}
               {% endif %}
             {% endfor %}
-            
+
             {% set highest_delta = namespace(current_central=-1000, room='None') %}
             {% if heating_need.rooms|count > 0 %}
               {% for i in range(heating_need.rooms|count) %}
@@ -98,7 +98,7 @@ heating:
               {% set result_delta = 0 %}
               {% set result_room = "Niet actief" %}
             {% endif %}
-            
+
             {{ result_delta }}
 
         # Calculate delta to be passed to the central heating
@@ -119,7 +119,7 @@ heating:
                 {% set heating_need.delta = heating_need.delta + [delta] %}
               {% endif %}
             {% endfor %}
-            
+
             {% set highest_delta = namespace(current_central=-1000, room='None') %}
             {% if heating_need.rooms|count > 0 %}
               {% for i in range(heating_need.rooms|count) %}
