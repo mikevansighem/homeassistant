@@ -372,7 +372,7 @@
         {% set data = namespace(thing=[]) %}
         {%- for item in states.binary_sensor  -%}
           {% if "connectivity" in item | string %}
-            {% if item.state == 'off' %}
+            {% if item.state == 'off' and "Reindeer " not in item | string%}
               {% set data.thing = data.thing + [item.attributes.friendly_name] %}
             {% endif %}
           {% endif %}

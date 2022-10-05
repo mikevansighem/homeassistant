@@ -20,10 +20,20 @@ aux_volume:
   step: 0.1
   mode: slider
 
+# TRV deadzone
+trv_deadzone:
+  name: Radiator hysterese
+  icon: mdi:thermometer
+  min: -5
+  max: 5
+  step: 1
+  unit_of_measurement: "°C"
+  mode: box
+
 # Temperature for hot water
 hot_water_temperature:
   name: Heet water temperatuur
-  icon: mdi:water-pump
+  icon: mdi:thermometer
   min: 45
   max: 85
   step: 1

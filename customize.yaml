@@ -15,8 +15,6 @@ sensor.somebody_home:
   icon: mdi:home
 binary_sensor.workday_sensor:
   icon: mdi:briefcase
-sensor.downstairs_temperature:
-  icon: mdi:thermometer
 light.attic:
   icon: mdi:home-roof
 

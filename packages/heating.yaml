@@ -6,17 +6,6 @@
 heating:
 
   #############################################################################
-  # GROUP
-  #############################################################################
-
-  group:
-    climate:
-      name: "Beneden verwarming"
-      entities:
-        - climate.beneden_vloerverwarming
-        - climate.woonkamer_radiator_thermostat
-
-  #############################################################################
   # SENSOR
   #############################################################################
 
@@ -85,12 +74,16 @@ heating:
               {% if states(room) == 'heat' %}
                 {% set current = state_attr(room, 'current_temperature') %}
                 {% set setpoint = state_attr(room, 'temperature') %}
-                {% set delta = setpoint - current %}
+                {% if 'beneden_vloerverwarming' in room | string %}
+                  {% set delta = setpoint - current %}
+                {% else %}
+                  {% set delta = setpoint - current - states('input_number.trv_deadzone')|float %}
+                {% endif %}
                 {% set heating_need.rooms = heating_need.rooms + [room] %}
                 {% set heating_need.delta = heating_need.delta + [delta] %}
               {% endif %}
             {% endfor %}
-
+            
             {% set highest_delta = namespace(current_central=-1000, room='None') %}
             {% if heating_need.rooms|count > 0 %}
               {% for i in range(heating_need.rooms|count) %}
@@ -103,9 +96,9 @@ heating:
               {% set result_room = highest_delta.room %}
             {% else %}
               {% set result_delta = 0 %}
-              {% set result_room = "None" %}
+              {% set result_room = "Niet actief" %}
             {% endif %}
-
+            
             {{ result_delta }}
 
         # Calculate delta to be passed to the central heating
@@ -117,12 +110,16 @@ heating:
               {% if states(room) == 'heat' %}
                 {% set current = state_attr(room, 'current_temperature') %}
                 {% set setpoint = state_attr(room, 'temperature') %}
-                {% set delta = setpoint - current %}
+                {% if 'beneden_vloerverwarming' in room | string %}
+                  {% set delta = setpoint - current %}
+                {% else %}
+                  {% set delta = setpoint - current - states('input_number.trv_deadzone')|float %}
+                {% endif %}
                 {% set heating_need.rooms = heating_need.rooms + [room] %}
                 {% set heating_need.delta = heating_need.delta + [delta] %}
               {% endif %}
             {% endfor %}
-
+            
             {% set highest_delta = namespace(current_central=-1000, room='None') %}
             {% if heating_need.rooms|count > 0 %}
               {% for i in range(heating_need.rooms|count) %}
@@ -142,7 +139,8 @@ heating:
 
         # Livingroom radiator current temprature to be passed to the avarge downstairs sensor.
         - name: "Living room radiator current temperature"
-          state: "{{state_attr('climate.woonkamer_radiator_thermostat', 'current_temperature')}}"
+          unit_of_measurement: "°C"
+          state: "{{state_attr('climate.woonkamer_radiator_thermostat', 'current_temperature')|float}}"
 
   #############################################################################
   # MQTT

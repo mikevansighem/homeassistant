@@ -577,10 +577,8 @@
   - service: mqtt.publish
     data:
       topic: opentherm-thermostat/current-temperature/set
-      payload_template: '{% if states(''sensor.heating_leading_room'') == ''climate.beneden_vloerverwarming''
-        %} {{state_attr(''climate.central_heating'', ''temperature'') - states(''sensor.heating_delta'')|float}}
-        {% else %} {{state_attr(''climate.central_heating'', ''temperature'') - states(''sensor.heating_delta'')|float
-        + 1 }} {% endif %}'
+      payload_template: '{{state_attr(''climate.central_heating'', ''temperature'')
+        - states(''sensor.heating_delta'')|float}}'
   mode: parallel
   max: 10
 - id: '1631038917696'
@@ -691,7 +689,7 @@
     target:
       entity_id: climate.woonkamer_radiator_thermostat
     data:
-      temperature: '{{ states(''sensor.climate_setpoint'') | float + 1 }}'
+      temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
   mode: single
   max: 3
 - id: '1631815874577'
@@ -2150,3 +2148,41 @@
     input:
       radiator: climate.woonkamer_radiator_thermostat
       window: binary_sensor.kitchen_door
+- id: '1664988079015'
+  alias: Climate - Garage follows livingroom
+  description: Downstairs floorheating follows the livingroom radiator setpoint to
+    give easy and physical controls.
+  trigger:
+  - platform: state
+    entity_id:
+    - climate.woonkamer_radiator_thermostat
+    to: 'off'
+    id: 'OFF'
+  - platform: state
+    entity_id:
+    - climate.woonkamer_radiator_thermostat
+    id: 'ON'
+    to: heat
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.garage_radiator_thermostat
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.garage_radiator_thermostat
+  mode: queued
+  max: 3
