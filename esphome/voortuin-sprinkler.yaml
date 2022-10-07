@@ -52,5 +52,5 @@ api:
 binary_sensor:
 
   - platform: status
-    name: "${upper_devicename} Status"
+    name: "${upper_devicename} status"
     icon: "mdi:wifi"

@@ -103,7 +103,7 @@
 
     # Alarm panel battery sensor
     alarm_panel_battery:
-      friendly_name: "Alarm paneel"
+      friendly_name: "Alarm paneel batterij"
       unit_of_measurement: "%"
       device_class: battery
       value_template: >-

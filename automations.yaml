@@ -685,11 +685,22 @@
     entity_id: sensor.climate_setpoint
   condition: []
   action:
-  - service: climate.set_temperature
-    target:
-      entity_id: climate.woonkamer_radiator_thermostat
-    data:
-      temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
+  - repeat:
+      while:
+      - condition: template
+        value_template: '{{states("sensor.climate_setpoint")|int != state_attr("climate.woonkamer_radiator_thermostat",
+          "temperature")|int }}'
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.woonkamer_radiator_thermostat
+        data:
+          temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 0
+          milliseconds: 0
   mode: single
   max: 3
 - id: '1631815874577'
