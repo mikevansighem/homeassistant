@@ -723,16 +723,16 @@
   - platform: template
     value_template: "{% set state = states('climate.beneden_vloerverwarming') %}\n{%
       set delta = state_attr('climate.beneden_vloerverwarming', \"temperature\") -
-      state_attr('climate.beneden_vloerverwarming', \"current_temperature\") %}\n{{delta}}\n{%
-      if state == 'heat' and delta|float > -5 %}\n  true\n{% else %}\n false\n{% endif
-      %}"
+      state_attr('climate.beneden_vloerverwarming', \"current_temperature\") %}\n{%
+      if state == 'heat' and delta|float > -5 %}\n  true\n{% else %}\n  false\n{%
+      endif %}"
     id: 'ON'
   - platform: template
     value_template: "{% set state = states('climate.beneden_vloerverwarming') %}\n{%
       set delta = state_attr('climate.beneden_vloerverwarming', \"temperature\") -
-      state_attr('climate.beneden_vloerverwarming', \"current_temperature\") %}\n{{delta}}\n{%
-      if state == 'heat' and delta|float > -5 %}\n  false\n{% else %}\n true\n{% endif
-      %}"
+      state_attr('climate.beneden_vloerverwarming', \"current_temperature\") %}\n{%
+      if state == 'heat' and delta|float > -5 %}\n  false\n{% else %}\n  true\n{%
+      endif %}"
     id: 'OFF'
   condition: []
   action:
@@ -749,6 +749,7 @@
       - condition: trigger
         id: 'OFF'
       sequence:
+      - delay: '{{ states(''input_datetime.floor_heating_pump_delay'') }}'
       - service: switch.turn_off
         target:
           entity_id: switch.floor_heating_pump_on_off

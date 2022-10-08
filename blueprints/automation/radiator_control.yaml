@@ -19,25 +19,14 @@ blueprint:
           multiple: false
 
 trigger:
+
   - platform: state
-    entity_id: sensor.climate_period
-    id: 'ON'
-    from: night
-  - platform: state
-    entity_id: sensor.house_state
-    to: home
+    entity_id: sensor.heating_allowed
+    to: 'true'
     id: 'ON'
   - platform: state
-    entity_id: sensor.house_state
-    id: 'OFF'
-    from: Home
-  - platform: state
-    entity_id: sensor.climate_period
-    to: night
-    id: 'OFF'
-  - platform: state
-    entity_id: sensor.house_state
-    to: away
+    entity_id: sensor.heating_allowed
+    to: 'false'
     id: 'OFF'
   - platform: state
     entity_id: !input 'window'
@@ -63,24 +52,16 @@ action:
       - conditions:
           - condition: trigger
             id: 'ON'
-          - condition: not
-            conditions:
-              - condition: state
-                entity_id: sensor.house_state
-                state: holiday
-              - condition: state
-                entity_id: sensor.house_state
-                state: away
-              - condition: state
-                entity_id: sensor.climate_period
-                state: night
-              - condition: state
-                entity_id: !input 'window'
-                state: 'on'
-                for:
-                  hours: 0
-                  minutes: 5
-                  seconds: 0
+          - condition: state
+            entity_id: sensor.heating_allowed
+            state: 'true'
+          - condition: state
+            entity_id: !input 'window'
+            state: 'on'
+            for:
+              hours: 0
+              minutes: 1
+              seconds: 0
         sequence:
           - service: climate.set_hvac_mode
             data:

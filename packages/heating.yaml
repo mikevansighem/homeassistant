@@ -99,7 +99,7 @@ heating:
               {% set result_room = "Niet actief" %}
             {% endif %}
 
-            {{ result_delta }}
+            {{ result_delta | round(2) }}
 
         # Calculate delta to be passed to the central heating
         - name: "Heating leading room"
