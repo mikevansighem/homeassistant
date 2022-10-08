@@ -16,7 +16,6 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-          integration: zha
           multiple: false
 
 trigger:

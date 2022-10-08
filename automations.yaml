@@ -683,6 +683,10 @@
   trigger:
   - platform: state
     entity_id: sensor.climate_setpoint
+  - platform: state
+    entity_id:
+    - climate.woonkamer_radiator_thermostat
+    to: heat
   condition: []
   action:
   - repeat:
@@ -1990,6 +1994,7 @@
     entity_id:
     - sensor.house_state
     id: 'ON'
+    from: night
     to: home
     for:
       hours: 0
@@ -2008,6 +2013,12 @@
       work_day == 'off' and now().strftime('%H:%M') > free_on ) %}\n  true\n{% else
       %}\n  false\n{% endif %}"
     id: 'OFF'
+  - platform: state
+    entity_id:
+    - sensor.house_state
+    from: away
+    to: home
+    id: 'ON'
   condition: []
   action:
   - choose:
@@ -2027,18 +2038,40 @@
           %}\n\n{% if ( work_day == 'on' and now().strftime('%H:%M') > work_on ) or
           ( work_day == 'off' and now().strftime('%H:%M') > free_on ) %}\n  false\n{%
           else %}\n  true\n{% endif %}"
-      - service: switch.turn_on
-        data: {}
-        target:
-          entity_id: switch.humidifier
+      - repeat:
+          while:
+          - condition: state
+            entity_id: switch.humidifier
+            state: 'off'
+          sequence:
+          - service: switch.turn_on
+            data: {}
+            target:
+              entity_id: switch.humidifier
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 30
+              milliseconds: 0
     - conditions:
       - condition: trigger
         id: 'OFF'
       sequence:
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id: switch.humidifier
+      - repeat:
+          while:
+          - condition: state
+            entity_id: switch.humidifier
+            state: 'on'
+          sequence:
+          - service: switch.turn_off
+            data: {}
+            target:
+              entity_id: switch.humidifier
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 30
+              milliseconds: 0
     default: []
   mode: single
 - id: '1663154996923'
@@ -2158,7 +2191,7 @@
     path: radiator_control.yaml
     input:
       radiator: climate.woonkamer_radiator_thermostat
-      window: binary_sensor.kitchen_door
+      window: binary_sensor.beneden_deuren_en_ramen
 - id: '1664988079015'
   alias: Climate - Garage follows livingroom
   description: Downstairs floorheating follows the livingroom radiator setpoint to

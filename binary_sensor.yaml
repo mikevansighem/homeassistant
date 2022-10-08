@@ -2,6 +2,13 @@
 # BINARY SENSORS
 ###############################################################################
 
+# Combine downstairs doors and windows
+- platform: group
+  name: "Beneden deuren en ramen"
+  entities:
+    - binary_sensor.eetkamer_raam
+    - binary_sensor.kitchen_door
+
 # NOISE SENSOR
 
 - platform: ffmpeg_noise
