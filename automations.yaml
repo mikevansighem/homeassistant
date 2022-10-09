@@ -689,6 +689,10 @@
     to: heat
   condition: []
   action:
+  - condition: numeric_state
+    entity_id: climate.woonkamer_radiator_thermostat
+    attribute: temperature
+    above: 0
   - repeat:
       while:
       - condition: template
@@ -2164,7 +2168,7 @@
           entity_id: climate.beneden_vloerverwarming
         data:
           temperature: '{{ state_attr(''climate.woonkamer_radiator_thermostat'', ''temperature'')
-            | float }}'
+            | float(15) }}'
     - conditions:
       - condition: trigger
         id: 'OFF'

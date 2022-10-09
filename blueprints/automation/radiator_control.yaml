@@ -57,7 +57,7 @@ action:
             state: 'true'
           - condition: state
             entity_id: !input 'window'
-            state: 'on'
+            state: 'off'
             for:
               hours: 0
               minutes: 1
