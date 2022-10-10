@@ -110,9 +110,14 @@ proximity:
     tolerance: 50
     unit_of_measurement: km
 
-# Presence based on ping
 device_tracker:
+
+    # Presence based on ping
   - platform: ping
     hosts:
       ping_phone_mike: 192.168.2.11
       ping_phone_anneloes: 192.168.2.27
+
+    # BT device tracker
+  - platform: bluetooth_tracker
+
