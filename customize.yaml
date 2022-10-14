@@ -2,14 +2,6 @@
 # CUSTOMIZE
 ###############################################################################
 
-# Plants
-plant.zamioculcas:
-  friendly_name: Zamioculcas
-  entity_picture: http://homeassistant.local:8123/local/plants/zamioculcas_zamiifolia.jpg
-plant.fern:
-  friendly_name: Varen
-  entity_picture: http://homeassistant.local:8123/local/plants/fern.jpg
-
 # Other
 sensor.somebody_home:
   icon: mdi:home
