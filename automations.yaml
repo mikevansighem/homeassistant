@@ -1329,6 +1329,7 @@
       entity_id:
       - button.fritz_box_7590_cleanup
       - button.fritz_powerline_1260e_cleanup
+      - button.fritz_powerline_1260e_cleanup_2
   mode: single
 - id: '1651855182269'
   alias: Chime - Off when quiet
