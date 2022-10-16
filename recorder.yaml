@@ -36,7 +36,7 @@ include:
     - sensor.heating_delta
     - sensor.heating_leading_room
     - switch.floor_heatingpump_helper
-    - sensor.heating_allowed 
+    - sensor.heating_allowed
     - sensor.climate_setpoint
 
     # Watering
