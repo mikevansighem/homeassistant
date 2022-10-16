@@ -37,6 +37,7 @@ include:
     - sensor.heating_leading_room
     - switch.floor_heatingpump_helper
     - sensor.heating_allowed 
+    - sensor.climate_setpoint
 
     # Watering
     - sensor.watering_level
