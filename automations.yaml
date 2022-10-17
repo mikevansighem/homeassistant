@@ -574,11 +574,15 @@
     seconds: '30'
   condition: []
   action:
-  - service: mqtt.publish
-    data:
-      topic: opentherm-thermostat/current-temperature/set
-      payload_template: '{{state_attr(''climate.central_heating'', ''temperature'')
-        - states(''sensor.heating_delta'')|float}}'
+  - if:
+    - condition: template
+      value_template: '{{ is_number(states(''sensor.heating_delta'')) }}'
+    then:
+    - service: mqtt.publish
+      data:
+        topic: opentherm-thermostat/current-temperature/set
+        payload_template: '{{state_attr(''climate.central_heating'', ''temperature'')
+          - states(''sensor.heating_delta'')|float}}'
   mode: parallel
   max: 10
 - id: '1631038917696'
@@ -689,26 +693,27 @@
     to: heat
   condition: []
   action:
-  - condition: numeric_state
-    entity_id: climate.woonkamer_radiator_thermostat
-    attribute: temperature
-    above: 0
-  - repeat:
-      while:
-      - condition: template
-        value_template: '{{states("sensor.climate_setpoint")|int != state_attr("climate.woonkamer_radiator_thermostat",
-          "temperature")|int }}'
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.woonkamer_radiator_thermostat
-        data:
-          temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
-      - delay:
-          hours: 0
-          minutes: 1
-          seconds: 0
-          milliseconds: 0
+  - if:
+    - condition: template
+      value_template: '{{ is_number(state_attr(''climate.woonkamer_radiator_thermostat'',''temperature''))
+        }}'
+    then:
+    - repeat:
+        while:
+        - condition: template
+          value_template: '{{states("sensor.climate_setpoint")|int != state_attr("climate.woonkamer_radiator_thermostat",
+            "temperature")|int }}'
+        sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.woonkamer_radiator_thermostat
+          data:
+            temperature: '{{ states(''sensor.climate_setpoint'') | float }}'
+        - delay:
+            hours: 0
+            minutes: 1
+            seconds: 0
+            milliseconds: 0
   mode: single
   max: 3
 - id: '1631815874577'
