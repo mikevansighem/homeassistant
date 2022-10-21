@@ -421,7 +421,7 @@
     missing_entities_services:
       friendly_name: "Missende entiteiten of services"
       value_template: >-
-        {{ states("sensor.watchman_missing_entities")|int + states("sensor.watchman_missing_services")|int }}
+        {{ states("sensor.watchman_missing_entities")|int(0) + states("sensor.watchman_missing_services")|int(0) }}
 
 ###############################################################################
 # STATISTICS
