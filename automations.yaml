@@ -802,7 +802,7 @@
       Timeout: 60
   mode: single
 - id: '1633712008868'
-  alias: Chime - Notify
+  alias: Chime - Notify if pressed
   description: ''
   trigger:
   - platform: state
@@ -2256,3 +2256,69 @@
           entity_id: climate.garage_radiator_thermostat
   mode: queued
   max: 3
+- id: '1666443364506'
+  alias: Chime - Mike comes home
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.tmp
+    to: home
+  condition:
+  - condition: state
+    entity_id: person.anneloes_jagt
+    state: home
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+  - condition: state
+    entity_id: input_boolean.quiet
+    state: 'off'
+  action:
+  - service: esphome.doorbell_chime
+    data: {}
+  - service: script.1655204175112
+    data:
+      Title: "Ding dong \U0001F514"
+      Message: Er staat iemand aan de voordeur.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Only when home and no quiet time
+      Group: General
+      Timeout: 3
+  mode: single
+- id: '1666443515270'
+  alias: Chime - Anneloes comes home
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.anneloes_jagt
+    to: home
+  condition:
+  - condition: state
+    entity_id: light.night_light_mike
+    state: home
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+  - condition: state
+    entity_id: input_boolean.quiet
+    state: 'off'
+  action:
+  - service: esphome.doorbell_chime
+    data: {}
+  - service: script.1655204175112
+    data:
+      Title: "Ding dong \U0001F514"
+      Message: Er staat iemand aan de voordeur.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Only when home and no quiet time
+      Group: General
+      Timeout: 3
+  mode: single
