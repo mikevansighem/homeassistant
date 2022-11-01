@@ -2263,11 +2263,11 @@
   - platform: state
     entity_id:
     - person.tmp
-    to: home
     for:
       hours: 0
-      minutes: 30
-      seconds: 0
+      minutes: 0
+      seconds: 30
+    to: home
   condition:
   - condition: state
     entity_id: person.anneloes_jagt

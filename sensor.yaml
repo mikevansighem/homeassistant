@@ -232,43 +232,37 @@
             mdi:weather-night
           {% endif %}
 
+    # +3600 for winter time check the method for quiet time that works better
     climate_period:
       friendly_name: "Climate period"
       value_template: >-
-        {%set old = as_timestamp(strptime(states('sensor.time_utc'), '%H:%M'))%}
-        {%set new = as_timestamp(strptime(states('sensor.time'), '%H:%M'))%}
-        {% set dif = new - old %}
-        {% set tnow = as_timestamp(strptime(states('sensor.time'), '%H:%M')+timedelta(seconds=2208985200))+dif %}
-
-        {% set early_start = state_attr('input_datetime.heating_pre_heat', 'timestamp') %}
-        {% set night_end_work = state_attr('input_datetime.end_night_workday', 'timestamp') %}
-        {% set work_night_end_time = (night_end_work - early_start)  | timestamp_utc %}
-        {% set night_end_free = state_attr('input_datetime.end_night_free_day', 'timestamp') %}
-        {% set free_night_end_time = (night_end_free - early_start)  | timestamp_utc %}
-
-        {% set early_stop = state_attr('input_datetime.heating_early_stop', 'timestamp') %}
-        {% set night_start_work = state_attr('input_datetime.start_night_workday', 'timestamp') %}
-        {% set work_night_start_time = (night_start_work - early_stop)  | timestamp_utc %}
-        {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'timestamp') %}
-        {% set free_night_start_time = (night_start_free - early_stop)  | timestamp_utc %}
+        {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}
+        {% set night_start_work = state_attr('input_datetime.start_night_workday', 'hour') * 60 + state_attr('input_datetime.start_night_workday', 'minute')%}
+        {% set night_end_free = state_attr('input_datetime.end_night_free_day', 'hour') * 60 + state_attr('input_datetime.end_night_free_day', 'minute')%}
+        {% set night_end_work = state_attr('input_datetime.end_night_workday', 'hour') * 60 + state_attr('input_datetime.end_night_workday', 'minute')%}
+        {% set offset_start = state_attr('input_datetime.heating_pre_heat', 'hour') * 60 + state_attr('input_datetime.heating_pre_heat', 'minute')%}
+        {% set offset_end = state_attr('input_datetime.heating_early_stop', 'hour') * 60 + state_attr('input_datetime.heating_early_stop', 'minute')%}
+        {% set evening_start = state_attr('input_datetime.evening_start', 'hour') * 60 + state_attr('input_datetime.evening_start', 'minute')%}
+        {% set morning_end = state_attr('input_datetime.morning_end', 'hour') * 60 + state_attr('input_datetime.morning_end', 'minute')%}
+        {% set tnow = (states('sensor.time')[:2] | int)*60 + (states('sensor.time')[-2:] | int)%}
 
         {% if is_state('input_select.climate_period_override', 'auto') %}
           {% if is_state('binary_sensor.workday_sensor', 'off') %}
-            {% if as_timestamp(free_night_end_time) < tnow < as_timestamp(state_attr('input_datetime.morning_end', 'timestamp')| timestamp_utc) %}
+            {% if night_end_free - offset_start < tnow < morning_end %}
               morning
-            {% elif as_timestamp(state_attr('input_datetime.morning_end', 'timestamp')| timestamp_utc) < tnow < as_timestamp(state_attr('input_datetime.evening_start', 'timestamp')| timestamp_utc) %}
+            {% elif morning_end < tnow < evening_start %}
               day
-            {% elif as_timestamp(state_attr('input_datetime.evening_start', 'timestamp')| timestamp_utc) < tnow < as_timestamp(free_night_start_time)  %}
+            {% elif evening_start < tnow < night_start_free - offset_end  %}
               evening
             {% else %}
               night
             {% endif %}
           {% else %}
-            {% if as_timestamp(work_night_end_time)  < tnow < as_timestamp( state_attr('input_datetime.morning_end', 'timestamp')| timestamp_utc) %}
+            {% if night_end_work - offset_start < tnow < morning_end %}
               morning
-            {% elif as_timestamp(state_attr('input_datetime.morning_end', 'timestamp')| timestamp_utc) < tnow < as_timestamp(state_attr('input_datetime.evening_start', 'timestamp')| timestamp_utc )%}
+            {% elif morning_end < tnow < evening_start %}
               day
-            {% elif as_timestamp(state_attr('input_datetime.evening_start', 'timestamp')| timestamp_utc) < tnow < as_timestamp(work_night_start_time)  %}
+            {% elif evening_start < tnow < night_start_work - offset_end   %}
               evening
             {% else %}
               night
@@ -277,6 +271,7 @@
         {% else %}
           {{states('input_select.climate_period_override')}}
         {% endif  %}
+
       icon_template: >-
           {% if is_state('sensor.climate_period', 'morning') %}
             mdi:weather-sunset-up
