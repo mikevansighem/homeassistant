@@ -1401,19 +1401,9 @@
       only_after: 00:00:00
       only_before: 00:00:00
       update_entities:
-      - update.fritz_box_7590_fritz_os
-      - update.fritz_powerline_1260e_fritz_os
       - update.home_assistant_core_update
       - update.home_assistant_operating_system_update
       - update.home_assistant_supervisor_update
-      - update.pi_hole_core_update_available
-      - update.pi_hole_ftl_update_available
-      - update.pi_hole_web_update_available
-      - update.hacs_update
-      - update.nest_protect_update
-      - update.opensprinkler_integration_for_home_assistant_update
-      - update.spotcast_update
-      - update.watchman_update
       notification_channel: Utility
 - id: '1654623073206'
   alias: 'Lights - Motion control - Stairs closet '
@@ -1723,7 +1713,7 @@
       Timeout: 0
   mode: single
 - id: '1659155364307'
-  alias: Baby - Reset noise monitor
+  alias: Surveillance - Reset noise monitor
   description: ''
   trigger:
   - platform: state

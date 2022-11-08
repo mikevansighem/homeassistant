@@ -1,0 +1,110 @@
+###############################################################################
+# SUBSTITUTIONS
+###############################################################################
+
+substitutions:
+  device_name: waterlezer
+  device_description: Water meter sensor 
+
+###############################################################################
+# GENERAL
+###############################################################################
+
+esphome:
+  name: ${device_name}
+  comment: "${device_description}" 
+  name_add_mac_suffix: false
+  
+esp8266:
+  board: esp12e
+  restore_from_flash: true
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${device_name} fallback"
+    password: !secret esphome_fallback_password
+    ap_timeout: 15s
+
+web_server:
+  port: 80
+  
+captive_portal:
+
+logger:
+  level: INFO
+
+ota:
+  reboot_timeout: 10min
+  num_attempts: 5
+  password: !secret ota_password
+
+status_led:
+  pin:
+    number: 2
+    inverted: true
+
+api:
+#via Home Assistant Ontwikkelhulpmiddelen > services zoeken op esphome.watermeter_set_water_reading en via deze methode de juiste beginstand invoeren
+  services:
+    - service: set_water_reading
+      variables:
+        meter_value: int
+      then:
+        - globals.set:
+            id: totalWaterUsage
+            value: !lambda "return ( meter_value );"
+
+###############################################################################
+# SPECIFIC
+###############################################################################
+
+globals:
+  - id: totalWaterUsage
+    type: int
+    restore_value: true      # aanpassen naar no indien de nieuwe waarde onder de oude ligt
+    initial_value: '0'       # beginstand van je watermeter -> aanpassen via Home Assistant services
+
+button:  
+  - platform: restart
+    name: "Restart device"
+    
+sensor:
+  - platform: pulse_counter
+    pin: 
+      number: 5
+      mode:
+        input: true
+        pullup: true #v3.5 aanzetten
+    id: watermeter_pulse
+    name: "Watermeter pulse"
+    count_mode:
+      rising_edge: DISABLE
+      falling_edge: INCREMENT
+    state_class: measurement
+    update_interval: 1s
+    internal_filter: 100us
+    accuracy_decimals: 0
+    unit_of_measurement: 'L/min'
+  
+  - platform: template
+    name: "Watermeter total"
+    state_class: "total_increasing"
+    device_class: 'water'
+    icon: mdi:water
+    update_interval: 1s
+    unit_of_measurement: L
+    accuracy_decimals: 0
+    lambda: |-
+      if (id(watermeter_pulse).state > 0) id(totalWaterUsage) += 1;
+      return id(totalWaterUsage);
+
+binary_sensor:
+
+  # Status sensor
+  - platform: status
+    name: "${device_name} status"
+    icon: "mdi:wifi"

@@ -134,6 +134,11 @@ energy_monitoring:
 
   utility_meter:
 
+    daily_water:
+      source: sensor.watermeter_pulse
+      name: Waterverbruik
+      cycle: daily
+
     daily_energy_tariff_1:
       source: sensor.energy_consumed_tariff_1
       name: Energie dal
