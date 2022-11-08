@@ -4,7 +4,7 @@
 
 substitutions:
   device_name: waterlezer
-  device_description: Water meter sensor 
+  device_description: Water meter sensor
 
 ###############################################################################
 # GENERAL
@@ -12,9 +12,9 @@ substitutions:
 
 esphome:
   name: ${device_name}
-  comment: "${device_description}" 
+  comment: "${device_description}"
   name_add_mac_suffix: false
-  
+
 esp8266:
   board: esp12e
   restore_from_flash: true
@@ -31,7 +31,7 @@ wifi:
 
 web_server:
   port: 80
-  
+
 captive_portal:
 
 logger:
@@ -48,7 +48,6 @@ status_led:
     inverted: true
 
 api:
-#via Home Assistant Ontwikkelhulpmiddelen > services zoeken op esphome.watermeter_set_water_reading en via deze methode de juiste beginstand invoeren
   services:
     - service: set_water_reading
       variables:
@@ -68,13 +67,13 @@ globals:
     restore_value: true      # aanpassen naar no indien de nieuwe waarde onder de oude ligt
     initial_value: '0'       # beginstand van je watermeter -> aanpassen via Home Assistant services
 
-button:  
+button:
   - platform: restart
     name: "Restart device"
-    
+
 sensor:
   - platform: pulse_counter
-    pin: 
+    pin:
       number: 5
       mode:
         input: true
@@ -89,7 +88,7 @@ sensor:
     internal_filter: 100us
     accuracy_decimals: 0
     unit_of_measurement: 'L/min'
-  
+
   - platform: template
     name: "Watermeter total"
     state_class: "total_increasing"

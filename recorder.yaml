@@ -38,7 +38,7 @@ include:
     - switch.floor_heatingpump_helper
     - sensor.heating_allowed
     - sensor.climate_setpoint
-    
+
     # Water
     - sensor.watermeter_total
     - sensor.watermeter_pulse
