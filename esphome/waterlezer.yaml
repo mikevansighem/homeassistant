@@ -77,7 +77,7 @@ sensor:
       number: 5
       mode:
         input: true
-        pullup: true #v3.5 aanzetten
+        pullup: true # v3.5 aanzetten
     id: watermeter_pulse
     name: "Watermeter pulse"
     count_mode:
