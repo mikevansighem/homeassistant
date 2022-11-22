@@ -332,7 +332,7 @@
       value_template: >-
         {% if states('switch.humidifier') == 'off' %}
           uit
-        {% elif states('sensor.humidifier_power')|int > 0 %}
+        {% elif states('sensor.humidifier_power')|int > 20 %}
           aan
         {% else %}
           standby
@@ -340,7 +340,7 @@
       icon_template: >-
         {% if states('switch.humidifier') == 'off' %}
           mdi:air-humidifier-off
-        {% elif states('sensor.humidifier_power')|int > 0 %}
+        {% elif states('sensor.humidifier_power')|int > 20 %}
           mdi:air-humidifier
         {% else %}
           mdi:air-humidifier

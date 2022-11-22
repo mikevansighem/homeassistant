@@ -45,6 +45,11 @@ api:
   encryption:
     key: !secret encryption_key
 
+status_led:
+  pin:
+    number: GPIO2
+    inverted: true
+
 ###############################################################################
 # SPECIFIC
 ###############################################################################
@@ -54,3 +59,8 @@ binary_sensor:
   - platform: status
     name: "${upper_devicename} status"
     icon: "mdi:wifi"
+
+switch:
+  - platform: gpio
+    pin: GPIO13
+    name: "${upper_devicename} relais"

@@ -1738,6 +1738,7 @@
     - sensor.house_state
     id: OPEN
     to: home
+    from: night
     for:
       hours: 0
       minutes: '{{state_attr(''input_datetime.front_door_cover_late_open'', ''hour'')
@@ -1831,10 +1832,85 @@
       minutes: 1
       seconds: 30
   action:
-  - service: notify.mobile_app_sm_g960f
-    data:
-      message: Zoë maakt geluid.
-      title: Zoë maakt geluid
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.tmp
+        state: home
+      - condition: state
+        entity_id: person.anneloes_jagt
+        state: home
+      sequence:
+      - service: notify.mobile_app_sm_g960f
+        data:
+          title: "Zoë maakt geluid \U0001F476"
+          message: Wat is er aan de hand.
+          data:
+            group: Zoë
+            channel: Zoë
+            color: '#ff69a4'
+            actions:
+            - action: URI
+              title: Open camera
+              uri: entityId:camera.kids_camera
+            - action: URI
+              title: Praat terug
+              uri: app://com.mcu.reolink
+      - service: notify.mobile_app_sm_a202f
+        data:
+          title: "Zoë maakt geluid \U0001F476"
+          message: Wat is er aan de hand.
+          data:
+            group: Zoë
+            channel: Zoë
+            color: '#ff69a4'
+            actions:
+            - action: URI
+              title: Open camera
+              uri: entityId:camera.kids_camera
+            - action: URI
+              title: Praat terug
+              uri: app://com.mcu.reolink
+    - conditions:
+      - condition: state
+        entity_id: person.tmp
+        state: home
+      sequence:
+      - service: notify.mobile_app_sm_g960f
+        data:
+          title: "Zoë maakt geluid \U0001F476"
+          message: Wat is er aan de hand.
+          data:
+            group: Zoë
+            channel: Zoë
+            color: '#ff69a4'
+            actions:
+            - action: URI
+              title: Open camera
+              uri: entityId:camera.kids_camera
+            - action: URI
+              title: Praat terug
+              uri: app://com.mcu.reolink
+    - conditions:
+      - condition: state
+        entity_id: person.anneloes_jagt
+        state: home
+      sequence:
+      - service: notify.mobile_app_sm_a202f
+        data:
+          title: "Zoë maakt geluid \U0001F476"
+          message: Wat is er aan de hand.
+          data:
+            group: Zoë
+            channel: Zoë
+            color: '#ff69a4'
+            actions:
+            - action: URI
+              title: Open camera
+              uri: entityId:camera.kids_camera
+            - action: URI
+              title: Praat terug
+              uri: app://com.mcu.reolink
   mode: single
 - id: '1660828842957'
   alias: Utility - Persistant notification for missing entities
@@ -2316,3 +2392,12 @@
       Group: General
       Timeout: 3
   mode: single
+- id: '1668944675023'
+  alias: Nieuwe automatisering
+  description: ''
+  use_blueprint:
+    path: turn-light-on-and-off-based-on-detected-motion.yaml
+    input:
+      motion_sensor: binary_sensor.attic_motion
+      light: light.attic
+      duration: 0:03:00
