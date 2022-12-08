@@ -850,6 +850,12 @@
     - sensor.quiet_time_schedule
     id: SOUND
     to: 'false'
+  - platform: state
+    entity_id:
+    - sensor.house_state
+    from: home
+    to: away
+    id: SOUND
   condition: []
   action:
   - choose:
@@ -952,6 +958,11 @@
     entity_id: binary_sensor.downstairs_hallway_motion
     to: 'on'
     id: TRIGGER
+  - platform: state
+    entity_id:
+    - sensor.house_state
+    to: away
+    id: RESET
   condition:
   - condition: not
     conditions:
@@ -1816,13 +1827,14 @@
       hours: 0
       minutes: 0
       seconds: 0
+    to: 'on'
   condition:
   - condition: state
     entity_id: light.zoe_ceeling
     state: 'off'
     for:
       hours: 0
-      minutes: 5
+      minutes: 3
       seconds: 0
   - condition: state
     entity_id: camera.kids_camera
@@ -2401,3 +2413,16 @@
       motion_sensor: binary_sensor.attic_motion
       light: light.attic
       duration: 0:03:00
+- id: '1670521715661'
+  alias: Surveillance - Keep FFMPEG on
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.process_ffmpeg
+    to: 'off'
+  condition: []
+  action:
+  - service: ffmpeg.restart
+    data: {}
+  mode: single

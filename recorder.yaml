@@ -2,7 +2,7 @@
 # RECORDER
 ###############################################################################
 
-purge_keep_days: 30 # days
+purge_keep_days: 14 # days
 commit_interval: 5 # seconds
 
 include:
@@ -38,6 +38,7 @@ include:
     - switch.floor_heatingpump_helper
     - sensor.heating_allowed
     - sensor.climate_setpoint
+    - sensor.process_ffmpeg
 
     # Water
     - sensor.watermeter_total
