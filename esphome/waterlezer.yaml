@@ -87,7 +87,6 @@ sensor:
     update_interval: 1s
     internal_filter: 100us
     accuracy_decimals: 0
-    unit_of_measurement: 'L/min'
 
   - platform: template
     name: "Watermeter total"

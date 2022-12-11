@@ -2421,6 +2421,16 @@
     entity_id:
     - sensor.process_ffmpeg
     to: 'off'
+  - platform: homeassistant
+    event: start
+  - platform: state
+    entity_id:
+    - binary_sensor.zoe_geluid
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
   condition: []
   action:
   - service: ffmpeg.restart

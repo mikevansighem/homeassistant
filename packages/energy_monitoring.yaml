@@ -15,7 +15,7 @@ energy_monitoring:
 
         # Gas costs including fixed costs to be fed into an utility meter
         daily_gas_costs_temp:
-          friendly_name: "Daily gas costs temp"
+          friendly_name: "Gas kosten"
           unit_of_measurement: "€"
           value_template: >-
             {% if is_state('sensor.time', "00:00") %}

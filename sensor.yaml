@@ -19,11 +19,11 @@
 # Derivative for current gas usage
 - platform: derivative
   source: sensor.gas_consumed
-  name: 'Gas usage'
+  name: 'Huidige gas verbruik'
   round: 3
   unit_time: h
   unit: 'm³/h'
-  time_window: "00:10:00"
+  time_window: "00:05:00"
 
 ###############################################################################
 # HOLIDAY REPLAY

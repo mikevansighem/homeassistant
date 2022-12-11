@@ -15,10 +15,12 @@ sensor.daily_gas:
   device_class: gas
   state_class: total_increasing
   icon: mdi:fire
-sensor.gas_usage:
+sensor.huidige_gas_verbruik:
   icon: mdi:fire
 sensor.daily_gas_costs:
   icon: mdi:cash
+sensor.huidige_water_verbruik:
+  icon: mdi:water
 
 # Weather
 sensor.average_ground_temperature:

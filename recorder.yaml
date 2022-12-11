@@ -25,6 +25,8 @@ include:
     - sensor.*energie*
     - sensor.*power*
     - sensor.*daily*
+    - sensor.*water*
+    - sensor.*gas*
 
   entities:
     # General
