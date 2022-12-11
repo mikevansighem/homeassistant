@@ -1,0 +1,58 @@
+###############################################################################
+# WATER MONITORING
+###############################################################################
+
+# Monitor the water usage.
+water_monitoring:
+
+  #############################################################################
+  # SENSOR
+  #############################################################################
+
+  sensor:
+    - platform: template
+      sensors:
+        # Water costs to be fed into a utility meter
+        water_costs_temp:
+          friendly_name: "Water kosten temp"
+          unit_of_measurement: "€"
+          value_template: >-
+            {{((states('sensor.watermeter_total') | float(0) * states('input_number.water_tariff') | float(0) / 1000 )+(states('input_number.fixed_water_tariff') | float(0) /365) / 1000 ) | round(2)}}
+          icon_template: >-
+            mdi:cash
+
+    # Derivative for current gas usage
+    - platform: derivative
+      source: sensor.watermeter_total
+      name: 'Huidige water verbruik'
+      round: 3
+      unit_time: h
+      unit: 'L/h'
+      time_window: "00:05:00"
+
+  #############################################################################
+  # UTILITY METERS
+  #############################################################################
+
+  utility_meter:
+
+    daily_water_costs:
+      source: sensor.water_costs_temp
+      name: "Water kosten"
+      cycle: daily
+
+    daily_water_back_sprinkler:
+      source: sensor.watermeter_pulse
+      name: Waterverbruik achtertuin sprinkler
+      cycle: daily
+      tariffs:
+        - aan
+        - uit
+
+    daily_water_front_sprinkler:
+      source: sensor.watermeter_pulse
+      name: Waterverbruik voortuin sprinkler
+      cycle: daily
+      tariffs:
+        - aan
+        - uit
