@@ -62,7 +62,6 @@ include:
     # Utilities
     - sensor.grid_fossil_fuel_percentage
     - sensor.co2_intensity
-    - sensor.gas_usage
 
     # Air quality
     - sensor.air_sensor_co2
