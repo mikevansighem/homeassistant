@@ -50,6 +50,24 @@
     data:
       entity_id: binary_sensor.sprinkler_3_station_running
       run_seconds: '{{states("sensor.lawn_watering_time") | int }}'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: '{{states("sensor.lawn_watering_time") | int + 15}}'
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.voortuin_sprinkler_relais
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: '{{states("sensor.driphose_watering_time") | int + 15}}'
+      milliseconds: 0
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.voortuin_sprinkler_relais
   mode: single
 - id: '1628878957372'
   alias: Alarm - Trigger while armed away
@@ -1830,7 +1848,7 @@
     to: 'on'
   condition:
   - condition: state
-    entity_id: light.zoe_ceeling
+    entity_id: light.zoe_plafond_lamp
     state: 'off'
     for:
       hours: 0

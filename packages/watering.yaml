@@ -167,7 +167,7 @@ watering:
 
         # Calculate watering level
         watering_level:
-          friendly_name: "Watering level"
+          friendly_name: "Bewatering hoeveelheid"
           unit_of_measurement: "%"
           value_template: >-
               {% set rain = states('sensor.buienradar_rain_last_24h') | float(0) %}
@@ -208,7 +208,7 @@ watering:
 
         # Calculate watering time for front sprinkler
         front_watering_time:
-          friendly_name: "Front watering time"
+          friendly_name: "Lage border water tijd"
           value_template: >-
               {% set base_time = states('input_number.front_sprinkler_base_time') | int(0) * 60 %}
               {% set level = states('sensor.watering_level') | float(0) / 100 %}
@@ -216,7 +216,7 @@ watering:
 
         # Calculate watering time for back sprinkler
         back_watering_time:
-          friendly_name: "Back watering time"
+          friendly_name: "Hoge border water tijd"
           value_template: >-
               {% set base_time = states('input_number.back_sprinkler_base_time') | int(0) * 60 %}
               {% set level = states('sensor.watering_level') | float(0) / 100 %}
@@ -224,8 +224,16 @@ watering:
 
         # Calculate watering time for lawn sprinkler
         lawn_watering_time:
-          friendly_name: "Lawn watering time"
+          friendly_name: "Gazon water tijd"
           value_template: >-
               {% set base_time = states('input_number.lawn_sprinkler_base_time') | int(0) * 60 %}
+              {% set level = states('sensor.watering_level') | float(0) / 100 %}
+              {{base_time * level}}
+
+        # Calculate watering time for driphose
+        driphose_watering_time:
+          friendly_name: "Druppel slang water tijd"
+          value_template: >-
+              {% set base_time = states('input_number.front_hose_base_time') | int(0) * 60 %}
               {% set level = states('sensor.watering_level') | float(0) / 100 %}
               {{base_time * level}}
