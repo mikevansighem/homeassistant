@@ -198,7 +198,7 @@
           {% endif %}
 
     house_state:
-      friendly_name: "House state"
+      friendly_name: "Huis toestand"
       value_template: >-
           {% set time = states('sensor.time') %}
           {% if is_state('input_select.house_state_override', 'auto') %}
@@ -239,7 +239,7 @@
 
     # +3600 for winter time check the method for quiet time that works better
     climate_period:
-      friendly_name: "Climate period"
+      friendly_name: "Klimaat periode"
       value_template: >-
         {% set night_start_free = state_attr('input_datetime.start_night_free_day', 'hour') * 60 + state_attr('input_datetime.start_night_free_day', 'minute')%}
         {% set night_start_work = state_attr('input_datetime.start_night_workday', 'hour') * 60 + state_attr('input_datetime.start_night_workday', 'minute')%}
