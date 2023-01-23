@@ -28,6 +28,12 @@ include:
     - sensor.*water*
     - sensor.*gas*
 
+    # Plants
+    - sensor.*_conductivity
+    - sensor.*_illuminance
+    - sensor.*_moisture
+    - sensor.*_temperature
+
   entities:
     # General
     - sensor.house_state
@@ -81,20 +87,6 @@ include:
     # Device tracker
     - device_tracker.sm_g960f
     - device_tracker.sm_a202f
-
-    # Plants
-    - sensor.drakenbloedboom_conductivity
-    - sensor.drakenbloedboom_illuminance
-    - sensor.drakenbloedboom_moisture
-    - sensor.drakenbloedboom_temperature
-    - sensor.zamioculcas_conductivity
-    - sensor.zamioculcas_illuminance
-    - sensor.zamioculcas_moisture
-    - sensor.zamioculcas_temperature
-    - sensor.fern_conductivity
-    - sensor.fern_illuminance
-    - sensor.fern_moisture
-    - sensor.fern_temperature
 
     # Power
     - sensor.washing_machine_electrical_measurement

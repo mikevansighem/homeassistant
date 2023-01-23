@@ -23,7 +23,7 @@ drakenbloedboom:
   max_brightness: 55500
   # min_brightness: 2000
   max_moisture: 60
-  min_moisture: 15
+  # min_moisture: 15
   max_temperature: 35
   min_temperature: 10
   max_conductivity: 1500
@@ -53,7 +53,7 @@ dieffenbachia:
   max_brightness: 25000
   # min_brightness: 1500
   max_moisture: 60
-  min_moisture: 15
+  min_moisture: 25
   max_temperature: 32
   min_temperature: 12
   max_conductivity: 1500
@@ -68,7 +68,7 @@ calathea:
   max_brightness: 20000
   # min_brightness: 1500
   max_moisture: 60
-  min_moisture: 18
+  min_moisture: 25
   max_temperature: 34
   min_temperature: 12
   max_conductivity: 1000
