@@ -2,7 +2,7 @@
 # RECORDER
 ###############################################################################
 
-purge_keep_days: 14 # days
+purge_keep_days: 8 # days
 commit_interval: 5 # seconds
 
 include:

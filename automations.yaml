@@ -8,7 +8,7 @@
   action:
   - service: auto_backup.backup_full
     data:
-      keep_days: 3
+      keep_days: 2
       name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
   - service: hassio.addon_stdin
     data:
@@ -1513,7 +1513,7 @@
       - service: light.turn_on
         data: {}
         target:
-          entity_id: light.attic
+          entity_id: light.zolder
     - conditions:
       - condition: trigger
         id: 'Off'
@@ -1521,7 +1521,7 @@
       - service: light.turn_off
         data: {}
         target:
-          entity_id: light.attic
+          entity_id: light.zolder
     default: []
   mode: restart
 - id: '1654921534120'
@@ -1861,7 +1861,7 @@
       minutes: 3
       seconds: 0
   - condition: state
-    entity_id: camera.kids_camera
+    entity_id: camera.zoe_camera_main
     state: idle
     for:
       hours: 0
@@ -1888,7 +1888,7 @@
             actions:
             - action: URI
               title: Open camera
-              uri: entityId:camera.kids_camera
+              uri: entityId:camera.zoe_camera_main
             - action: URI
               title: Praat terug
               uri: app://com.mcu.reolink
@@ -1903,7 +1903,7 @@
             actions:
             - action: URI
               title: Open camera
-              uri: entityId:camera.kids_camera
+              uri: entityId:camera.zoe_camera_main
             - action: URI
               title: Praat terug
               uri: app://com.mcu.reolink
@@ -1923,7 +1923,7 @@
             actions:
             - action: URI
               title: Open camera
-              uri: entityId:camera.kids_camera
+              uri: entityId:camera.zoe_camera_main
             - action: URI
               title: Praat terug
               uri: app://com.mcu.reolink
@@ -1943,7 +1943,7 @@
             actions:
             - action: URI
               title: Open camera
-              uri: entityId:camera.kids_camera
+              uri: entityId:camera.zoe_camera_main
             - action: URI
               title: Praat terug
               uri: app://com.mcu.reolink
@@ -2042,14 +2042,14 @@
     path: turn_light_off_when_no_motion_long.yaml
     input:
       motion_sensor: binary_sensor.attic_motion
-      light: light.attic
+      light: light.zolder
 - id: '1661532657566'
   alias: Lights - Turn off if there is no motion - Zoë
   description: ''
   use_blueprint:
     path: turn_light_off_when_no_motion_long.yaml
     input:
-      motion_sensor: binary_sensor.kids_camera_motion
+      motion_sensor: binary_sensor.zoe_camera_motion
       light: light.kids_room
 - id: '1661533185915'
   alias: Lights - Turn off if there is no motion - Decorations
@@ -2450,7 +2450,7 @@
     path: turn-light-on-and-off-based-on-detected-motion.yaml
     input:
       motion_sensor: binary_sensor.attic_motion
-      light: light.attic
+      light: light.zolder
       duration: 0:15:00
 - id: '1672923812224'
   alias: Lights - Motion control - Attic hallway
@@ -2477,7 +2477,7 @@
     input:
       motion_sensor: binary_sensor.toilet_beweging
       light: light.toilet
-      duration: 0:02:00
+      duration: 0:01:00
 - id: '1673183796191'
   alias: ' Lights - Turn off if there is no motion - Bathroom'
   description: ''
@@ -2486,3 +2486,16 @@
     input:
       motion_sensor: binary_sensor.badkamer_beweging
       light: light.badkamer
+- id: '1674984169355'
+  alias: Utility - Purge database
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:03:22
+  condition: []
+  action:
+  - service: recorder.purge
+    data:
+      repack: true
+      keep_days: 8
+  mode: single

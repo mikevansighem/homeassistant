@@ -7,9 +7,7 @@ sensor.somebody_home:
   icon: mdi:home
 binary_sensor.workday_sensor:
   icon: mdi:briefcase
-light.attic:
-  icon: mdi:home-roof
-
+  
 # Energy
 sensor.daily_gas:
   device_class: gas

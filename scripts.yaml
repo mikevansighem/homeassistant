@@ -12,7 +12,7 @@ flash_licht:
       - light.downstairs_hallway
       - light.upstairs_hallway
       - light.attic_hallway
-      - light.attic
+      - light.zolder
       - light.bedroom
       - light.closet
       - light.car_port
@@ -649,3 +649,59 @@ sprinklers_run_grass_for_input_time:
       run_seconds: '{{states("input_number.lawn_sprinkler_time") | int * 60}}'
   mode: single
   icon: mdi:sprinkler-variant
+toggle_soapie:
+  alias: Toggle soapie
+  sequence:
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: 2833598d2470cebd380be406dedabd3b
+        domain: vacuum
+        entity_id: vacuum.soapie
+        type: is_docked
+      sequence:
+      - device_id: 2833598d2470cebd380be406dedabd3b
+        domain: vacuum
+        entity_id: vacuum.soapie
+        type: clean
+    - conditions:
+      - condition: device
+        device_id: 2833598d2470cebd380be406dedabd3b
+        domain: vacuum
+        entity_id: vacuum.soapie
+        type: is_cleaning
+      sequence:
+      - device_id: 2833598d2470cebd380be406dedabd3b
+        domain: vacuum
+        entity_id: vacuum.soapie
+        type: dock
+  mode: single
+  icon: mdi:spray-bottle
+toggle_noenoe:
+  alias: Toggle noenoe
+  sequence:
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: 21772c2aaa1ef8b8657a520b4486f31f
+        domain: vacuum
+        entity_id: vacuum.noenoe
+        type: is_docked
+      sequence:
+      - device_id: 21772c2aaa1ef8b8657a520b4486f31f
+        domain: vacuum
+        entity_id: vacuum.noenoe
+        type: clean
+    - conditions:
+      - condition: device
+        device_id: 21772c2aaa1ef8b8657a520b4486f31f
+        domain: vacuum
+        entity_id: vacuum.noenoe
+        type: is_cleaning
+      sequence:
+      - device_id: 21772c2aaa1ef8b8657a520b4486f31f
+        domain: vacuum
+        entity_id: vacuum.noenoe
+        type: dock
+  mode: single
+  icon: mdi:vacuum

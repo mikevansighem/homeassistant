@@ -296,6 +296,8 @@
         {% set climate_period = states('sensor.climate_period') %}
         {% if house_state == 'away' or house_state == 'holiday' %}
           false
+        {% elif states('sensor.buienradar_temperature_1d')|int(0) > states('input_number.zomerstand_temperatuur')|int(0) %}
+          false
         {% elif climate_period != 'night' %}
           true
         {% else %}
