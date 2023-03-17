@@ -16,6 +16,7 @@ esphome:
   comment: "${device_description}"
   platform: ESP8266
   board: d1_mini
+  friendly_name: "${upper_devicename}"
 
 wifi:
   ssid: !secret wifi_ssid

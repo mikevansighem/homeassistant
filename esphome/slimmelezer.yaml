@@ -4,6 +4,7 @@
 
 substitutions:
   device_name: slimmelezer
+  upper_devicename: Slimmelezer
   device_description: "P1 module to read smart energy and gas meter"
 
 ################################################################################
@@ -16,6 +17,7 @@ esphome:
   platform: ESP8266
   esp8266_restore_from_flash: true
   board: d1_mini
+  friendly_name: "${upper_devicename}"
   name_add_mac_suffix: false
   project:
     name: zuidwijk.slimmelezer

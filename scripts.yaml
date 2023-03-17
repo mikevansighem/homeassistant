@@ -87,6 +87,12 @@ lights_turn_off_all_lights:
       - toilet
       - upstairs_hallway
       - front_garden
+      - bathroom
+      - badkamer_spots
+      - zoe_kamer
+      - kids_room
+      - utility_closet
+    data: {}
   mode: single
   icon: mdi:lightbulb-group-off
 alarm_sound_alarm:
@@ -654,11 +660,13 @@ toggle_soapie:
   sequence:
   - choose:
     - conditions:
-      - condition: device
-        device_id: 2833598d2470cebd380be406dedabd3b
-        domain: vacuum
-        entity_id: vacuum.soapie
-        type: is_docked
+      - condition: not
+        conditions:
+        - condition: device
+          device_id: 2833598d2470cebd380be406dedabd3b
+          domain: vacuum
+          entity_id: vacuum.soapie
+          type: is_cleaning
       sequence:
       - device_id: 2833598d2470cebd380be406dedabd3b
         domain: vacuum
@@ -682,11 +690,13 @@ toggle_noenoe:
   sequence:
   - choose:
     - conditions:
-      - condition: device
-        device_id: 21772c2aaa1ef8b8657a520b4486f31f
-        domain: vacuum
-        entity_id: vacuum.noenoe
-        type: is_docked
+      - condition: not
+        conditions:
+        - condition: device
+          device_id: 21772c2aaa1ef8b8657a520b4486f31f
+          domain: vacuum
+          entity_id: vacuum.noenoe
+          type: is_cleaning
       sequence:
       - device_id: 21772c2aaa1ef8b8657a520b4486f31f
         domain: vacuum

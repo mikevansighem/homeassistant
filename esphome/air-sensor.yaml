@@ -16,6 +16,7 @@ esphome:
   comment: "${device_description}"
   platform: ESP8266
   board: esp01_1m
+  friendly_name: "Lucht sensor"
 
 # Enable logging
 logger:

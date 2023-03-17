@@ -4,7 +4,7 @@
 
 substitutions:
   device_name: reindeer
-  upper_devicename: Reindeer
+  upper_devicename: Rendier
   device_description: "A simple reindeer light"
 
 ###############################################################################
@@ -16,6 +16,7 @@ esphome:
   comment: "${device_description}"
   platform: ESP8266
   board: esp01_1m
+  friendly_name: "${upper_devicename}"
 
 # Enable logging
 logger:

@@ -16,6 +16,7 @@ esphome:
   comment: "${device_description}"
   platform: ESP32
   board: esp32dev
+  friendly_name: "Bluetooth versterker"
 
 # Enable logging
 logger:

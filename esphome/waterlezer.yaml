@@ -14,6 +14,7 @@ esphome:
   name: ${device_name}
   comment: "${device_description}"
   name_add_mac_suffix: false
+  friendly_name: "Waterlezer"
 
 esp8266:
   board: esp12e

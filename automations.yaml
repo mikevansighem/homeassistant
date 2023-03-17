@@ -975,10 +975,6 @@
     The state is saved in an input boolean.
   trigger:
   - platform: state
-    entity_id: sensor.house_state
-    to: night
-    id: RESET
-  - platform: state
     entity_id: binary_sensor.downstairs_hallway_motion
     to: 'on'
     id: TRIGGER
@@ -986,6 +982,9 @@
     entity_id:
     - sensor.house_state
     to: away
+    id: RESET
+  - platform: time
+    at: 03:30:00
     id: RESET
   condition:
   - condition: not

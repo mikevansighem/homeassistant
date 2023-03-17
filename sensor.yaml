@@ -20,7 +20,7 @@
 - platform: derivative
   source: sensor.gas_consumed
   name: 'Huidige gas verbruik'
-  round: 3
+  round: 1
   unit_time: h
   unit: 'm³/h'
   time_window: "00:05:00"
