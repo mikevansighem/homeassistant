@@ -2498,3 +2498,25 @@
       repack: true
       keep_days: 8
   mode: single
+- id: '1679753075499'
+  alias: Utility - Update all ESPHome devices
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:20:00
+  condition: []
+  action:
+  - service: update.install
+    data: {}
+    target:
+      entity_id:
+      - update.waterlezer_firmware
+      - update.bluetooth_relaiy_firmware
+      - update.doorbell_firmware
+      - update.air_sensor_firmware
+      - update.esphome_update
+      - update.fan_controller_firmware
+      - update.slimmelezer_firmware
+      - update.fan_button_firmware
+      - update.voortuin_sprinkler_firmware
+  mode: single

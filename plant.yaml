@@ -22,7 +22,7 @@ zamioculcas:
 drakenbloedboom:
   max_brightness: 55500
   # min_brightness: 2000
-  max_moisture: 60
+  # max_moisture: 60
   # min_moisture: 15
   max_temperature: 35
   min_temperature: 10
