@@ -414,7 +414,7 @@
       value_template: >-
         {% set data = namespace(thing=[]) %}
         {%- for item in states.plant  -%}
-          {% if "problem=none" not in item | string %}
+          {% if "problem=none" not in item | string and "drakenbloedboom=problem; problem=moisture low," not in item | string %}
             {% set data.thing = data.thing + [item.attributes.friendly_name] %}
           {% endif %}
         {% endfor %}

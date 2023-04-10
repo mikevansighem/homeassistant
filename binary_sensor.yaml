@@ -38,7 +38,7 @@
   scan_interval: 30
 
 - platform: ping
-  host: 192.168.2.14
+  host: 192.168.2.19
   name: "Woonkamer home mini"
   scan_interval: 30
 

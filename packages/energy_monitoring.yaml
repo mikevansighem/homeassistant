@@ -135,7 +135,7 @@ energy_monitoring:
   utility_meter:
 
     daily_water:
-      source: sensor.watermeter_pulse
+      source: sensor.watermeter_total
       name: Waterverbruik
       cycle: daily
 

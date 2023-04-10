@@ -1411,7 +1411,7 @@
   use_blueprint:
     path: plant_moisture_notification.yaml
     input:
-      time: '16:00:00'
+      time: '17:00:00'
       actions:
       - service: script.1655204175112
         data:
@@ -1423,6 +1423,9 @@
           Message: De {{sensors}} hebben water nodig.
           Voice: false
           Admin_only: false
+      exclude:
+        entity_id:
+        - plant.drakenbloedboom
 - id: '1653651804886'
   alias: Utility - Notify for updates
   description: ''
