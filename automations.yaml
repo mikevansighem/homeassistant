@@ -10,11 +10,6 @@
     data:
       keep_days: 2
       name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
-  - service: hassio.addon_stdin
-    data:
-      addon: 782428ea_dropbox-backup
-      input:
-        command: upload
   mode: single
 - id: '1628787697002'
   alias: Sprinklers - Irrigation control
@@ -902,17 +897,19 @@
     default: []
   mode: single
 - id: '1635792969335'
-  alias: 'Lights - Reindeer follows decorations '
+  alias: Lights - Reindeer follows living room
   description: Have the ESPHome reindeer follow the decorations light group.
   trigger:
   - platform: state
-    entity_id: light.decorations
+    entity_id:
+    - light.living_room
     to: 'on'
     id: 'ON'
   - platform: state
-    entity_id: light.decorations
-    id: 'OFF'
+    entity_id:
+    - light.living_room
     to: 'off'
+    id: 'OFF'
   condition: []
   action:
   - choose:
@@ -1014,11 +1011,6 @@
         target:
           entity_id: input_boolean.first_down
         data: {}
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.decorations
-        data: {}
       - service: scene.turn_on
         target:
           entity_id: scene.living_room_livingroom
@@ -1031,6 +1023,10 @@
   trigger:
   - platform: webhook
     webhook_id: deploy
+    allowed_methods:
+    - POST
+    - PUT
+    local_only: false
   condition: []
   action:
   - service: shell_command.git_pull
@@ -1066,7 +1062,7 @@
       - media_player.living_room_home_mini
   mode: single
 - id: '1642531564644'
-  alias: Air - Fan control
+  alias: Air - Livingroom fan control
   description: '- Turn off fan when holiday;
 
     - Limit fan speed during the night;
@@ -1341,6 +1337,10 @@
   trigger:
   - platform: webhook
     webhook_id: fail
+    allowed_methods:
+    - POST
+    - PUT
+    local_only: false
   condition: []
   action:
   - service: script.1655204175112
@@ -1423,9 +1423,6 @@
           Message: De {{sensors}} hebben water nodig.
           Voice: false
           Admin_only: false
-      exclude:
-        entity_id:
-        - plant.drakenbloedboom
 - id: '1653651804886'
   alias: Utility - Notify for updates
   description: ''
@@ -1749,23 +1746,6 @@
       Group: General
       Timeout: 0
   mode: single
-- id: '1659155364307'
-  alias: Surveillance - Reset noise monitor
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.zoe_geluid
-    to: unavailable
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition: []
-  action:
-  - service: ffmpeg.restart
-    data: {}
-  mode: single
 - id: '1660298269200'
   alias: Cover - Front door
   description: ''
@@ -1842,114 +1822,6 @@
           message: Vervang batterij {{ sensors }}. [Meer info.](/lovelace/batterijen)
           title: Low battery
           notification_id: low_battery
-- id: '1660449882472'
-  alias: Surveillance - Baby monitor
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.zoe_geluid
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: light.zoe_plafond_lamp
-    state: 'off'
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-  - condition: state
-    entity_id: camera.zoe_camera_main
-    state: idle
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 30
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: person.tmp
-        state: home
-      - condition: state
-        entity_id: person.anneloes_jagt
-        state: home
-      sequence:
-      - service: notify.mobile_app_sm_g960f
-        data:
-          title: "Zoë maakt geluid \U0001F476"
-          message: Wat is er aan de hand.
-          data:
-            group: Zoë
-            channel: Zoë
-            color: '#ff69a4'
-            actions:
-            - action: URI
-              title: Open camera
-              uri: entityId:camera.zoe_camera_main
-            - action: URI
-              title: Praat terug
-              uri: app://com.mcu.reolink
-      - service: notify.mobile_app_sm_a202f
-        data:
-          title: "Zoë maakt geluid \U0001F476"
-          message: Wat is er aan de hand.
-          data:
-            group: Zoë
-            channel: Zoë
-            color: '#ff69a4'
-            actions:
-            - action: URI
-              title: Open camera
-              uri: entityId:camera.zoe_camera_main
-            - action: URI
-              title: Praat terug
-              uri: app://com.mcu.reolink
-    - conditions:
-      - condition: state
-        entity_id: person.tmp
-        state: home
-      sequence:
-      - service: notify.mobile_app_sm_g960f
-        data:
-          title: "Zoë maakt geluid \U0001F476"
-          message: Wat is er aan de hand.
-          data:
-            group: Zoë
-            channel: Zoë
-            color: '#ff69a4'
-            actions:
-            - action: URI
-              title: Open camera
-              uri: entityId:camera.zoe_camera_main
-            - action: URI
-              title: Praat terug
-              uri: app://com.mcu.reolink
-    - conditions:
-      - condition: state
-        entity_id: person.anneloes_jagt
-        state: home
-      sequence:
-      - service: notify.mobile_app_sm_a202f
-        data:
-          title: "Zoë maakt geluid \U0001F476"
-          message: Wat is er aan de hand.
-          data:
-            group: Zoë
-            channel: Zoë
-            color: '#ff69a4'
-            actions:
-            - action: URI
-              title: Open camera
-              uri: entityId:camera.zoe_camera_main
-            - action: URI
-              title: Praat terug
-              uri: app://com.mcu.reolink
-  mode: single
 - id: '1660828842957'
   alias: Utility - Persistant notification for missing entities
   description: ''
@@ -2053,14 +1925,6 @@
     input:
       motion_sensor: binary_sensor.zoe_camera_motion
       light: light.kids_room
-- id: '1661533185915'
-  alias: Lights - Turn off if there is no motion - Decorations
-  description: ''
-  use_blueprint:
-    path: turn_light_off_when_no_motion_long.yaml
-    input:
-      motion_sensor: binary_sensor.livingroom_motion
-      light: light.decorations
 - id: '1661573682772'
   alias: Climate - Bathroom radiator
   description: ''
@@ -2422,29 +2286,6 @@
       Group: General
       Timeout: 3
   mode: single
-- id: '1670521715661'
-  alias: Surveillance - Keep FFMPEG on
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.process_ffmpeg
-    to: 'off'
-  - platform: homeassistant
-    event: start
-  - platform: state
-    entity_id:
-    - binary_sensor.zoe_geluid
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 15
-      seconds: 0
-  condition: []
-  action:
-  - service: ffmpeg.restart
-    data: {}
-  mode: single
 - id: '1672923790316'
   alias: Lights - Motion control - Attic
   description: ''
@@ -2514,7 +2355,6 @@
     target:
       entity_id:
       - update.waterlezer_firmware
-      - update.bluetooth_relaiy_firmware
       - update.doorbell_firmware
       - update.air_sensor_firmware
       - update.esphome_update
@@ -2522,4 +2362,95 @@
       - update.slimmelezer_firmware
       - update.fan_button_firmware
       - update.voortuin_sprinkler_firmware
+      - update.keuken_ventilator_firmware
+  mode: single
+- id: '1683952397926'
+  alias: 'Air - Keuken ventilator '
+  description: ''
+  trigger:
+  - platform: template
+    value_template: "{% if (is_state('sensor.air_sensor_quality', 'Poor') or is_state('sensor.air_sensor_quality',
+      'Unhealty') and is_state('sensor.house_state', 'away') ) %}\n  {% if 10 < states('sensor.buienradar_temperature')
+      < 25 %}\n    True\n  {% else %}\n    False\n  {% endif %}\n{% else %}\n  False\n{%
+      endif %}"
+    id: 'ON'
+  - platform: template
+    value_template: "{% if (is_state('sensor.air_sensor_quality', 'Poor') or is_state('sensor.air_sensor_quality',
+      'Unhealty') and is_state('sensor.house_state', 'away') ) %}\n  {% if 10 < states('sensor.buienradar_temperature')
+      < 25 %}\n    False\n  {% else %}\n    True\n  {% endif %}\n{% else %}\n  True\n{%
+      endif %}"
+    id: 'OFF'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - type: turn_on
+        device_id: 00d68240c7ddda6cb74d2e2afc77bf33
+        entity_id: fan.keuken_ventilator
+        domain: fan
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - type: turn_off
+        device_id: 00d68240c7ddda6cb74d2e2afc77bf33
+        entity_id: fan.keuken_ventilator
+        domain: fan
+  mode: single
+- id: '1685981131120'
+  alias: Light - Kitchen switch
+  description: ''
+  trigger:
+  - platform: event
+    event_type: hue_event
+    event_data:
+      id: keuken_schakelaar_button
+      device_id: 1715fd824115d43b8c131a2fb7e7cca9
+      unique_id: 1ff9fe97-28ec-4e1f-a11d-c1dc415411e2
+      type: initial_press
+    id: 'ON'
+  - platform: event
+    event_type: hue_event
+    event_data:
+      id: keuken_schakelaar_button
+      device_id: 1715fd824115d43b8c131a2fb7e7cca9
+      unique_id: 4cc40d62-37c8-4007-8918-49098c318693
+      type: initial_press
+    id: 'OFF'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - type: turn_on
+        device_id: 66de4bdab0d6fcdb2345eb320108131c
+        entity_id: light.kitchen
+        domain: light
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - type: turn_off
+        device_id: 66de4bdab0d6fcdb2345eb320108131c
+        entity_id: light.kitchen
+        domain: light
+  mode: single
+- id: '1685982300815'
+  alias: Utility - Restart at high disk use
+  description: ''
+  trigger:
+  - platform: time
+    at: 03:10:00
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.disk_use_percent
+    above: '75'
+  action:
+  - service: homeassistant.restart
+    data: {}
   mode: single

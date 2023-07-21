@@ -9,22 +9,6 @@
     - binary_sensor.eetkamer_raam
     - binary_sensor.kitchen_door
 
-# NOISE SENSOR
-
-- platform: ffmpeg_noise
-  name: "Zoë geluid"
-  input: !secret nursery_camera_rtsp
-  extra_arguments: -nostats -filter:a highpass=f=300,lowpass=f=2500
-  initial_state: true
-  duration: 2
-  reset: 30
-  peak: -45 # 0 is very loud and -100 is low.
-
-# WORKDAY CALENDAR
-
-- platform: workday
-  country: NL
-
 # PING NETWORK DEVICES
 
 - platform: ping

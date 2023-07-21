@@ -18,6 +18,7 @@ include:
     - input_boolean
     - cover
     - camera
+    - fan
 
   entity_globs:
     - sensor.*battery*
@@ -46,7 +47,6 @@ include:
     - switch.floor_heatingpump_helper
     - sensor.heating_allowed
     - sensor.climate_setpoint
-    - sensor.process_ffmpeg
 
     # Water
     - sensor.watermeter_total

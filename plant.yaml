@@ -19,20 +19,20 @@ zamioculcas:
     conductivity: sensor.zamioculcas_conductivity
     brightness: sensor.zamioculcas_illuminance
 
-drakenbloedboom:
-  max_brightness: 55500
-  # min_brightness: 2000
-  # max_moisture: 60
-  # min_moisture: 15
-  max_temperature: 35
-  min_temperature: 10
-  max_conductivity: 1500
-  min_conductivity: 50
+grote_calathea:
+  max_brightness: 20000
+  # min_brightness: 1500
+  max_moisture: 60
+  min_moisture: 25
+  max_temperature: 34
+  min_temperature: 12
+  max_conductivity: 1000
+  min_conductivity: 100
   sensors:
-    moisture: sensor.drakenbloedboom_moisture
-    temperature: sensor.drakenbloedboom_temperature
-    conductivity: sensor.drakenbloedboom_conductivity
-    brightness: sensor.drakenbloedboom_illuminance
+    moisture: sensor.grote_calathea_moisture
+    temperature: sensor.grote_calathea_temperature
+    conductivity: sensor.grote_calathea_conductivity
+    brightness: sensor.grote_calathea_illuminance
 
 fern:
   max_brightness: 4000

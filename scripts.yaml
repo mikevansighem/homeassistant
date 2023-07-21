@@ -77,7 +77,6 @@ lights_turn_off_all_lights:
       - bedroom
       - car_port
       - closet
-      - decorations
       - dining_room
       - downstairs_hallway
       - garden

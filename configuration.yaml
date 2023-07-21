@@ -54,7 +54,7 @@ spotcast:
 ###############################################################################
 
 logger:
-  default: debug
+  default: info
   logs:
     pychromecast.socket_client: fatal
     homeassistant.components.webhook: error
@@ -77,6 +77,16 @@ zha:
   zigpy_config:
     network:
       channel: 20
+
+###############################################################################
+# COMMAND LINE
+###############################################################################
+
+# latest commit message
+command_line:
+  - sensor:
+      command: git log -1 --format=%s
+      name: last_commit
 
 ###############################################################################
 # PRECENCE
@@ -105,7 +115,3 @@ device_tracker:
     hosts:
       ping_phone_mike: 192.168.2.11
       ping_phone_anneloes: 192.168.2.27
-
-  # BT device tracker
-  - platform: bluetooth_tracker
-

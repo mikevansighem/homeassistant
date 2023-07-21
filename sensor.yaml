@@ -2,16 +2,6 @@
 # SENSORS
 ###############################################################################
 
-- platform: systemmonitor
-  resources:
-    - type: process
-      arg: ffmpeg
-
-# latest commit message
-- platform: command_line
-  command: git log -1 --format=%s
-  name: last_commit
-
 ###############################################################################
 # INTEGRAL AND DERIVATIVE
 ###############################################################################
