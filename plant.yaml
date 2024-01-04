@@ -20,14 +20,14 @@ zamioculcas:
     brightness: sensor.zamioculcas_illuminance
 
 grote_calathea:
-  max_brightness: 20000
+  max_brightness: 15000
   # min_brightness: 1500
   max_moisture: 60
-  min_moisture: 25
-  max_temperature: 34
+  min_moisture: 15
+  max_temperature: 32
   min_temperature: 12
-  max_conductivity: 1000
-  min_conductivity: 100
+  max_conductivity: 2000
+  min_conductivity: 350
   sensors:
     moisture: sensor.grote_calathea_moisture
     temperature: sensor.grote_calathea_temperature
@@ -48,21 +48,6 @@ fern:
     temperature: sensor.fern_temperature
     conductivity: sensor.fern_conductivity
     brightness: sensor.fern_illuminance
-
-dieffenbachia:
-  max_brightness: 25000
-  # min_brightness: 1500
-  max_moisture: 60
-  min_moisture: 25
-  max_temperature: 32
-  min_temperature: 12
-  max_conductivity: 1500
-  min_conductivity: 200
-  sensors:
-    moisture: sensor.dieffenbachia_moisture
-    temperature: sensor.dieffenbachia_temperature
-    conductivity: sensor.dieffenbachia_conductivity
-    brightness: sensor.dieffenbachia_illuminance
 
 calathea:
   max_brightness: 20000

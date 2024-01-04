@@ -19,9 +19,6 @@ heating:
         - sensor.livingroom_motion_temperature
         - sensor.stairs_closet_motion_temperature
         - sensor.air_sensor_temperature
-        - sensor.grote_calathea_temperature
-        - sensor.zamioculcas_temperature
-        - sensor.fern_temperature
         - sensor.living_room_radiator_current_temperature
 
   #############################################################################

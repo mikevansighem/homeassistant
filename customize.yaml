@@ -29,6 +29,10 @@ sensor.average_humidity:
   icon: mdi:water-percent
 
 # Connections
+binary_sensor.junior:
+  icon: mdi:wifi
+binary_sensor.mini_camera:
+ icon: mdi:wifi
 binary_sensor.slaapkamer_home_mini:
   icon: mdi:wifi
 binary_sensor.bijkeuken_range_extender:

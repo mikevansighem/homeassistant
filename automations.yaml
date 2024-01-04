@@ -1264,6 +1264,10 @@
     domain: vacuum
     entity_id: vacuum.noenoe
     type: clean
+  - device_id: 8d51009ad631b297b6ffc1c3c0fd8172
+    domain: vacuum
+    entity_id: e41684602e68e38f9edf8f04333195ec
+    type: clean
   - service: input_boolean.turn_on
     data: {}
     target:
@@ -1685,41 +1689,12 @@
   - condition: state
     entity_id: input_boolean.mopped
     for:
-      hours: 90
+      hours: 70
       minutes: 0
       seconds: 0
     state: 'on'
   action:
   - service: input_boolean.turn_off
-    data: {}
-    target:
-      entity_id:
-      - input_boolean.mopped
-  mode: single
-- id: '1655902887175'
-  alias: Vacuum - Start mopping when vacuumed and away
-  description: Clean when away and battery full after vacuuming.
-  trigger:
-  - platform: state
-    entity_id:
-    - vacuum.noenoe
-    to: docked
-  condition:
-  - condition: state
-    entity_id: sensor.soapie_battery_level
-    state: '100'
-  - condition: state
-    entity_id: input_boolean.mopped
-    state: 'off'
-  - condition: state
-    entity_id: sensor.house_state
-    state: away
-  action:
-  - device_id: bbfcd968b38b244336509a78e99c525c
-    domain: vacuum
-    entity_id: vacuum.soapie
-    type: clean
-  - service: input_boolean.turn_on
     data: {}
     target:
       entity_id:
@@ -1810,9 +1785,9 @@
       exclude:
         entity_id:
         - sensor.soapie_battery_level
-        - sensor.sm_g960f_battery_level
+        - sensor.sm_s901b_battery_level
         - sensor.noenoe_battery_level
-        - sensor.sm_a202f_battery_level
+        - sensor.samsung_a35_battery_level
       actions:
       - service: persistent_notification.dismiss
         data:
@@ -2226,7 +2201,7 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 30
+      seconds: 15
     to: home
   condition:
   - condition: state
@@ -2453,4 +2428,103 @@
   action:
   - service: homeassistant.restart
     data: {}
+  mode: single
+- id: '1693720069549'
+  alias: Utility - Switch Pi-hole on
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.pi_hole
+    to: 'off'
+    for:
+      hours: 3
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 69f365fa32a1ca450bb0d92685c5cd0a
+    entity_id: c0fdfa9c79ec001e5559b4064ccfc817
+    domain: switch
+  mode: single
+- id: '1697734212600'
+  alias: Vacuum - Notify if Junior is in trouble
+  description: 'Stop the vacuum if it has been stuck for some time and notify. '
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.junior
+    to: error
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  condition: []
+  action:
+  - service: script.1655204175112
+    data:
+      Title: Junior in de nesten ❌
+      Message: Junior heeft hulp nodig.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Always
+      Group: General
+      Timeout: 0
+  - service: vacuum.stop
+    data: {}
+    target:
+      device_id:
+      - 8d51009ad631b297b6ffc1c3c0fd8172
+  mode: single
+- id: '1697734304743'
+  alias: Vacuum - Notify Juniors bin full
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.junior_bin_full
+    to: 'on'
+  condition: []
+  action:
+  - service: script.1655204175112
+    data:
+      Title: Junior vol ♻️
+      Message: Junior wil geleegd worden.
+      Url: lovelace/home
+      Voice: true
+      Admin_only: false
+      Timing: Retain till home and no quiet time
+      Group: General
+      Timeout: 0
+  mode: single
+- id: '1701005207044'
+  alias: Vacuum - Start Saopie when vacuumed and away
+  description: Clean when away and battery full after vacuuming.
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.junior
+    to: docked
+  condition:
+  - condition: state
+    entity_id: sensor.soapie_battery_level
+    state: '100'
+  - condition: state
+    entity_id: input_boolean.mopped
+    state: 'off'
+  - condition: state
+    entity_id: sensor.house_state
+    state: away
+  action:
+  - device_id: 2833598d2470cebd380be406dedabd3b
+    domain: vacuum
+    entity_id: 99433579fdf440e2249354215881c0b2
+    type: clean
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.mopped
   mode: single

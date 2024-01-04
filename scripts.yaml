@@ -444,7 +444,7 @@ commit_and_clear:
           entity_id: input_boolean.quiet
           state: 'off'
     then:
-    - service: notify.mobile_app_sm_g960f
+    - service: notify.mobile_app_samsung_s22
       data:
         title: '{{ Title }}'
         message: '{{ Message }}'
@@ -497,7 +497,7 @@ commit_and_clear:
         - condition: template
           value_template: '{{ Admin_only == false }}'
     then:
-    - service: notify.mobile_app_sm_a202f
+    - service: notify.mobile_app_sm_a346b
       data:
         title: '{{ Title }}'
         message: '{{ Message }}'
@@ -568,7 +568,7 @@ commit_and_clear:
       else:
       - wait_template: '{{is_state(''person.tmp'', ''home'') and is_state(''input_boolean.quiet'',
           ''off'')}}'
-    - service: notify.mobile_app_sm_g960f
+    - service: notify.mobile_app_samsung_s22
       data:
         title: '{{ Title }}'
         message: '{{ Message }}'
@@ -620,7 +620,7 @@ commit_and_clear:
         entity_id: person.anneloes_jagt
         state: home
       then:
-      - service: notify.mobile_app_sm_a202f
+      - service: notify.mobile_app_sm_a346b
         data:
           title: '{{ Title }}'
           message: '{{ Message }}'
@@ -635,7 +635,7 @@ commit_and_clear:
         entity_id: person.tmp
         state: home
       then:
-      - service: notify.mobile_app_sm_g960f
+      - service: notify.mobile_app_samsung_s22
         data:
           title: '{{ Title }}'
           message: '{{ Message }}'

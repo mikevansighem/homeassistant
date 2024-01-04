@@ -96,14 +96,14 @@ proximity:
   home_mike:
     zone: home
     devices:
-      - device_tracker.sm_g960f
+      - device_tracker.sm_s901b
       - device_tracker.ping_phone_mike
     tolerance: 50
     unit_of_measurement: km
   home_anneloes:
     zone: home
     devices:
-      - device_tracker.sm_a202f
+      - device_tracker.samsung_a35
       - device_tracker.ping_phone_anneloes
     tolerance: 50
     unit_of_measurement: km
@@ -113,5 +113,5 @@ device_tracker:
   # Presence based on ping
   - platform: ping
     hosts:
-      ping_phone_mike: 192.168.2.11
+      ping_phone_mike: 192.168.2.70
       ping_phone_anneloes: 192.168.2.27

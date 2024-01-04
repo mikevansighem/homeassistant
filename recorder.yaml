@@ -19,6 +19,7 @@ include:
     - cover
     - camera
     - fan
+    - device_tracker
 
   entity_globs:
     - sensor.*battery*
@@ -83,10 +84,6 @@ include:
     - sensor.memory_use_percent
     - sensor.disk_use_percent
     - sensor.processor_temperature
-
-    # Device tracker
-    - device_tracker.sm_g960f
-    - device_tracker.sm_a202f
 
     # Power
     - sensor.washing_machine_electrical_measurement
